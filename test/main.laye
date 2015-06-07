@@ -1,0 +1,2 @@
+loc value = Static.doubleInt(123);
+value <> " is typeof " <> typeof value;
