@@ -8,7 +8,8 @@ import net.fudev.laye.internal.parse.ast.SyntaxNode;
  */
 public interface Expression extends SyntaxNode
 {
-   public static void convertFromListToValueInOperatorExpression(final LayeFunctionBuilder builder, final Expression value)
+   public static void convertFromListToValueInOperatorExpression (final LayeFunctionBuilder builder,
+         final Expression value)
    {
       // TODO I don't think Laye should ignore these, but think about it.
       if (value instanceof ExprListCtor)

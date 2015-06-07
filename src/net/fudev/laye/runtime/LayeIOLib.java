@@ -10,17 +10,17 @@ import net.fudev.laye.util.Util;
 
 public final class LayeIOLib extends LayeStdLib
 {
-   protected LayeIOLib(final Vector<LayeStdLib> natives, final Root thisRoot)
+   protected LayeIOLib (final Vector<LayeStdLib> natives, final Root thisRoot)
    {
       super(natives, thisRoot);
-
+      
       addFn("input", (root, parent, args) ->
       {
          root.getOut().print(Util.concatValues(args, " "));
          final String result = root.getIn().nextLine();
          return LayeString.valueOf(result);
       });
-
+      
       addFn("print", (root, parent, args) ->
       {
          if (args.length == 0)
@@ -35,7 +35,7 @@ public final class LayeIOLib extends LayeStdLib
          root.getOut().println(Util.concatValues(args, " "));
          return LayeValue.NULL;
       });
-
+      
       addFn("error", (root, parent, args) ->
       {
          if (args.length == 0)

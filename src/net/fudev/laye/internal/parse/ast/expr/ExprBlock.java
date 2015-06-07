@@ -8,13 +8,13 @@ import net.fudev.laye.internal.parse.ast.SyntaxNode;
 public class ExprBlock implements Expression
 {
    public final Vector<SyntaxNode> nodes = new Vector<>();
-
-   public ExprBlock()
+   
+   public ExprBlock ()
    {
    }
-
+   
    @Override
-   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       builder.startBlock();
       final int size = nodes.size(), sizem1 = size - 1;

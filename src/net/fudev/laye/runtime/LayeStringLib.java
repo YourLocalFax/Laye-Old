@@ -10,13 +10,13 @@ import net.fudev.laye.internal.values.LayeTable;
 
 public final class LayeStringLib extends LayeStdLib
 {
-   protected LayeStringLib(final Vector<LayeStdLib> natives, final Root thisRoot)
+   protected LayeStringLib (final Vector<LayeStdLib> natives, final Root thisRoot)
    {
       super(natives, thisRoot);
-
+      
       final LayeTable string = new LayeTable();
       addConst("string", string);
-
+      
       string.newSlot("chars", thisRoot, (root, parent, args) ->
       {
          final char[] chars = new char[args.length];
@@ -27,7 +27,7 @@ public final class LayeStringLib extends LayeStdLib
          }
          return LayeString.valueOf(new String(chars));
       });
-
+      
       string.newSlot("code", thisRoot, (root, parent, args) ->
       {
          final String str;

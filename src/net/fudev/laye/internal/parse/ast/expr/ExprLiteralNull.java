@@ -4,12 +4,12 @@ import net.fudev.laye.internal.compile.laye.LayeFunctionBuilder;
 
 public class ExprLiteralNull implements Expression
 {
-   public ExprLiteralNull()
+   public ExprLiteralNull ()
    {
    }
-
+   
    @Override
-   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       if (isResultRequired)
       {

@@ -5,47 +5,47 @@ import net.fudev.laye.internal.ValueType;
 public final class LayeInstance extends LayeValue
 {
    public final LayeType type;
-
-   public LayeInstance(final LayeType type, final LayeValue... ctorArgs)
+   
+   public LayeInstance (final LayeType type, final LayeValue... ctorArgs)
    {
       this(type, null, ctorArgs);
    }
-
-   public LayeInstance(final LayeType type, final String ctorName, final LayeValue... ctorArgs)
+   
+   public LayeInstance (final LayeType type, final String ctorName, final LayeValue... ctorArgs)
    {
       super(ValueType.INSTANCE);
       this.type = type;
-
+      
       final LayeValue[] args = new LayeValue[ctorArgs.length + 1];
       System.arraycopy(ctorArgs, 0, args, 1, ctorArgs.length);
       args[0] = this;
-
+      
       final LayeFunction ctor = type.getCtorByName(ctorName);
       ctor.call(args);
    }
-
+   
    @Override
-   public int hashCode()
+   public int hashCode ()
    {
       // TODO hashCode
       return 0;
    }
-
+   
    @Override
-   public boolean equalTo_b(final LayeValue other)
+   public boolean equalTo_b (final LayeValue other)
    {
       // TODO overloaded == operator
       return other == this;
    }
-
+   
    @Override
-   public String asstring()
+   public String asstring ()
    {
       return "instance-TODO";
    }
-
+   
    @Override
-   public LayeValue infixOp(final String op, final LayeValue right)
+   public LayeValue infixOp (final String op, final LayeValue right)
    {
       final LayeFunction leftOp = type.getLeftInfixOperator(op);
       if (leftOp != null)
@@ -67,9 +67,9 @@ public final class LayeInstance extends LayeValue
          }
       }
    }
-
+   
    @Override
-   public LayeValue add(final LayeValue right)
+   public LayeValue add (final LayeValue right)
    {
       return infixOp("+", right);
    }

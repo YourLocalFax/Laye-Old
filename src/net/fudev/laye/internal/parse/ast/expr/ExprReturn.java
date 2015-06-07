@@ -5,14 +5,14 @@ import net.fudev.laye.internal.compile.laye.LayeFunctionBuilder;
 public class ExprReturn implements Expression
 {
    public Expression value;
-
-   public ExprReturn(final Expression value)
+   
+   public ExprReturn (final Expression value)
    {
       this.value = value;
    }
-
+   
    @Override
-   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       if (isResultRequired)
       {

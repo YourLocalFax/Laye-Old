@@ -5,18 +5,18 @@ public final class Logger
    public static enum LoggerLevel
    {
       NONE(0), ERROR(1), DEBUG(2);
-
+      
       final int level;
-
-      LoggerLevel(final int level)
+      
+      LoggerLevel (final int level)
       {
          this.level = level;
       }
    }
-
-   private static LoggerLevel level = LoggerLevel.DEBUG;
-
-   public static void setLoggerLevel(LoggerLevel level)
+   
+   private static LoggerLevel level = LoggerLevel.NONE;
+   
+   public static void setLoggerLevel (LoggerLevel level)
    {
       if (level == null)
       {
@@ -24,13 +24,13 @@ public final class Logger
       }
       Logger.level = level;
    }
-
-   public static LoggerLevel getLoggerLevel()
+   
+   public static LoggerLevel getLoggerLevel ()
    {
       return Logger.level;
    }
-
-   private static void log(final LoggerLevel at, final String group, final String message)
+   
+   private static void log (final LoggerLevel at, final String group, final String message)
    {
       if (at.level <= Logger.level.level)
       {
@@ -45,28 +45,28 @@ public final class Logger
          }
       }
    }
-
-   public static void error(final String message)
+   
+   public static void error (final String message)
    {
       Logger.error("ERROR", message);
    }
-
-   public static void error(final String group, final String message)
+   
+   public static void error (final String group, final String message)
    {
       Logger.log(LoggerLevel.ERROR, group, message);
    }
-
-   public static void debug(final String message)
+   
+   public static void debug (final String message)
    {
       Logger.debug("DEBUG", message);
    }
-
-   public static void debug(final String group, final String message)
+   
+   public static void debug (final String group, final String message)
    {
       Logger.log(LoggerLevel.DEBUG, group, message);
    }
-
-   private Logger()
+   
+   private Logger ()
    {
    }
 }

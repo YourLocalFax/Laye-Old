@@ -8,15 +8,15 @@ public class ExprListCtor implements Expression
 {
    public final Vector<Expression> values;
    public boolean immutable;
-
-   public ExprListCtor(final Vector<Expression> values, final boolean immutable)
+   
+   public ExprListCtor (final Vector<Expression> values, final boolean immutable)
    {
       this.values = values;
       this.immutable = immutable;
    }
-
+   
    @Override
-   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       if (isResultRequired)
       {

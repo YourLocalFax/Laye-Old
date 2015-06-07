@@ -10,18 +10,17 @@ import net.fudev.laye.internal.values.LayeValue;
 
 public abstract class LayeStdLib
 {
-   @SuppressWarnings("unused")
-   private static Vector<LayeStdLib> getNatives(final Root root)
+   private static Vector<LayeStdLib> getNatives (final Root root)
    {
       final Vector<LayeStdLib> natives = new Vector<>();
-
+      
       new LayeIOLib(natives, root);
       new LayeStringLib(natives, root);
-
+      
       return natives;
    }
-
-   public static void register(final Root root)
+   
+   public static void register (final Root root)
    {
       for (final LayeStdLib natives : getNatives(root))
       {
@@ -32,22 +31,22 @@ public abstract class LayeStdLib
          }
       }
    }
-
+   
    private final Map<String, LayeValue> k = new HashMap<>();
    protected final Root root;
-
-   protected LayeStdLib(final Vector<LayeStdLib> natives, final Root root)
+   
+   protected LayeStdLib (final Vector<LayeStdLib> natives, final Root root)
    {
       natives.addElement(this);
       this.root = root;
    }
-
-   protected void addFn(final String key, final LayeJavaFunction.Function fn)
+   
+   protected void addFn (final String key, final LayeJavaFunction.Function fn)
    {
       k.put(key, LayeJavaFunction.create(root, fn));
    }
-
-   protected void addConst(final String key, final LayeValue k)
+   
+   protected void addConst (final String key, final LayeValue k)
    {
       this.k.put(key, k);
    }

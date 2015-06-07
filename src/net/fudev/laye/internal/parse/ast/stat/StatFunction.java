@@ -13,23 +13,24 @@ public final class StatFunction implements Statement
    public boolean isConst;
    public Expression name;
    public ASTFunctionPrototype prototype;
-
-   public StatFunction(final boolean gen, final boolean isConst, final Expression name, final ASTFunctionPrototype prototype)
+   
+   public StatFunction (final boolean gen, final boolean isConst, final Expression name,
+         final ASTFunctionPrototype prototype)
    {
       this.gen = gen;
       this.isConst = isConst;
       this.name = name;
       this.prototype = prototype;
    }
-
+   
    @Override
-   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       name.accept(builder, true);
-
+      
       final int pre = builder.previous();
       final int preop = Laye.GET_OP(pre);
-
+      
       switch (preop)
       {
          case Laye.OP_GET_INDEX:
@@ -41,15 +42,15 @@ public final class StatFunction implements Statement
          default:
             throw new CompilerException("invalid function destination");
       }
-
+      
       final FunctionPrototype proto = prototype.generate(builder, gen);
-
+      
       // undo get-idx
       builder.popOp();
       builder.increaseStackSize();
-
+      
       builder.visitLoadFn(proto);
-
+      
       builder.visitOpNewSlot(isConst);
    }
 }

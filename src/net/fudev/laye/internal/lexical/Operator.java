@@ -6,14 +6,14 @@ import java.util.Map;
 public final class Operator
 {
    public static final int PREC_DEFAULT = 20;
-
+   
    public static final int PREC_BIT = 10;
    public static final int PREC_MULT = 30;
    public static final int PREC_POW = 40;
-
+   
    private static final Map<String, Operator> operators = new HashMap<>();
-
-   public static Operator get(final String operator)
+   
+   public static Operator get (final String operator)
    {
       Operator result = Operator.operators.get(operator);
       if (result == null)
@@ -23,12 +23,14 @@ public final class Operator
       }
       return result;
    }
-
+   
    /**
-    * @param symbol The symbol in question
-    * @return <code>true</code> for all valid operator symbols, <code>false</code> otherwise.
+    * @param symbol
+    *           The symbol in question
+    * @return <code>true</code> for all valid operator symbols,
+    *         <code>false</code> otherwise.
     */
-   public static boolean isValidOperatorSymbol(final char symbol)
+   public static boolean isValidOperatorSymbol (final char symbol)
    {
       switch (symbol)
       {
@@ -44,7 +46,6 @@ public final class Operator
          case '+':
          case '\\':
          case '|':
-         case ':':
          case '<':
          case '>':
          case '/':
@@ -54,18 +55,14 @@ public final class Operator
             return false;
       }
    }
-
+   
    static
    {
-      final String[] defaultOperators =
-         {
-            "+", "-", "*", "/", "//", "%", "^",
-            "+=", "-=", "*=", "/=", "//=", "%=", "^=",
-            "&", "|", "~", "<<", ">>", ">>>", "<>",
-            "&=", "|=", "~=", "<<=", ">>=", ">>>=", "<>=",
-            "==", "!=", "<", "<=", ">", ">=", "<=>",
-            "<-", "=",
-         };
+      final String[] defaultOperators = {
+            "+", "-", "*", "/", "//", "%", "^", "+=", "-=", "*=", "/=", "//=", "%=", "^=", "&", "|", "~", "<<", ">>",
+            ">>>", "<>", "&=", "|=", "~=", "<<=", ">>=", ">>>=", "<>=", "==", "!=", "<", "<=", ">", ">=", "<=>", "<-",
+            "=",
+      };
       for (final String operator : defaultOperators)
       {
          for (final char c : operator.toCharArray())
@@ -78,26 +75,29 @@ public final class Operator
          Operator.get(operator);
       }
    }
-
+   
    public final String image;
-
+   
    public int precedence = Operator.PREC_DEFAULT;
-
-   private Operator(final String image)
+   
+   private Operator (final String image)
    {
       this.image = image;
    }
-
+   
    /**
-    * Used to determine if a given operator can be overloaded.
-    * This returns false for any operator ending with <code>=</code>, as Laye reserves those for translation to assignment operations, and for the new-slot operator <code>&lt;-</code>
+    * Used to determine if a given operator can be overloaded. This returns
+    * false for any operator ending with <code>=</code>, as Laye reserves those
+    * for translation to assignment operations, and for the new-slot operator
+    * <code>&lt;-</code>
     *
     * @param operator
     * @return
     */
-   public boolean isOverloadable()
+   public boolean isOverloadable ()
    {
-      // TODO will <= and >= stick around in Laye, or will those be changed? (to match the standard '=' postfix standard)
+      // TODO will <= and >= stick around in Laye, or will those be changed? (to
+      // match the standard '=' postfix standard)
       if (image.endsWith("="))
       {
          // There are special cases where '=' post isn't quite straightforward
@@ -116,14 +116,15 @@ public final class Operator
          case "!=": // is translated to {not (a == b)}
          case ">": // is translated to {not (a <= b)}
          case "=": // covered by endsWith('='), but left here for clarity
-         case ">=": // see >, covered by endsWith('='), but left here for clarity
+         case ">=": // see >, covered by endsWith('='), but left here for
+                    // clarity
             return false;
          default:
             return true;
       }
    }
-
-   public boolean isAssignment()
+   
+   public boolean isAssignment ()
    {
       if (image.endsWith("="))
       {
@@ -140,8 +141,8 @@ public final class Operator
       }
       return false;
    }
-
-   public Operator infixFromAssignment()
+   
+   public Operator infixFromAssignment ()
    {
       return Operator.get(image.substring(0, image.length() - 2));
    }

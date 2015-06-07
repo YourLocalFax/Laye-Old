@@ -13,20 +13,20 @@ public class LayeTable extends LayeValue
    {
       final boolean isConst;
       LayeValue value;
-
-      public Entry(final LayeValue value, final boolean isConst)
+      
+      public Entry (final LayeValue value, final boolean isConst)
       {
          this.isConst = isConst;
          this.value = value;
       }
-
-      public LayeValue getValue()
+      
+      public LayeValue getValue ()
       {
          return value;
       }
-
+      
       @Override
-      public int hashCode()
+      public int hashCode ()
       {
          final int prime = 31;
          int result = 1;
@@ -34,9 +34,9 @@ public class LayeTable extends LayeValue
          result = prime * result + ((value == null) ? 0 : value.hashCode());
          return result;
       }
-
+      
       @Override
-      public boolean equals(final Object obj)
+      public boolean equals (final Object obj)
       {
          if (this == obj)
          {
@@ -68,15 +68,15 @@ public class LayeTable extends LayeValue
          }
          return true;
       }
-
+      
       @Override
-      public String toString()
+      public String toString ()
       {
          return value.toString();
       }
    }
-
-   public static LayeTable valueOf(final Map<String, LayeValue> table)
+   
+   public static LayeTable valueOf (final Map<String, LayeValue> table)
    {
       final Map<String, Entry> result = new HashMap<>();
       for (final Map.Entry<String, LayeValue> entry : table.entrySet())
@@ -85,35 +85,35 @@ public class LayeTable extends LayeValue
       }
       return new LayeTable(result);
    }
-
+   
    protected final Map<String, Entry> table;
-
-   public LayeTable()
+   
+   public LayeTable ()
    {
       super(ValueType.TABLE);
       table = new HashMap<>();
    }
-
-   private LayeTable(final Map<String, Entry> table)
+   
+   private LayeTable (final Map<String, Entry> table)
    {
       super(ValueType.TABLE);
       this.table = table;
    }
-
-   private LayeTable(final LayeTable other)
+   
+   private LayeTable (final LayeTable other)
    {
       super(ValueType.TABLE);
       table = new HashMap<>(other.table);
    }
-
+   
    @Override
-   public int hashCode()
+   public int hashCode ()
    {
       return table.hashCode();
    }
-
+   
    @Override
-   public boolean equalTo_b(final LayeValue other)
+   public boolean equalTo_b (final LayeValue other)
    {
       if (!other.istable())
       {
@@ -122,9 +122,9 @@ public class LayeTable extends LayeValue
       final LayeTable table = (LayeTable) other;
       return this.table.equals(table.table);
    }
-
+   
    @Override
-   public String asstring()
+   public String asstring ()
    {
       final StringBuilder builder = new StringBuilder().append('{');
       boolean comma = false;
@@ -148,36 +148,36 @@ public class LayeTable extends LayeValue
       }
       return builder.append('}').toString();
    }
-
+   
    @Override
-   public LayeValue callChildMethod(final LayeValue key, final LayeValue... args)
+   public LayeValue callChildMethod (final LayeValue key, final LayeValue... args)
    {
       return callChildMethod(key.asstring(), args);
    }
-
-   public LayeValue callChildMethod(final String key, final LayeValue... args)
+   
+   public LayeValue callChildMethod (final String key, final LayeValue... args)
    {
       final LayeValue value = get(key);
       return value.callAsMethod(this, args);
    }
-
+   
    @Override
-   public void newSlotMutable(final LayeValue key, final LayeValue value)
+   public void newSlotMutable (final LayeValue key, final LayeValue value)
    {
       newSlotMutable(key.asstring(), value);
    }
-
-   public void newSlotMutable(final LayeValue key, final Root root, final LayeJavaFunction.Function value)
+   
+   public void newSlotMutable (final LayeValue key, final Root root, final LayeJavaFunction.Function value)
    {
       newSlotMutable(key.asstring(), LayeJavaFunction.create(root, value));
    }
-
-   public void newSlotMutable(final String key, final Root root, final LayeJavaFunction.Function value)
+   
+   public void newSlotMutable (final String key, final Root root, final LayeJavaFunction.Function value)
    {
       newSlotMutable(key, LayeJavaFunction.create(root, value));
    }
-
-   public void newSlotMutable(final String key, final LayeValue value)
+   
+   public void newSlotMutable (final String key, final LayeValue value)
    {
       final Entry entry = table.get(key);
       if (entry != null && entry.isConst)
@@ -186,24 +186,24 @@ public class LayeTable extends LayeValue
       }
       table.put(key, new Entry(value, false));
    }
-
+   
    @Override
-   public void newSlot(final LayeValue key, final LayeValue value)
+   public void newSlot (final LayeValue key, final LayeValue value)
    {
       newSlot(key.asstring(), value);
    }
-
-   public void newSlot(final LayeValue key, final Root root, final LayeJavaFunction.Function value)
+   
+   public void newSlot (final LayeValue key, final Root root, final LayeJavaFunction.Function value)
    {
       newSlot(key.asstring(), LayeJavaFunction.create(root, value));
    }
-
-   public void newSlot(final String key, final Root root, final LayeJavaFunction.Function value)
+   
+   public void newSlot (final String key, final Root root, final LayeJavaFunction.Function value)
    {
       newSlot(key, LayeJavaFunction.create(root, value));
    }
-
-   public void newSlot(final String key, final LayeValue value)
+   
+   public void newSlot (final String key, final LayeValue value)
    {
       final Entry entry = table.get(key);
       if (entry != null && entry.isConst)
@@ -212,14 +212,14 @@ public class LayeTable extends LayeValue
       }
       table.put(key, new Entry(value, true));
    }
-
+   
    @Override
-   public LayeValue delSlot(final LayeValue key)
+   public LayeValue delSlot (final LayeValue key)
    {
       return delSlot(key.asstring());
    }
-
-   public LayeValue delSlot(final String key)
+   
+   public LayeValue delSlot (final String key)
    {
       final Entry entry = table.get(key);
       if (entry == null)
@@ -234,14 +234,14 @@ public class LayeTable extends LayeValue
       table.remove(key);
       return entry.value;
    }
-
+   
    @Override
-   public LayeValue get(final LayeValue key)
+   public LayeValue get (final LayeValue key)
    {
       return get(key.asstring());
    }
-
-   public LayeValue get(final String key)
+   
+   public LayeValue get (final String key)
    {
       final Entry entry = table.get(key);
       if (entry == null)
@@ -250,14 +250,14 @@ public class LayeTable extends LayeValue
       }
       return entry.value;
    }
-
+   
    @Override
-   public void set(final LayeValue key, final LayeValue value)
+   public void set (final LayeValue key, final LayeValue value)
    {
       set(key.asstring(), value);
    }
-
-   public void set(final String key, final LayeValue value)
+   
+   public void set (final String key, final LayeValue value)
    {
       final Entry entry = table.get(key);
       if (entry == null)

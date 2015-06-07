@@ -7,19 +7,19 @@ public class ExprPostfix implements Expression
 {
    public Expression value;
    public Operator op;
-
-   public ExprPostfix(final Expression value, final Operator op)
+   
+   public ExprPostfix (final Expression value, final Operator op)
    {
       this.value = value;
       this.op = op;
    }
-
+   
    @Override
-   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       Expression.convertFromListToValueInOperatorExpression(builder, value);
       builder.visitPostfixExpr(op);
-
+      
       if (!isResultRequired)
       {
          builder.visitOpPop(1);

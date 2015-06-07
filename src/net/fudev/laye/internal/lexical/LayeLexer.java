@@ -8,68 +8,68 @@ import net.fudev.laye.err.LayeException;
 public final class LayeLexer
 {
    private final Reader reader;
-
+   
    private int line = 1;
-
+   
    private char c = '\0';
    private boolean eos = false;
-
+   
    private StringBuilder stringBuilder = new StringBuilder();
    private TokenData tokenData;
-
+   
    private Token peekedToken = Token.NO_TOKEN;
    private TokenData peekedTokenData;
-
-   public LayeLexer(final Reader reader)
+   
+   public LayeLexer (final Reader reader)
    {
       this.reader = reader;
       read();
    }
-
-   public TokenData getTokenData()
+   
+   public TokenData getTokenData ()
    {
       return tokenData;
    }
-
-   public TokenData getPeekedTokenData()
+   
+   public TokenData getPeekedTokenData ()
    {
       return peekedTokenData;
    }
-
-   public int getLine()
+   
+   public int getLine ()
    {
       return line;
    }
-
+   
    // ---------- TEMP STRING ---------- //
-
-   private void beginTempString()
+   
+   private void beginTempString ()
    {
       stringBuilder.setLength(0);
       stringBuilder.trimToSize();
    }
-
-   private String endTempString()
+   
+   private String endTempString ()
    {
       final String string = stringBuilder.toString();
       tokenData = new TokenData(string);
       return string;
    }
-
-   private void putChar(final char c)
+   
+   private void putChar (final char c)
    {
       stringBuilder.append(c);
    }
-
-   private void putChar()
+   
+   private void putChar ()
    {
       stringBuilder.append(c);
       read();
    }
-
+   
    // ---------- LEXING ---------- //
-
-   private void read()
+   
+   private void read ()
    {
       int value = -1;
       try
@@ -86,8 +86,8 @@ public final class LayeLexer
       }
       c = (char) value;
    }
-
-   public Token peek()
+   
+   public Token peek ()
    {
       if (peekedToken == Token.NO_TOKEN)
       {
@@ -98,8 +98,8 @@ public final class LayeLexer
       }
       return peekedToken;
    }
-
-   public Token lex()
+   
+   public Token lex ()
    {
       if (peekedToken != Token.NO_TOKEN)
       {
@@ -128,7 +128,7 @@ public final class LayeLexer
             case '\'':
             case '"':
                return stringLiteral();
-               // simple
+            // simple
             case '(':
                read();
                return Token.OPEN_BRACKET;
@@ -164,7 +164,7 @@ public final class LayeLexer
             case '@':
                read();
                return Token.AT;
-               // Anything else
+            // Anything else
             default:
                // check operators
                beginTempString();
@@ -202,8 +202,8 @@ public final class LayeLexer
       // Nothing!
       return Token.NO_TOKEN;
    }
-
-   private Token stringLiteral()
+   
+   private Token stringLiteral ()
    {
       final char closing = c; // " | '
       beginTempString();
@@ -233,8 +233,8 @@ public final class LayeLexer
       read(); // " | '
       return Token.STRING_LITERAL;
    }
-
-   private int readEscape()
+   
+   private int readEscape ()
    {
       int res = -1;
       switch (c)
@@ -282,29 +282,29 @@ public final class LayeLexer
       }
       return res;
    }
-
-   private static boolean doesCharDefineIntBase(final char c)
+   
+   private static boolean doesCharDefineIntBase (final char c)
    {
       return c == 'x' || c == 'X' || c == 'b' || c == 'B';
    }
-
-   private static boolean isHexChar(final char c)
+   
+   private static boolean isHexChar (final char c)
    {
       return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
    }
-
-   private static boolean isOctalChar(final char c)
+   
+   private static boolean isOctalChar (final char c)
    {
       return (c >= '0' && c <= '7');
    }
-
-   private static boolean isBinaryChar(final char c)
+   
+   private static boolean isBinaryChar (final char c)
    {
       return c == '0' || c == '1';
    }
-
+   
    // TODO check that this works plz
-   private Token numberLiteral()
+   private Token numberLiteral ()
    {
       beginTempString();
       int radix = 10;
@@ -456,8 +456,8 @@ public final class LayeLexer
          return Token.FLOAT_LITERAL;
       }
    }
-
-   private Token identifier()
+   
+   private Token identifier ()
    {
       beginTempString();
       while (!eos && Character.isAlphabetic(c) || Character.isDigit(c) || c == '_')
@@ -467,14 +467,14 @@ public final class LayeLexer
       final String string = endTempString();
       return getTokenFromIdent(string);
    }
-
-   private static Token getTokenFromIdent(final String ident)
+   
+   private static Token getTokenFromIdent (final String ident)
    {
       switch (ident)
       {
          case "_":
             return Token.WILDCARD;
-
+            
          case "and":
             return Token.AND;
          case "or":
@@ -495,28 +495,28 @@ public final class LayeLexer
             return Token.DEREF;
          case "typeof":
             return Token.TYPEOF;
-
+            
          case "true":
             return Token.TRUE;
          case "false":
             return Token.FALSE;
          case "null":
             return Token.NULL;
-
+            
          case "loc":
             return Token.LOC;
          case "stat":
             return Token.STAT;
          case "mut":
             return Token.MUT;
-
+            
          case "fn":
             return Token.FN;
          case "gen":
             return Token.GEN;
          case "type":
             return Token.TYPE;
-
+            
          case "has":
             return Token.HAS;
          case "ctor":
@@ -529,7 +529,7 @@ public final class LayeLexer
             return Token.RET;
          case "new":
             return Token.NEW;
-
+            
          case "if":
             return Token.IF;
          case "el":
@@ -566,7 +566,7 @@ public final class LayeLexer
             return Token.DO;
          case "end":
             return Token.END;
-
+            
          default:
             return Token.IDENT;
       }

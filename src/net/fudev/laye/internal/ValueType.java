@@ -1,18 +1,8 @@
 package net.fudev.laye.internal;
 
-import net.fudev.laye.internal.types.LayeTypeBool;
-import net.fudev.laye.internal.types.LayeTypeFloat;
-import net.fudev.laye.internal.types.LayeTypeFunction;
-import net.fudev.laye.internal.types.LayeTypeInt;
-import net.fudev.laye.internal.types.LayeTypeList;
-import net.fudev.laye.internal.types.LayeTypeNull;
-import net.fudev.laye.internal.types.LayeTypeNumber;
-import net.fudev.laye.internal.types.LayeTypeReference;
-import net.fudev.laye.internal.types.LayeTypeStream;
-import net.fudev.laye.internal.types.LayeTypeString;
-import net.fudev.laye.internal.types.LayeTypeTable;
-import net.fudev.laye.internal.types.LayeTypeUserdata;
-import net.fudev.laye.internal.values.LayeType;
+import java.util.List;
+
+import net.fudev.laye.internal.types.*;
 
 public enum ValueType
 {
@@ -20,29 +10,60 @@ public enum ValueType
    BOOL(LayeTypeBool.TYPE),
    NUMBER(LayeTypeNumber.TYPE),
    INT(LayeTypeInt.TYPE),
-   FLOAT(LayeTypeFloat.TYPE),
+   FLOAT(
+         LayeTypeFloat.TYPE),
    STRING(LayeTypeString.TYPE),
    TABLE(LayeTypeTable.TYPE),
    LIST(LayeTypeList.TYPE),
-   STREAM(LayeTypeStream.TYPE),
+   STREAM(
+         LayeTypeStream.TYPE),
    FUNCTION(LayeTypeFunction.TYPE),
    // TODO remove Reference type?
    REFERENCE(LayeTypeReference.TYPE),
    USERDATA(LayeTypeUserdata.TYPE),
    TYPE(null),
    INSTANCE(null);
-
-   public final LayeType type;
-
-   ValueType(final LayeType type)
+   
+   public static ValueType getFromClass (final Class<?> cls)
+   {
+      if (cls.isArray() || List.class.isAssignableFrom(cls))
+      {
+         return LIST;
+      }
+      // TODO other types
+      if (cls == String.class)
+      {
+         return STRING;
+      }
+      else if (cls == Byte.class || cls == Short.class || cls == Integer.class
+            || cls == Long.class || cls == byte.class || cls == short.class
+            || cls == int.class
+            || cls == long.class)
+      {
+         return INT;
+      }
+      else if (cls == Float.class || cls == Double.class || cls == float.class
+            || cls == double.class)
+      {
+         return FLOAT;
+      }
+      else if (cls == Boolean.class)
+      {
+         return BOOL;
+      }
+      return USERDATA;
+   }
+   
+   public final LayeValueType type;
+   
+   ValueType (final LayeValueType type)
    {
       this.type = type;
    }
-
+   
    @Override
-   public String toString()
+   public String toString ()
    {
-      return type == null ? "<no-type>" : type.asstring();
+      return type == null ? "<no-type>" : type.toString();
    }
-
 }

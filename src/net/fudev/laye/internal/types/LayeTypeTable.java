@@ -1,19 +1,29 @@
 package net.fudev.laye.internal.types;
 
-import net.fudev.laye.internal.values.LayeType;
+import net.fudev.laye.internal.values.LayeValue;
 
-public final class LayeTypeTable extends LayeType
+public final class LayeTypeTable extends LayeValueType
 {
-   public static final LayeType TYPE = new LayeTypeTable();
-
-   private LayeTypeTable()
-   {
-      super(null);
-   }
-
+   public static final LayeValueType TYPE = new LayeTypeTable();
+   
+   private final String name = "Table";
+   private final int hashCode = name.hashCode() * 131;
+   
    @Override
-   public String asstring()
+   public String asstring ()
    {
-      return "Table";
+      return name;
+   }
+   
+   @Override
+   public int hashCode ()
+   {
+      return hashCode;
+   }
+   
+   @Override
+   public boolean equalTo_b (final LayeValue other)
+   {
+      return other == this;
    }
 }

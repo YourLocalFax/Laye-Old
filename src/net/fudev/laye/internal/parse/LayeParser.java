@@ -11,33 +11,7 @@ import net.fudev.laye.internal.lexical.Token;
 import net.fudev.laye.internal.lexical.TokenData;
 import net.fudev.laye.internal.parse.ast.ASTFunctionPrototype;
 import net.fudev.laye.internal.parse.ast.SyntaxNode;
-import net.fudev.laye.internal.parse.ast.expr.ExprAssign;
-import net.fudev.laye.internal.parse.ast.expr.ExprBlock;
-import net.fudev.laye.internal.parse.ast.expr.ExprDelSlot;
-import net.fudev.laye.internal.parse.ast.expr.ExprDeref;
-import net.fudev.laye.internal.parse.ast.expr.ExprFor;
-import net.fudev.laye.internal.parse.ast.expr.ExprFunction;
-import net.fudev.laye.internal.parse.ast.expr.ExprFunctionCall;
-import net.fudev.laye.internal.parse.ast.expr.ExprGetIndex;
-import net.fudev.laye.internal.parse.ast.expr.ExprGetVar;
-import net.fudev.laye.internal.parse.ast.expr.ExprIf;
-import net.fudev.laye.internal.parse.ast.expr.ExprInfix;
-import net.fudev.laye.internal.parse.ast.expr.ExprListCtor;
-import net.fudev.laye.internal.parse.ast.expr.ExprLiteralBool;
-import net.fudev.laye.internal.parse.ast.expr.ExprLiteralFloat;
-import net.fudev.laye.internal.parse.ast.expr.ExprLiteralInt;
-import net.fudev.laye.internal.parse.ast.expr.ExprLiteralNull;
-import net.fudev.laye.internal.parse.ast.expr.ExprLiteralString;
-import net.fudev.laye.internal.parse.ast.expr.ExprMatch;
-import net.fudev.laye.internal.parse.ast.expr.ExprMethodCall;
-import net.fudev.laye.internal.parse.ast.expr.ExprNewSlot;
-import net.fudev.laye.internal.parse.ast.expr.ExprPostfix;
-import net.fudev.laye.internal.parse.ast.expr.ExprPrefix;
-import net.fudev.laye.internal.parse.ast.expr.ExprRef;
-import net.fudev.laye.internal.parse.ast.expr.ExprReturn;
-import net.fudev.laye.internal.parse.ast.expr.ExprTableCtor;
-import net.fudev.laye.internal.parse.ast.expr.ExprWhile;
-import net.fudev.laye.internal.parse.ast.expr.Expression;
+import net.fudev.laye.internal.parse.ast.expr.*;
 import net.fudev.laye.internal.parse.ast.stat.StatFunction;
 import net.fudev.laye.internal.parse.ast.stat.StatLocalFunction;
 import net.fudev.laye.internal.parse.ast.stat.StatLocalVariable;
@@ -52,19 +26,19 @@ import net.fudev.laye.util.Logger;
 public class LayeParser
 {
    private static final String LOG_GROUP = "PARSER";
-
+   
    private LayeLexer lexer;
-
-   public LayeParser()
+   
+   public LayeParser ()
    {
    }
-
-   public ASTFunctionPrototype parse(final Reader reader)
+   
+   public ASTFunctionPrototype parse (final Reader reader)
    {
       final Vector<SyntaxNode> nodes = new Vector<>();
-
+      
       lexer = new LayeLexer(reader);
-
+      
       lex(); // get the first token
       while (token != Token.NO_TOKEN)
       {
@@ -75,36 +49,36 @@ public class LayeParser
             nodes.add(node);
          }
       }
-
+      
       debug("parsing finished!");
-
+      
       final ASTFunctionPrototype proto = new ASTFunctionPrototype();
       proto.addNodes(nodes.toArray(new SyntaxNode[nodes.size()]));
-
+      
       return proto;
    }
-
-   private void error(final String message)
+   
+   private void error (final String message)
    {
-      //Logger.error(LOG_GROUP, message);
+      // Logger.error(LOG_GROUP, message);
       throw new CompilerException("line " + lexer.getLine() + ": " + message);
    }
-
-   private static void debug(final String message)
+   
+   private static void debug (final String message)
    {
       Logger.debug(LayeParser.LOG_GROUP, message);
    }
-
+   
    // Acquire Tokens
-
+   
    private Token lastToken = Token.NO_TOKEN;
    private Token token = Token.NO_TOKEN;
    private Token peekedToken = Token.NO_TOKEN;
-
+   
    private TokenData tokenData = TokenData.EMPTY;
    private TokenData peekedTokenData = TokenData.EMPTY;
-
-   private Token getNextToken()
+   
+   private Token getNextToken ()
    {
       Token result = lexer.lex();
       switch (result)
@@ -126,8 +100,8 @@ public class LayeParser
       }
       return result;
    }
-
-   private void lex()
+   
+   private void lex ()
    {
       if (peekedToken != Token.NO_TOKEN)
       {
@@ -143,8 +117,8 @@ public class LayeParser
          tokenData = lexer.getTokenData();
       }
    }
-
-   private void peek()
+   
+   private void peek ()
    {
       if (peekedToken == Token.NO_TOKEN)
       {
@@ -152,13 +126,13 @@ public class LayeParser
          peekedTokenData = lexer.getTokenData();
       }
    }
-
-   private boolean expect(final Token kind)
+   
+   private boolean expect (final Token kind)
    {
       return expect(kind, kind + " expected, got " + token);
    }
-
-   private boolean expect(final Token kind, final String msg)
+   
+   private boolean expect (final Token kind, final String msg)
    {
       if (token != kind)
       {
@@ -168,8 +142,8 @@ public class LayeParser
       lex();
       return true;
    }
-
-   private void checkSemi(final String message)
+   
+   private void checkSemi (final String message)
    {
       peek();
       if ((lastToken != Token.SEMI && lastToken != Token.END) && !expect(Token.SEMI))
@@ -177,71 +151,71 @@ public class LayeParser
          error(message);
       }
    }
-
-   private Modifiers gatherModifiers()
+   
+   private Modifiers gatherModifiers ()
    {
       boolean isLocal = false;
       boolean isMutable = false;
       boolean isStatic = false;
-
+      
       loop:
-      while (true)
-      {
-         switch (token)
+         while (true)
          {
-            case LOC:
-               if (isLocal)
-               {
-                  error("cannot use a modifier twice.");
-               }
-               isLocal = true;
-               lex(); // local
-               break;
-            case MUT:
-               if (isMutable)
-               {
-                  error("cannot use a modifier twice.");
-               }
-               isMutable = true;
-               lex(); // mut
-               break;
-            case STAT:
-               if (isStatic)
-               {
-                  error("cannot use a modifier twice.");
-               }
-               isStatic = true;
-               lex(); // static
-               break;
-            default:
-               break loop;
+            switch (token)
+            {
+               case LOC:
+                  if (isLocal)
+                  {
+                     error("cannot use a modifier twice.");
+                  }
+                  isLocal = true;
+                  lex(); // local
+                  break;
+               case MUT:
+                  if (isMutable)
+                  {
+                     error("cannot use a modifier twice.");
+                  }
+                  isMutable = true;
+                  lex(); // mut
+                  break;
+               case STAT:
+                  if (isStatic)
+                  {
+                     error("cannot use a modifier twice.");
+                  }
+                  isStatic = true;
+                  lex(); // static
+                  break;
+               default:
+                  break loop;
+            }
          }
-      }
-
+      
       return Modifiers.get(isLocal, isMutable, isStatic);
    }
-
-   private String ident()
+   
+   private String ident ()
    {
       return ident("identifier expected as function name");
    }
-
-   private String ident(final String message)
+   
+   private String ident (final String message)
    {
       if (token != Token.IDENT)
       {
          error(message);
       }
-
+      
       final String name = tokenData.string;
       lex(); // 'ident'
-
+      
       return name;
    }
-
+   
    // ---------- PARSING ---------- //
-
-   private SyntaxNode topLevel()
+   
+   private SyntaxNode topLevel ()
    {
       debug("starting top level with " + token);
       final SyntaxNode result;
@@ -287,24 +261,25 @@ public class LayeParser
             break;
          default:
             // Here, we check for a generic top level expression.
-            // When an expression is parsed from the topLevel, a semicolon is needed
+            // When an expression is parsed from the topLevel, a semicolon is
+            // needed
             result = expression();
             checkSemi("top-level expressions must be followed by a semicolon.");
       }
       return result;
    }
-
+   
    // ---------- STATEMENTS ---------- //
-
-   private Statement statLocVarDef(final boolean con)
+   
+   private Statement statLocVarDef (final boolean con)
    {
       final Vector<String> names = new Vector<>();
       final Vector<Expression> values = new Vector<>();
-
+      
       while (true)
       {
          final String localName = ident();
-
+         
          final Expression value;
          if (token == Token.EQUAL)
          {
@@ -315,10 +290,10 @@ public class LayeParser
          {
             value = new ExprLiteralNull();
          }
-
+         
          names.add(localName);
          values.add(value);
-
+         
          if (token == Token.COMMA)
          {
             lex(); // ,
@@ -328,19 +303,19 @@ public class LayeParser
             break;
          }
       }
-
+      
       return new StatLocalVariable(con, names, values);
    }
-
-   private Statement statNewSlotMut()
+   
+   private Statement statNewSlotMut ()
    {
       final Vector<String> names = new Vector<>();
       final Vector<Expression> values = new Vector<>();
-
+      
       while (true)
       {
          final String newSlotName = ident();
-
+         
          final Expression value;
          if (token == Token.EQUAL)
          {
@@ -351,10 +326,10 @@ public class LayeParser
          {
             value = new ExprLiteralNull();
          }
-
+         
          names.add(newSlotName);
          values.add(value);
-
+         
          if (token == Token.COMMA)
          {
             lex(); // ,
@@ -364,16 +339,16 @@ public class LayeParser
             break;
          }
       }
-
+      
       return new StatNewSlotMutable(names, values);
    }
-
-   private Statement statFnDef(final boolean isLocal, final boolean isConst)
+   
+   private Statement statFnDef (final boolean isLocal, final boolean isConst)
    {
       // TODO make use of the isGen thing for generators
       final boolean isGen = token == Token.GEN;
       lex(); // fn | gen
-
+      
       if (isLocal)
       {
          final String name = ident();
@@ -387,19 +362,19 @@ public class LayeParser
          return new StatFunction(isGen, isConst, name, proto);
       }
    }
-
-   private ASTFunctionPrototype parseFnPrototype()
+   
+   private ASTFunctionPrototype parseFnPrototype ()
    {
       final ASTFunctionPrototype proto = new ASTFunctionPrototype();
-
+      
       // start with args
-
+      
       if (token == Token.MUT)
       {
          lex(); // mut
-
+         
          proto.addParam(ident(), false);
-
+         
          if (token == Token.VARGS)
          {
             proto.vargs = true;
@@ -410,7 +385,7 @@ public class LayeParser
       {
          proto.addParam(tokenData.string, true);
          lex(); // 'ident'
-
+         
          if (token == Token.VARGS)
          {
             proto.vargs = true;
@@ -426,22 +401,22 @@ public class LayeParser
             {
                error("vargs parameter must be the last parameter.");
             }
-
+            
             boolean isConst = true;
             if (token == Token.MUT)
             {
                isConst = false;
                lex(); // con
             }
-
+            
             proto.addParam(ident(), isConst);
-
+            
             if (token == Token.VARGS)
             {
                proto.vargs = true;
                lex(); // ...
             }
-
+            
             if (token == Token.COMMA)
             {
                lex(); // ,
@@ -453,21 +428,21 @@ public class LayeParser
          }
          expect(Token.CLOSE_BRACKET);
       }
-
+      
       expect(Token.EQUAL);
       proto.addNodes(expression());
-
+      
       return proto;
    }
-
+   
    // ---------- EXPRESSIONS ---------- //
-
+   
    /**
-    * Top level call for all expressions.
-    * This call will result in exactly one new value on the stack, always, as
-    * Laye expressions are guaranteed to have exactly one value.
+    * Top level call for all expressions. This call will result in exactly one
+    * new value on the stack, always, as Laye expressions are guaranteed to have
+    * exactly one value.
     */
-   private Expression expression()
+   private Expression expression ()
    {
       final Expression expr = factor();
       if (expr == null)
@@ -492,8 +467,8 @@ public class LayeParser
             return expr;
       }
    }
-
-   private Vector<Expression> commaSeparatedExpressions(final boolean allowTrailingComma)
+   
+   private Vector<Expression> commaSeparatedExpressions (final boolean allowTrailingComma)
    {
       final Vector<Expression> exprs = new Vector<>();
       while (true)
@@ -519,13 +494,13 @@ public class LayeParser
       }
       return exprs;
    }
-
-   private Expression primaryExpression()
+   
+   private Expression primaryExpression ()
    {
       return primaryExpression(true);
    }
-
-   private Expression primaryExpression(final boolean allowPostfixCall)
+   
+   private Expression primaryExpression (final boolean allowPostfixCall)
    {
       final Expression result;
       switch (token)
@@ -614,7 +589,7 @@ public class LayeParser
          case GEN:
          {
             final boolean gen = token == Token.GEN;
-            lex(); // fn  | gen
+            lex(); // fn | gen
             if (token != Token.OPEN_BRACKET)
             {
                // TODO make this nicer
@@ -623,6 +598,10 @@ public class LayeParser
             final ASTFunctionPrototype proto = parseFnPrototype();
             return new ExprFunction(gen, proto);
          }
+         case TYPEOF:
+            lex(); // typeof
+            result = new ExprPrefixTypeof(expression());
+            break;
          case IDENT:
             result = new ExprGetVar(tokenData.string);
             lex(); // ident
@@ -696,8 +675,8 @@ public class LayeParser
          return postfix(result, allowPostfixCall);
       }
    }
-
-   private Expression postfix(final Expression target, final boolean allowPostfixCall)
+   
+   private Expression postfix (final Expression target, final boolean allowPostfixCall)
    {
       if (target == null)
       {
@@ -807,8 +786,8 @@ public class LayeParser
       }
       return target;
    }
-
-   private Expression factor()
+   
+   private Expression factor ()
    {
       final Expression left;
       if ((left = primaryExpression()) == null)
@@ -817,8 +796,8 @@ public class LayeParser
       }
       return factorRHS(0, left);
    }
-
-   private Expression factorRHS(final int minp, Expression left)
+   
+   private Expression factorRHS (final int minp, Expression left)
    {
       while (token == Token.OPERATOR && tokenData.operator.precedence >= minp)
       {
@@ -848,11 +827,11 @@ public class LayeParser
       }
       return left;
    }
-
-   private ExprBlock exprBlock()
+   
+   private ExprBlock exprBlock ()
    {
       final ExprBlock result = new ExprBlock();
-
+      
       lex(); // do
       while (token != Token.END)
       {
@@ -863,20 +842,20 @@ public class LayeParser
          }
       }
       lex(); // end
-
+      
       return result;
    }
-
-   private ExprIf exprIf()
+   
+   private ExprIf exprIf ()
    {
       lex(); // if
-
+      
       expect(Token.OPEN_BRACKET);
       final Expression condition = expression();
       expect(Token.CLOSE_BRACKET);
-
+      
       final Expression pass = expression();
-
+      
       final Expression fail;
       if (token == Token.EL)
       {
@@ -887,25 +866,26 @@ public class LayeParser
       {
          fail = null;
       }
-
-      return new ExprIf(condition, pass == null ? new ExprLiteralNull() : pass, fail == null ? new ExprLiteralNull() : fail);
+      
+      return new ExprIf(condition, pass == null ? new ExprLiteralNull() : pass,
+            fail == null ? new ExprLiteralNull() : fail);
    }
-
-   private ExprFor exprFor()
+   
+   private ExprFor exprFor ()
    {
       lex(); // for
-
+      
       expect(Token.OPEN_BRACKET);
-
+      
       final String indexName = ident();
-
+      
       // init and limit
       expect(Token.EQUAL, "'=' expected for initial value declaration.");
       final Expression initial = expression();
-
+      
       expect(Token.TO, "'to' expected for limit value.");
       final Expression limit = expression();
-
+      
       // step
       final Expression step;
       if (token == Token.BY)
@@ -917,51 +897,52 @@ public class LayeParser
       {
          step = null;
       }
-
+      
       expect(Token.CLOSE_BRACKET);
-
+      
       final Expression body = expression();
-
+      
       return new ExprFor(indexName, initial, limit, step, body);
    }
-
-   private Expression exprForEach()
+   
+   private Expression exprForEach ()
    {
       // TODO for each
       lex(); // for
       lex(); // each
       return null;
    }
-
-   private ExprWhile exprWhile()
+   
+   private ExprWhile exprWhile ()
    {
       lex(); // while
-
+      
       expect(Token.OPEN_BRACKET);
       final Expression condition = expression();
       expect(Token.CLOSE_BRACKET);
-
+      
       final Expression body = expression();
-
+      
       return new ExprWhile(condition, body);
    }
-
-   private ExprMatch exprMatch()
+   
+   private ExprMatch exprMatch ()
    {
       lex(); // match
-
+      
       expect(Token.OPEN_BRACKET);
       final Expression value = expression();
       expect(Token.CLOSE_BRACKET);
-
+      
       final ExprMatch match = new ExprMatch(value);
-
+      
       while (token != Token.END)
       {
          final Vector<LayeValue> cases = new Vector<>();
          if (token == Token.WILDCARD)
          {
-            // leaves cases.size() == 0, so that'll be null for default when needed
+            // leaves cases.size() == 0, so that'll be null for default when
+            // needed
             lex(); // _
          }
          else
@@ -1018,9 +999,9 @@ public class LayeParser
          checkSemi("';' expected to end case.");
          match.addCase(cases, result);
       }
-
+      
       expect(Token.END);
-
+      
       return match;
    }
 }

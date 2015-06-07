@@ -5,38 +5,66 @@ import net.fudev.laye.internal.ValueType;
 
 public abstract class LayeValue
 {
+   public static LayeValue valueOf (final Object value)
+   {
+      if (value == null)
+      {
+         return NULL;
+      }
+      final Class<?> cls = value.getClass();
+      if (cls == String.class)
+      {
+         return LayeString.valueOf((String) value);
+      }
+      else if (cls == Byte.class || cls == Short.class || cls == Integer.class
+            || cls == Long.class)
+      {
+         return LayeInt.valueOf(((Number) value).longValue());
+      }
+      else if (cls == Float.class || cls == Double.class)
+      {
+         return LayeValue.valueOf(((Number) value).doubleValue());
+      }
+      else if (cls == Boolean.class)
+      {
+         return value == Boolean.TRUE ? TRUE : FALSE;
+      }
+      // TODO lists and maps
+      return LayeUserdata.valueOf(value);
+   }
+   
    // ---------- Constants ---------- //
-
+   
    public static final LayeNull NULL = LayeNull.NULL_INTERNAL;
-
+   
    public static final LayeBool TRUE = LayeBool.TRUE_INTERNAL;
    public static final LayeBool FALSE = LayeBool.FALSE_INTERNAL;
-
+   
    public static final LayeList EMPTY_LIST = LayeList.EMPTY_LIST_INTERNAL;
-
+   
    public final ValueType valueType;
-
-   protected LayeValue(final ValueType type)
+   
+   protected LayeValue (final ValueType type)
    {
       valueType = type;
    }
-
-   public final String typeString()
+   
+   public final String typeString ()
    {
       return valueType.type.toString();
    }
-
-   public @Override String toString()
+   
+   public @Override String toString ()
    {
       return asstring();
    }
-
+   
    // ---------- HashCode && Equals ---------- //
-
+   
    @Override
-   public abstract int hashCode();
-
-   public @Override boolean equals(final Object other)
+   public abstract int hashCode ();
+   
+   public @Override boolean equals (final Object other)
    {
       if (other == this)
       {
@@ -52,103 +80,112 @@ public abstract class LayeValue
       }
       return equalTo_b((LayeValue) other);
    }
-
+   
    // ---------- Errors ---------- //
-
+   
    /** Throws an UnsupportedOperation for a unary prefix operation error. */
-   final static void arithUnaryPreError(final String op, final String value)
+   final static void arithUnaryPreError (final String op, final String value)
    {
-      throw LayeException.unsupportedOperation("prefix unary '" + op + "' is undefined for type '" + value + "'");
+      throw LayeException.unsupportedOperation(
+            "prefix unary '" + op + "' is undefined for type '" + value + "'");
    }
-
+   
    /** Throws an UnsupportedOperation for a unary postfix operation error. */
-   final static void arithUnaryPostError(final String op, final String value)
+   final static void arithUnaryPostError (final String op, final String value)
    {
-      throw LayeException.unsupportedOperation("postfix unary '" + op + "' is undefined for type '" + value + "'");
+      throw LayeException.unsupportedOperation(
+            "postfix unary '" + op + "' is undefined for type '" + value + "'");
    }
-
+   
    /** Throws an UnsupportedOperation for a binary operation error. */
-   final static void arithBinaryError(final String op, final String left, final String right)
+   final static void arithBinaryError (final String op, final String left,
+         final String right)
    {
-      throw LayeException.unsupportedOperation("binary '" + op + "' is undefined for types '" + left + "' and '" + right + "'");
+      throw LayeException
+      .unsupportedOperation("binary '" + op + "' is undefined for types '"
+            + left + "' and '" + right + "'");
    }
-
+   
    /** Throws an UnsupportedOperation for a comparison error. */
-   final static void compError(final String op, final String left, final String right)
+   final static void compError (final String op, final String left,
+         final String right)
    {
-      throw LayeException.unsupportedOperation("comparison '" + op + "' is undefined for types '" + left + "' and '" + right + "'");
+      throw LayeException
+      .unsupportedOperation(
+            "comparison '" + op + "' is undefined for types '" + left
+            + "' and '" + right + "'");
    }
-
+   
    // ---------- Type Checking ---------- //
-
-   public boolean isnull()
+   
+   public boolean isnull ()
    {
       return valueType == ValueType.NULL;
    }
-
-   public boolean isbool()
+   
+   public boolean isbool ()
    {
       return valueType == ValueType.BOOL;
    }
-
-   public boolean isnumber()
+   
+   public boolean isnumber ()
    {
       return valueType == ValueType.NUMBER || isint() || isfloat();
    }
-
-   public boolean isint()
+   
+   public boolean isint ()
    {
       return valueType == ValueType.INT;
    }
-
-   public boolean isfloat()
+   
+   public boolean isfloat ()
    {
       return valueType == ValueType.FLOAT;
    }
-
-   public boolean isstring()
+   
+   public boolean isstring ()
    {
       return valueType == ValueType.STRING;
    }
-
-   public boolean istable()
+   
+   public boolean istable ()
    {
       return valueType == ValueType.TABLE;
    }
-
-   public boolean ismutablelist()
+   
+   public boolean ismutablelist ()
    {
       return valueType == ValueType.LIST;
    }
-
-   public boolean islist()
+   
+   public boolean islist ()
    {
       return valueType == ValueType.LIST;
    }
-
-   public boolean isfunction()
+   
+   public boolean isfunction ()
    {
       return valueType == ValueType.FUNCTION;
    }
-
-   public boolean isref()
+   
+   public boolean isref ()
    {
       return valueType == ValueType.REFERENCE;
    }
-
-   public boolean isuserdata()
+   
+   public boolean isuserdata ()
    {
       return valueType == ValueType.USERDATA;
    }
-
-   public boolean istype()
+   
+   public boolean istype ()
    {
       return valueType == ValueType.TYPE;
    }
-
+   
    // ---------- Type Conversion ---------- //
-
-   public LayeBool tobool()
+   
+   public LayeBool tobool ()
    {
       if (this == LayeValue.NULL || this == LayeValue.FALSE)
       {
@@ -156,25 +193,25 @@ public abstract class LayeValue
       }
       return LayeValue.TRUE;
    }
-
-   public LayeInt toint()
+   
+   public LayeInt toint ()
    {
       throw LayeException.unexpectedType(valueType, ValueType.INT);
    }
-
-   public LayeFloat tofloat()
+   
+   public LayeFloat tofloat ()
    {
       throw LayeException.unexpectedType(valueType, ValueType.FLOAT);
    }
-
-   public LayeString tostring()
+   
+   public LayeString tostring ()
    {
       return LayeString.valueOf(asstring());
    }
-
+   
    // ---------- Checked Type Conversion ---------- //
-
-   public LayeBool checkbool()
+   
+   public LayeBool checkbool ()
    {
       if (valueType != ValueType.BOOL)
       {
@@ -182,8 +219,8 @@ public abstract class LayeValue
       }
       return (LayeBool) this;
    }
-
-   public LayeInt checkint()
+   
+   public LayeInt checkint ()
    {
       if (valueType != ValueType.INT)
       {
@@ -191,8 +228,8 @@ public abstract class LayeValue
       }
       return (LayeInt) this;
    }
-
-   public LayeFloat checkfloat()
+   
+   public LayeFloat checkfloat ()
    {
       if (valueType != ValueType.FLOAT)
       {
@@ -200,8 +237,8 @@ public abstract class LayeValue
       }
       return (LayeFloat) this;
    }
-
-   public LayeNumber checknumber()
+   
+   public LayeNumber checknumber ()
    {
       if (valueType != ValueType.FLOAT && valueType != ValueType.INT)
       {
@@ -209,8 +246,8 @@ public abstract class LayeValue
       }
       return (LayeNumber) this;
    }
-
-   public LayeString checkstring()
+   
+   public LayeString checkstring ()
    {
       if (valueType != ValueType.STRING)
       {
@@ -218,8 +255,8 @@ public abstract class LayeValue
       }
       return (LayeString) this;
    }
-
-   public LayeTable checktable()
+   
+   public LayeTable checktable ()
    {
       if (valueType != ValueType.TABLE)
       {
@@ -227,8 +264,8 @@ public abstract class LayeValue
       }
       return (LayeTable) this;
    }
-
-   public LayeList checklist()
+   
+   public LayeList checklist ()
    {
       if (valueType != ValueType.LIST)
       {
@@ -236,8 +273,8 @@ public abstract class LayeValue
       }
       return (LayeList) this;
    }
-
-   public LayeFunction checkfunction()
+   
+   public LayeFunction checkfunction ()
    {
       if (valueType != ValueType.FUNCTION)
       {
@@ -245,8 +282,8 @@ public abstract class LayeValue
       }
       return (LayeFunction) this;
    }
-
-   public LayeReference checkreference()
+   
+   public LayeReference checkreference ()
    {
       if (valueType != ValueType.REFERENCE)
       {
@@ -254,8 +291,8 @@ public abstract class LayeValue
       }
       return (LayeReference) this;
    }
-
-   public LayeUserdata checkuserdata()
+   
+   public LayeUserdata checkuserdata ()
    {
       if (valueType != ValueType.USERDATA)
       {
@@ -263,8 +300,8 @@ public abstract class LayeValue
       }
       return (LayeUserdata) this;
    }
-
-   public LayeType checktype()
+   
+   public LayeType checktype ()
    {
       if (valueType != ValueType.TYPE)
       {
@@ -272,8 +309,8 @@ public abstract class LayeValue
       }
       return (LayeType) this;
    }
-
-   public LayeInstance checkinstance()
+   
+   public LayeInstance checkinstance ()
    {
       if (valueType != ValueType.INSTANCE)
       {
@@ -281,773 +318,903 @@ public abstract class LayeValue
       }
       return (LayeInstance) this;
    }
-
+   
    // ---------- Checked Java Type Conversion ---------- //
-
-   public boolean asbool()
+   
+   public boolean asbool ()
    {
       return checkbool().value;
    }
-
-   public byte asbyte()
+   
+   public byte asbyte ()
    {
       return (byte) checkint().value;
    }
-
-   public short asshort()
+   
+   public short asshort ()
    {
       return (short) checkint().value;
    }
-
-   public int asint()
+   
+   public int asint ()
    {
       return (int) checkint().value;
    }
-
-   public long aslong()
+   
+   public long aslong ()
    {
       return checkint().value;
    }
-
-   public float asfloat()
+   
+   public float asfloat ()
    {
       return (float) checkfloat().value;
    }
-
-   public double asdouble()
+   
+   public double asdouble ()
    {
       return checkfloat().value;
    }
-
-   public abstract String asstring();
-
-   public LayeValue[] asarray()
+   
+   public abstract String asstring ();
+   
+   public LayeValue[] asarray ()
    {
       // TODO handle this somewhere?
       return null;
    }
-
-   public Object asuserdata()
+   
+   public Object asuserdata ()
    {
       return checkuserdata().value;
    }
-
+   
    // ---------- Calls ---------- //
-
-   public LayeValue call(final LayeValue... args)
+   
+   public LayeValue call (final LayeValue... args)
    {
       throw new LayeException("cannot call " + valueType.type.toString());
    }
-
-   public LayeValue callAsMethod(final LayeValue parent, final LayeValue... args)
+   
+   public LayeValue callAsMethod (final LayeValue parent,
+         final LayeValue... args)
    {
       throw new LayeException("cannot call " + valueType.type.toString());
    }
-
-   public LayeValue callChildMethod(final LayeValue name, final LayeValue... args)
+   
+   public LayeValue callChildMethod (final LayeValue name,
+         final LayeValue... args)
    {
-      throw new LayeException(valueType.type.toString() + " has no method '" + name + "'");
+      throw new LayeException(
+            valueType.type.toString() + " has no method '" + name + "'");
    }
-
+   
    // ---------- Unary Operations ---------- //
-
+   
    /** Performs the given prefix unary operation on this value. */
-   public LayeValue unaryPrefixOp(final String op)
+   public LayeValue unaryPrefixOp (final String op)
    {
       arithUnaryPreError(op, valueType.type.toString());
       return null;
    }
-
+   
    /** Performs the given postfix unary operation on this value. */
-   public LayeValue unaryPostfixOp(final String op)
+   public LayeValue unaryPostfixOp (final String op)
    {
       arithUnaryPostError(op, valueType.type.toString());
       return null;
    }
-
+   
    /** Takes the positive of this LayeValue. */
-   public LayeValue posit()
+   public LayeValue posit ()
    {
       arithUnaryPreError("+", valueType.type.toString());
       return null;
    }
-
+   
    /** Takes the negative of this LayeValue. */
-   public LayeValue negate()
+   public LayeValue negate ()
    {
       arithUnaryPreError("-", valueType.type.toString());
       return null;
    }
-
+   
    /** Takes the bool complement of this LayeValue. */
-   public LayeValue not()
+   public LayeValue not ()
    {
       return tobool() == LayeValue.TRUE ? LayeValue.FALSE : LayeValue.TRUE;
    }
-
+   
    /** Takes the integer complement of this LayeValue. */
-   public LayeValue complement()
+   public LayeValue complement ()
    {
       arithUnaryPreError("~", valueType.type.toString());
       return null;
    }
-
+   
    /** Returns the type of this value. */
-   public LayeValue typeof()
+   public LayeValue typeof ()
    {
       return LayeString.valueOf(valueType.type.toString());
    }
-
+   
    /** Takes the length of this LayeValue. */
-   public LayeValue len()
+   public LayeValue len ()
    {
       arithUnaryPreError("#", valueType.type.toString());
       return null;
    }
-
-   /** Takes the length of this LayeValue and returns it as an integer for Java to use. */
-   public int length()
+   
+   /**
+    * Takes the length of this LayeValue and returns it as an integer for Java
+    * to use.
+    */
+   public int length ()
    {
       return len().asint();
    }
-
+   
    // ---------- Binary Arithmetic ---------- //
-
+   
    /** Performs the given binary operation on this value and the right value. */
-   public LayeValue infixOp(final String op, final LayeValue right)
+   public LayeValue infixOp (final String op, final LayeValue right)
    {
-      arithBinaryError(op, valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError(op, valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    // Concatenation ( .. )
-
+   
    /** Concatenates two LayeValues as strings. */
-   public LayeValue concat(final LayeValue right)
+   public LayeValue concat (final LayeValue right)
    {
       return LayeString.valueOf(asstring() + right.asstring());
    }
-
+   
    // Addition ( + )
-
+   
    /** Add two LayeValues. */
-   public LayeValue add(final LayeValue right)
+   public LayeValue add (final LayeValue right)
    {
-      arithBinaryError("+", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError("+", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Sum of this LayeValue and a long. */
-   public LayeValue add(final long right)
+   public LayeValue add (final long right)
    {
-      arithBinaryError("+", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError("+", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Sum of this LayeValue and a double. */
-   public LayeValue add(final double right)
+   public LayeValue add (final double right)
    {
-      arithBinaryError("+", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      arithBinaryError("+", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return null;
    }
-
+   
    /** Sum of a long and this LayeValue. */
-   public LayeValue addRev(final long left)
+   public LayeValue addRev (final long left)
    {
-      arithBinaryError("+", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError("+", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    /** Sum of a double and this LayeValue. */
-   public LayeValue addRev(final double left)
+   public LayeValue addRev (final double left)
    {
-      arithBinaryError("+", ValueType.FLOAT.type.toString(), valueType.type.toString());
+      arithBinaryError("+", ValueType.FLOAT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // Subtraction ( - )
-
+   
    /** Subtract two LayeValues. */
-   public LayeValue subtract(final LayeValue right)
+   public LayeValue subtract (final LayeValue right)
    {
-      arithBinaryError("-", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError("-", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Difference of this LayeValue and a long. */
-   public LayeValue subtract(final long right)
+   public LayeValue subtract (final long right)
    {
-      arithBinaryError("-", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError("-", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Difference of this LayeValue and a double. */
-   public LayeValue subtract(final double right)
+   public LayeValue subtract (final double right)
    {
-      arithBinaryError("-", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      arithBinaryError("-", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return null;
    }
-
+   
    /** Difference of a long and this LayeValue. */
-   public LayeValue subtractRev(final long left)
+   public LayeValue subtractRev (final long left)
    {
-      arithBinaryError("-", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError("-", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    /** Difference of a double and this LayeValue. */
-   public LayeValue subtractRev(final double left)
+   public LayeValue subtractRev (final double left)
    {
-      arithBinaryError("-", ValueType.FLOAT.type.toString(), valueType.type.toString());
+      arithBinaryError("-", ValueType.FLOAT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // Multiplication ( * )
-
+   
    /** Multiply two LayeValues. */
-   public LayeValue multiply(final LayeValue right)
+   public LayeValue multiply (final LayeValue right)
    {
-      arithBinaryError("*", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError("*", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Product of this LayeValue and a long. */
-   public LayeValue multiply(final long right)
+   public LayeValue multiply (final long right)
    {
-      arithBinaryError("*", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError("*", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Product of this LayeValue and a double. */
-   public LayeValue multiply(final double right)
+   public LayeValue multiply (final double right)
    {
-      arithBinaryError("*", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      arithBinaryError("*", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return null;
    }
-
+   
    /** Product of a long and this LayeValue. */
-   public LayeValue multiplyRev(final long left)
+   public LayeValue multiplyRev (final long left)
    {
-      arithBinaryError("*", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError("*", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    /** Product of a double and this LayeValue. */
-   public LayeValue multiplyRev(final double left)
+   public LayeValue multiplyRev (final double left)
    {
-      arithBinaryError("*", ValueType.FLOAT.type.toString(), valueType.type.toString());
+      arithBinaryError("*", ValueType.FLOAT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // Division ( / )
-
+   
    /** Divide two LayeValues. */
-   public LayeValue divide(final LayeValue right)
+   public LayeValue divide (final LayeValue right)
    {
-      arithBinaryError("/", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError("/", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Quotient of this LayeValue and a long. */
-   public LayeValue divide(final long right)
+   public LayeValue divide (final long right)
    {
-      arithBinaryError("/", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError("/", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Quotient of this LayeValue and a double. */
-   public LayeValue divide(final double right)
+   public LayeValue divide (final double right)
    {
-      arithBinaryError("/", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      arithBinaryError("/", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return null;
    }
-
+   
    /** Quotient of a long and this LayeValue. */
-   public LayeValue divideRev(final long left)
+   public LayeValue divideRev (final long left)
    {
-      arithBinaryError("/", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError("/", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    /** Quotient of a double and this LayeValue. */
-   public LayeValue divideRev(final double left)
+   public LayeValue divideRev (final double left)
    {
-      arithBinaryError("/", ValueType.FLOAT.type.toString(), valueType.type.toString());
+      arithBinaryError("/", ValueType.FLOAT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // Integer Division ( ~/ )
-
+   
    /** Integer divide two LayeValues. */
-   public LayeValue intDivide(final LayeValue right)
+   public LayeValue intDivide (final LayeValue right)
    {
-      arithBinaryError("~/", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError("~/", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Integer quotient of this LayeValue and a long. */
-   public LayeValue intDivide(final long right)
+   public LayeValue intDivide (final long right)
    {
-      arithBinaryError("~/", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError("~/", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Integer quotient of this LayeValue and a double. */
-   public LayeValue intDivide(final double right)
+   public LayeValue intDivide (final double right)
    {
-      arithBinaryError("~/", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      arithBinaryError("~/", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return null;
    }
-
+   
    /** Integer quotient of a long and this LayeValue. */
-   public LayeValue intDivideRev(final long left)
+   public LayeValue intDivideRev (final long left)
    {
-      arithBinaryError("~/", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError("~/", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    /** Integer quotient of a double and this LayeValue. */
-   public LayeValue intDivideRev(final double left)
+   public LayeValue intDivideRev (final double left)
    {
-      arithBinaryError("~/", ValueType.FLOAT.type.toString(), valueType.type.toString());
+      arithBinaryError("~/", ValueType.FLOAT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // Modulo ( % )
-
+   
    /** Modulo two LayeValues. */
-   public LayeValue remainder(final LayeValue right)
+   public LayeValue remainder (final LayeValue right)
    {
-      arithBinaryError("%", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError("%", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Remainder of this LayeValue and a long. */
-   public LayeValue remainder(final long right)
+   public LayeValue remainder (final long right)
    {
-      arithBinaryError("%", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError("%", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Remainder of this LayeValue and a double. */
-   public LayeValue remainder(final double right)
+   public LayeValue remainder (final double right)
    {
-      arithBinaryError("%", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      arithBinaryError("%", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return null;
    }
-
+   
    /** Remainder of a long and this LayeValue. */
-   public LayeValue remainderRev(final long left)
+   public LayeValue remainderRev (final long left)
    {
-      arithBinaryError("%", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError("%", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    /** Remainder of a double and this LayeValue. */
-   public LayeValue remainderRev(final double left)
+   public LayeValue remainderRev (final double left)
    {
-      arithBinaryError("%", ValueType.FLOAT.type.toString(), valueType.type.toString());
+      arithBinaryError("%", ValueType.FLOAT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // Power ( ^ )
-
+   
    /** Power two LayeValues. */
-   public LayeValue power(final LayeValue right)
+   public LayeValue power (final LayeValue right)
    {
-      arithBinaryError("^", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError("^", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Power of this LayeValue and a long. */
-   public LayeValue power(final long right)
+   public LayeValue power (final long right)
    {
-      arithBinaryError("^", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError("^", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Power of this LayeValue and a double. */
-   public LayeValue power(final double right)
+   public LayeValue power (final double right)
    {
-      arithBinaryError("^", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      arithBinaryError("^", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return null;
    }
-
+   
    /** Power of a long and this LayeValue. */
-   public LayeValue powerRev(final long left)
+   public LayeValue powerRev (final long left)
    {
-      arithBinaryError("^", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError("^", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    /** Power of a double and this LayeValue. */
-   public LayeValue powerRev(final double left)
+   public LayeValue powerRev (final double left)
    {
-      arithBinaryError("^", ValueType.FLOAT.type.toString(), valueType.type.toString());
+      arithBinaryError("^", ValueType.FLOAT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // And ( & )
-
+   
    /** And two LayeValues. */
-   public LayeValue and(final LayeValue right)
+   public LayeValue and (final LayeValue right)
    {
-      arithBinaryError("&", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError("&", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** And of this LayeValue and a long. */
-   public LayeValue and(final long right)
+   public LayeValue and (final long right)
    {
-      arithBinaryError("&", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError("&", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** And of a long and this LayeValue. */
-   public LayeValue andRev(final long left)
+   public LayeValue andRev (final long left)
    {
-      arithBinaryError("&", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError("&", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // Or ( & )
-
+   
    /** Or two LayeValues. */
-   public LayeValue or(final LayeValue right)
+   public LayeValue or (final LayeValue right)
    {
-      arithBinaryError("|", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError("|", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Or of this LayeValue and a long. */
-   public LayeValue or(final long right)
+   public LayeValue or (final long right)
    {
-      arithBinaryError("|", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError("|", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Or of a long and this LayeValue. */
-   public LayeValue orRev(final long left)
+   public LayeValue orRev (final long left)
    {
-      arithBinaryError("|", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError("|", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // Xor ( ~ )
-
+   
    /** Xor two LayeValues. */
-   public LayeValue xor(final LayeValue right)
+   public LayeValue xor (final LayeValue right)
    {
-      arithBinaryError("~", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError("~", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Xor of this LayeValue and a long. */
-   public LayeValue xor(final long right)
+   public LayeValue xor (final long right)
    {
-      arithBinaryError("~", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError("~", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Xor of a long and this LayeValue. */
-   public LayeValue xorRev(final long left)
+   public LayeValue xorRev (final long left)
    {
-      arithBinaryError("~", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError("~", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // Left shift ( << )
-
+   
    /** Left shift two LayeValues. */
-   public LayeValue shiftLeft(final LayeValue right)
+   public LayeValue shiftLeft (final LayeValue right)
    {
-      arithBinaryError("<<", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError("<<", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Left shift of this LayeValue and a long. */
-   public LayeValue shiftLeft(final long right)
+   public LayeValue shiftLeft (final long right)
    {
-      arithBinaryError("<<", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError("<<", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Left shift of a long and this LayeValue. */
-   public LayeValue shiftLeftRev(final long left)
+   public LayeValue shiftLeftRev (final long left)
    {
-      arithBinaryError("<<", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError("<<", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // Right shift ( << )
-
+   
    /** Right shift two LayeValues. */
-   public LayeValue shiftRight(final LayeValue right)
+   public LayeValue shiftRight (final LayeValue right)
    {
-      arithBinaryError(">>", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError(">>", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Right shift of this LayeValue and a long. */
-   public LayeValue shiftRight(final long right)
+   public LayeValue shiftRight (final long right)
    {
-      arithBinaryError(">>", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError(">>", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Right shift of a long and this LayeValue. */
-   public LayeValue shiftRightRev(final long left)
+   public LayeValue shiftRightRev (final long left)
    {
-      arithBinaryError(">>", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError(">>", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // Unsigned right shift ( >>> )
-
+   
    /** Unsigned right shift two LayeValues. */
-   public LayeValue shiftRightUnsigned(final LayeValue right)
+   public LayeValue shiftRightUnsigned (final LayeValue right)
    {
-      arithBinaryError(">>>", valueType.type.toString(), right.valueType.type.toString());
+      arithBinaryError(">>>", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
+   
    /** Unsigned right shift of this LayeValue and a long. */
-   public LayeValue shiftRightUnsigned(final long right)
+   public LayeValue shiftRightUnsigned (final long right)
    {
-      arithBinaryError(">>>", valueType.type.toString(), ValueType.INT.type.toString());
+      arithBinaryError(">>>", valueType.type.toString(),
+            ValueType.INT.type.toString());
       return null;
    }
-
+   
    /** Unsigned right shift of a long and this LayeValue. */
-   public LayeValue shiftRightUnsignedRev(final long left)
+   public LayeValue shiftRightUnsignedRev (final long left)
    {
-      arithBinaryError(">>>", ValueType.INT.type.toString(), valueType.type.toString());
+      arithBinaryError(">>>", ValueType.INT.type.toString(),
+            valueType.type.toString());
       return null;
    }
-
+   
    // ---------- Comparison ---------- //
-
-   public LayeBool equalTo(final LayeValue other)
+   
+   public LayeBool equalTo (final LayeValue other)
    {
       return equalTo_b(other) ? LayeValue.TRUE : LayeValue.FALSE;
    }
-
-   public boolean equalTo_b(final LayeValue other)
+   
+   public boolean equalTo_b (final LayeValue other)
    {
       return false;
    }
-
-   public int compareTo(final LayeValue right)
+   
+   public int compareTo (final LayeValue right)
    {
-      return this.lessThan(right) == LayeValue.TRUE ? -1 : (right.lessEqual(this) == LayeValue.TRUE ? 1 : 0);
+      return this.lessThan(right) == LayeValue.TRUE ? -1
+            : (right.lessEqual(this) == LayeValue.TRUE ? 1 : 0);
    }
-
+   
    // Less than
-
-   /** @return this < right */
-   public LayeBool lessThan(final LayeValue right)
+   
+   /**
+    * @return this < right
+    */
+   public LayeBool lessThan (final LayeValue right)
    {
-      compError("<", valueType.type.toString(), right.valueType.type.toString());
+      compError("<", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
-   /** @return this < right */
-   public boolean lessThan_b(final LayeValue right)
+   
+   /**
+    * @return this < right
+    */
+   public boolean lessThan_b (final LayeValue right)
    {
-      compError("<", valueType.type.toString(), right.valueType.type.toString());
+      compError("<", valueType.type.toString(),
+            right.valueType.type.toString());
       return false;
    }
-
-   /** @return this < right */
-   public LayeBool lessThan(final long right)
+   
+   /**
+    * @return this < right
+    */
+   public LayeBool lessThan (final long right)
    {
       compError("<", valueType.type.toString(), ValueType.INT.type.toString());
       return null;
    }
-
-   /** @return this < right */
-   public boolean lessThan_b(final long right)
+   
+   /**
+    * @return this < right
+    */
+   public boolean lessThan_b (final long right)
    {
       compError("<", valueType.type.toString(), ValueType.INT.type.toString());
       return false;
    }
-
-   /** @return this < right */
-   public LayeBool lessThan(final double right)
+   
+   /**
+    * @return this < right
+    */
+   public LayeBool lessThan (final double right)
    {
-      compError("<", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      compError("<", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return null;
    }
-
-   /** @return this < right */
-   public boolean lessThan_b(final double right)
+   
+   /**
+    * @return this < right
+    */
+   public boolean lessThan_b (final double right)
    {
-      compError("<", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      compError("<", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return false;
    }
-
+   
    // Less than or Equal
-
-   /** @return this <= right */
-   public LayeBool lessEqual(final LayeValue right)
+   
+   /**
+    * @return this <= right
+    */
+   public LayeBool lessEqual (final LayeValue right)
    {
-      compError("<=", valueType.type.toString(), right.valueType.type.toString());
+      compError("<=", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
-   /** @return this <= right */
-   public boolean lessEqual_b(final LayeValue right)
+   
+   /**
+    * @return this <= right
+    */
+   public boolean lessEqual_b (final LayeValue right)
    {
-      compError("<=", valueType.type.toString(), right.valueType.type.toString());
+      compError("<=", valueType.type.toString(),
+            right.valueType.type.toString());
       return false;
    }
-
-   /** @return this <= right */
-   public LayeBool lessEqual(final long right)
+   
+   /**
+    * @return this <= right
+    */
+   public LayeBool lessEqual (final long right)
    {
       compError("<=", valueType.type.toString(), ValueType.INT.type.toString());
       return null;
    }
-
-   /** @return this <= right */
-   public boolean lessEqual_b(final long right)
+   
+   /**
+    * @return this <= right
+    */
+   public boolean lessEqual_b (final long right)
    {
       compError("<=", valueType.type.toString(), ValueType.INT.type.toString());
       return false;
    }
-
-   /** @return this <= right */
-   public LayeBool lessEqual(final double right)
+   
+   /**
+    * @return this <= right
+    */
+   public LayeBool lessEqual (final double right)
    {
-      compError("<=", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      compError("<=", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return null;
    }
-
-   /** @return this <= right */
-   public boolean lessEqual_b(final double right)
+   
+   /**
+    * @return this <= right
+    */
+   public boolean lessEqual_b (final double right)
    {
-      compError("<=", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      compError("<=", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return false;
    }
-
+   
    // Greater than
-
-   /** @return this > right */
-   public LayeBool greaterThan(final LayeValue right)
+   
+   /**
+    * @return this > right
+    */
+   public LayeBool greaterThan (final LayeValue right)
    {
-      compError(">", valueType.type.toString(), right.valueType.type.toString());
+      compError(">", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
-   /** @return this > right */
-   public boolean greaterThan_b(final LayeValue right)
+   
+   /**
+    * @return this > right
+    */
+   public boolean greaterThan_b (final LayeValue right)
    {
-      compError(">", valueType.type.toString(), right.valueType.type.toString());
+      compError(">", valueType.type.toString(),
+            right.valueType.type.toString());
       return false;
    }
-
-   /** @return this > right */
-   public LayeBool greaterThan(final long right)
+   
+   /**
+    * @return this > right
+    */
+   public LayeBool greaterThan (final long right)
    {
       compError(">", valueType.type.toString(), ValueType.INT.type.toString());
       return null;
    }
-
-   /** @return this > right */
-   public boolean greaterThan_b(final long right)
+   
+   /**
+    * @return this > right
+    */
+   public boolean greaterThan_b (final long right)
    {
       compError(">", valueType.type.toString(), ValueType.INT.type.toString());
       return false;
    }
-
-   /** @return this > right */
-   public LayeBool greaterThan(final double right)
+   
+   /**
+    * @return this > right
+    */
+   public LayeBool greaterThan (final double right)
    {
-      compError(">", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      compError(">", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return null;
    }
-
-   /** @return this > right */
-   public boolean greaterThan_b(final double right)
+   
+   /**
+    * @return this > right
+    */
+   public boolean greaterThan_b (final double right)
    {
-      compError(">", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      compError(">", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return false;
    }
-
+   
    // Greater than or Equal
-
-   /** @return this >= right */
-   public LayeBool greaterEqual(final LayeValue right)
+   
+   /**
+    * @return this >= right
+    */
+   public LayeBool greaterEqual (final LayeValue right)
    {
-      compError(">=", valueType.type.toString(), right.valueType.type.toString());
+      compError(">=", valueType.type.toString(),
+            right.valueType.type.toString());
       return null;
    }
-
-   /** @return this >= right */
-   public boolean greaterEqual_b(final LayeValue right)
+   
+   /**
+    * @return this >= right
+    */
+   public boolean greaterEqual_b (final LayeValue right)
    {
-      compError(">=", valueType.type.toString(), right.valueType.type.toString());
+      compError(">=", valueType.type.toString(),
+            right.valueType.type.toString());
       return false;
    }
-
-   /** @return this >= right */
-   public LayeBool greaterEqual(final long right)
+   
+   /**
+    * @return this >= right
+    */
+   public LayeBool greaterEqual (final long right)
    {
       compError(">=", valueType.type.toString(), ValueType.INT.type.toString());
       return null;
    }
-
-   /** @return this >= right */
-   public boolean greaterEqual_b(final long right)
+   
+   /**
+    * @return this >= right
+    */
+   public boolean greaterEqual_b (final long right)
    {
       compError(">=", valueType.type.toString(), ValueType.INT.type.toString());
       return false;
    }
-
-   /** @return this >= right */
-   public LayeBool greaterEqual(final double right)
+   
+   /**
+    * @return this >= right
+    */
+   public LayeBool greaterEqual (final double right)
    {
-      compError(">=", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      compError(">=", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return null;
    }
-
-   /** @return this >= right */
-   public boolean greaterEqual_b(final double right)
+   
+   /**
+    * @return this >= right
+    */
+   public boolean greaterEqual_b (final double right)
    {
-      compError(">=", valueType.type.toString(), ValueType.FLOAT.type.toString());
+      compError(">=", valueType.type.toString(),
+            ValueType.FLOAT.type.toString());
       return false;
    }
-
+   
    // ---------- Indexing ---------- //
-
-   public void newSlotMutable(final LayeValue key, final LayeValue value)
+   
+   public void newSlotMutable (final LayeValue key, final LayeValue value)
    {
-      throw LayeException.unsupportedOperation("cannot 'newSlot' on type " + valueType.type.toString());
+      throw LayeException.unsupportedOperation(
+            "cannot 'newSlot' on type " + valueType.type.toString());
    }
-
-   public void newSlot(final LayeValue key, final LayeValue value)
+   
+   public void newSlot (final LayeValue key, final LayeValue value)
    {
-      throw LayeException.unsupportedOperation("cannot 'newSlotConst' on type " + valueType.type.toString());
+      throw LayeException.unsupportedOperation(
+            "cannot 'newSlotConst' on type " + valueType.type.toString());
    }
-
-   public LayeValue delSlot(final LayeValue key)
+   
+   public LayeValue delSlot (final LayeValue key)
    {
-      throw LayeException.unsupportedOperation("cannot 'delSlot' on type " + valueType.type.toString());
+      throw LayeException.unsupportedOperation(
+            "cannot 'delSlot' on type " + valueType.type.toString());
    }
-
-   public LayeValue get(final LayeValue key)
+   
+   public LayeValue get (final LayeValue key)
    {
-      throw LayeException.unsupportedOperation("cannot 'get' on type " + valueType.type.toString());
+      throw LayeException.unsupportedOperation(
+            "cannot 'get' on type " + valueType.type.toString());
    }
-
-   public void set(final LayeValue key, final LayeValue value)
+   
+   public void set (final LayeValue key, final LayeValue value)
    {
-      throw LayeException.unsupportedOperation("cannot 'set' on type " + valueType.type.toString());
+      throw LayeException.unsupportedOperation(
+            "cannot 'set' on type " + valueType.type.toString());
    }
-
+   
    // ---------- Type ---------- //
-
-   public LayeBool istypeof(final LayeValue type)
+   
+   public LayeBool istypeof (final LayeValue type)
    {
       if (type.istype())
       {
@@ -1059,5 +1226,5 @@ public abstract class LayeValue
       }
       return LayeValue.FALSE;
    }
-
+   
 }

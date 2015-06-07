@@ -7,21 +7,21 @@ import net.fudev.laye.internal.compile.laye.LayeFunctionBuilder;
 public class ExprDelSlot implements Expression
 {
    public Expression value;
-
-   public ExprDelSlot(final Expression value)
+   
+   public ExprDelSlot (final Expression value)
    {
       this.value = value;
    }
-
+   
    @Override
-   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       if (isResultRequired)
       {
          value.accept(builder, true);
          final int op = builder.previous();
          builder.popOp();
-
+         
          switch (op & Laye.MAX_OP)
          {
             case Laye.OP_GET_INDEX:

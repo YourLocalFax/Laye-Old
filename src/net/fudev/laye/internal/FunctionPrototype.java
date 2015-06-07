@@ -9,9 +9,9 @@ import net.fudev.laye.internal.values.LayeValue;
 
 public final class FunctionPrototype
 {
-
-   //public final LayeFileData file;
-
+   
+   // public final LayeFileData file;
+   
    /** Constants used by the function. */
    public final LayeValue[] k;
    /** all maps for match expressions */
@@ -26,7 +26,7 @@ public final class FunctionPrototype
    public final int[] lineInfo;
    /** Did we store line info? */
    public final boolean hasLineInfos;
-
+   
    /** How many parameters were given? */
    public final int numParams;
    /** Was a varg parameter given? */
@@ -35,13 +35,16 @@ public final class FunctionPrototype
    public final int maxLocalsSize;
    /** Maximum stack size needed for this function. */
    public final int maxStackSize;
-
+   
    /** Does this prototype define a generator? */
    public final boolean generator;
-
-   public FunctionPrototype(/*final LayeFileData file,*/final LayeValue[] k, final List<Map<LayeValue, Integer>> jumpTables, final int[] code, final FunctionPrototype[] nested, final UpValueInfo[] upValues, final int[] lineInfo, final boolean hasLineInfos, final int numParams, final boolean hasVargs, final int maxLocalsSize, final int maxStackSize, final boolean generator)
+   
+   public FunctionPrototype (/* final LayeFileData file, */final LayeValue[] k,
+         final List<Map<LayeValue, Integer>> jumpTables, final int[] code, final FunctionPrototype[] nested,
+         final UpValueInfo[] upValues, final int[] lineInfo, final boolean hasLineInfos, final int numParams,
+         final boolean hasVargs, final int maxLocalsSize, final int maxStackSize, final boolean generator)
    {
-      //this.file = file;
+      // this.file = file;
       this.k = k;
       this.jumpTables = jumpTables;
       this.code = code;
@@ -55,9 +58,9 @@ public final class FunctionPrototype
       this.maxStackSize = maxStackSize;
       this.generator = generator;
    }
-
+   
    @Override
-   public int hashCode()
+   public int hashCode ()
    {
       final int prime = 31;
       int result = 1;
@@ -75,9 +78,9 @@ public final class FunctionPrototype
       result = prime * result + Arrays.hashCode(upValues);
       return result;
    }
-
+   
    @Override
-   public boolean equals(final Object obj)
+   public boolean equals (final Object obj)
    {
       if (this == obj)
       {
@@ -149,5 +152,5 @@ public final class FunctionPrototype
       }
       return true;
    }
-
+   
 }

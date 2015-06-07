@@ -8,22 +8,22 @@ public class ExprFunctionCall implements Expression
 {
    public Expression value;
    public Vector<Expression> args;
-
-   public ExprFunctionCall(final Expression value, final Vector<Expression> args)
+   
+   public ExprFunctionCall (final Expression value, final Vector<Expression> args)
    {
       this.value = value;
       this.args = args;
    }
-
-   public ExprFunctionCall(final Expression value, final Expression arg)
+   
+   public ExprFunctionCall (final Expression value, final Expression arg)
    {
       this.value = value;
       args = new Vector<>();
       args.add(arg);
    }
-
+   
    @Override
-   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       value.accept(builder, true);
       for (final Expression arg : args)

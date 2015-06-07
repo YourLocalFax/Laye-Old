@@ -9,20 +9,20 @@ public class ExprTableCtor implements Expression
    public final Vector<Expression> keys = new Vector<>();
    public final Vector<Expression> values = new Vector<>();
    public final Vector<Boolean> constant = new Vector<>();
-
-   public ExprTableCtor()
+   
+   public ExprTableCtor ()
    {
    }
-
-   public void addEntry(final Expression key, final Expression value, final boolean con)
+   
+   public void addEntry (final Expression key, final Expression value, final boolean con)
    {
       keys.addElement(key);
       values.addElement(value);
       constant.addElement(con);
    }
-
+   
    @Override
-   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       if (isResultRequired)
       {
