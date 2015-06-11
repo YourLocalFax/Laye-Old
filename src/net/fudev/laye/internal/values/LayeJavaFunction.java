@@ -13,10 +13,12 @@ public final class LayeJavaFunction extends LayeValue
    @FunctionalInterface
    public static interface Function
    {
-      LayeValue call (final Root root, final LayeValue parent, final LayeValue... args);
+      LayeValue call(final Root root, final LayeValue parent,
+            final LayeValue... args);
    }
    
-   public static LayeJavaFunction create (final Root root, final Function function)
+   public static LayeJavaFunction create(final Root root,
+         final Function function)
    {
       if (function == null)
       {
@@ -28,7 +30,7 @@ public final class LayeJavaFunction extends LayeValue
    private final Root root;
    private final Function function;
    
-   private LayeJavaFunction (final Root root, final Function function)
+   private LayeJavaFunction(final Root root, final Function function)
    {
       super(ValueType.FUNCTION);
       this.function = function;
@@ -36,32 +38,33 @@ public final class LayeJavaFunction extends LayeValue
    }
    
    @Override
-   public int hashCode ()
+   public int hashCode()
    {
       // TODO hashCode
       return 0;
    }
    
    @Override
-   public boolean equalTo_b (final LayeValue other)
+   public boolean equalTo_b(final LayeValue other)
    {
       return other == this;
    }
    
    @Override
-   public String asstring ()
+   public String asstring()
    {
       return "native-func-TODO";
    }
    
    @Override
-   public LayeValue call (final LayeValue... args)
+   public LayeValue call(final LayeValue... args)
    {
       return function.call(root, LayeValue.NULL, args);
    }
    
    @Override
-   public LayeValue callAsMethod (final LayeValue parent, final LayeValue... args)
+   public LayeValue callAsMethod(final LayeValue parent,
+         final LayeValue... args)
    {
       return function.call(root, parent, args);
    }

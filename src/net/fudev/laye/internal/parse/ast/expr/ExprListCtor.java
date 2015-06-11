@@ -7,16 +7,15 @@ import net.fudev.laye.internal.compile.laye.LayeFunctionBuilder;
 public class ExprListCtor implements Expression
 {
    public final Vector<Expression> values;
-   public boolean immutable;
    
-   public ExprListCtor (final Vector<Expression> values, final boolean immutable)
+   public ExprListCtor(final Vector<Expression> values)
    {
       this.values = values;
-      this.immutable = immutable;
    }
    
    @Override
-   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired)
    {
       if (isResultRequired)
       {
@@ -25,14 +24,7 @@ public class ExprListCtor implements Expression
          {
             values.get(i).accept(builder, true);
          }
-         if (immutable)
-         {
-            builder.visitOpList(size);
-         }
-         else
-         {
-            builder.visitOpMutList(size);
-         }
+         builder.visitOpList(size);
       }
    }
 }

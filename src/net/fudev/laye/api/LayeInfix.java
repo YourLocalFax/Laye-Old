@@ -26,9 +26,9 @@ public @interface LayeInfix
 {
    /**
     */
-   String operator () default "";
+   String operator() default "";
    
    /**
     */
-   LayeOperator.Assoc assoc () default LayeOperator.Assoc.LEFT;
+   LayeOperator.Assoc assoc() default LayeOperator.Assoc.LEFT;
 }

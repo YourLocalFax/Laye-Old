@@ -3,22 +3,24 @@ package net.fudev.laye.util;
 import java.util.Arrays;
 import java.util.List;
 
-import net.fudev.laye.internal.values.LayeList;
+import net.fudev.laye.internal.values.LayeTuple;
 import net.fudev.laye.internal.values.LayeValue;
 
 public final class Util
 {
    
-   private Util ()
+   private Util()
    {
    }
    
-   public static String concatValues (final LayeValue[] values, final String separator)
+   public static String concatValues(final LayeValue[] values,
+         final String separator)
    {
       return Util.concatValuesRange(values, 0, values.length, separator);
    }
    
-   public static String concatValuesRange (final LayeValue[] values, final int offset, final int len,
+   public static String concatValuesRange(final LayeValue[] values,
+         final int offset, final int len,
          final String separator)
    {
       final StringBuilder sb = new StringBuilder();
@@ -33,14 +35,15 @@ public final class Util
       return sb.toString();
    }
    
-   public static LayeValue[] createValueArray (final int length)
+   public static LayeValue[] createValueArray(final int length)
    {
       final LayeValue[] result = new LayeValue[length];
       Arrays.fill(result, LayeValue.NULL);
       return result;
    }
    
-   public static LayeValue[] createValueArray (final int length, final LayeValue... initial)
+   public static LayeValue[] createValueArray(final int length,
+         final LayeValue... initial)
    {
       final int initialLength = initial.length;
       if (initialLength >= length)
@@ -56,7 +59,8 @@ public final class Util
       }
    }
    
-   public static LayeValue[] createValueArrayLocals (final int length, final boolean hasVargs,
+   public static LayeValue[] createValueArrayLocals(final int length,
+         final boolean hasVargs,
          final LayeValue... initial)
    {
       final int initialLength = initial.length;
@@ -69,12 +73,13 @@ public final class Util
       {
          final LayeValue[] result = new LayeValue[length];
          System.arraycopy(initial, 0, result, 0, length - 1);
-         result[length - 1] = LayeList.valueOf(true, Arrays.copyOfRange(initial, length - 1, initialLength));
+         result[length - 1] = LayeTuple.valueOf(initial, length - 1,
+               initialLength);
          return result;
       }
    }
    
-   public static int[] toIntArray (final List<Integer> code)
+   public static int[] toIntArray(final List<Integer> code)
    {
       final int len = code.size(), res[] = new int[len];
       for (int i = 0; i < len; i++)
@@ -84,7 +89,8 @@ public final class Util
       return res;
    }
    
-   public static boolean arrayEquals (final LayeValue[] a, final LayeValue[] b, final int length)
+   public static boolean arrayEquals(final LayeValue[] a, final LayeValue[] b,
+         final int length)
    {
       for (int i = 0; i < length; i++)
       {

@@ -15,5 +15,6 @@ public interface SyntaxNode
     *           <code>true</code> if this node should leave a value on the
     *           stack, <code>false</code> otherwise.
     */
-   void accept (final LayeFunctionBuilder builder, final boolean isResultRequired);
+   void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired);
 }

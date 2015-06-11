@@ -11,56 +11,63 @@ import net.fudev.laye.util.ImmutableArrayList;
 public final class SkarendalScriptEngineFactory implements ScriptEngineFactory
 {
    
-   private static final ImmutableArrayList<String> names = SkarendalScriptEngineFactory.asImmutableList("skarendal",
-         "Skarendal", "laye", "Laye");
-   private static final ImmutableArrayList<String> mimeTypes = SkarendalScriptEngineFactory.asImmutableList();
-   private static final ImmutableArrayList<String> extensions = SkarendalScriptEngineFactory.asImmutableList("laye");
-   
+   private static final ImmutableArrayList<String> names = SkarendalScriptEngineFactory
+         .asImmutableList("skarendal",
+               "Skarendal", "laye", "Laye");
+   private static final ImmutableArrayList<String> mimeTypes = SkarendalScriptEngineFactory
+         .asImmutableList();
+   private static final ImmutableArrayList<String> extensions = SkarendalScriptEngineFactory
+         .asImmutableList("laye");
+         
    private static final ThreadLocal<SkarendalScriptEngine> engines = new ThreadLocal<>();
    
-   private static final ImmutableArrayList<String> asImmutableList (final String... values)
+   private static final ImmutableArrayList<String> asImmutableList(
+         final String... values)
    {
       return new ImmutableArrayList<>(values);
    }
    
-   private static ClassLoader getAppClassLoader ()
+   private static ClassLoader getAppClassLoader()
    {
       final ClassLoader ccl = Thread.currentThread().getContextClassLoader();
-      return (ccl == null) ? SkarendalScriptEngineFactory.class.getClassLoader() : ccl;
+      return (ccl == null) ? SkarendalScriptEngineFactory.class.getClassLoader()
+            : ccl;
    }
    
-   public SkarendalScriptEngineFactory ()
+   public SkarendalScriptEngineFactory()
    {
    }
    
-   public @Override String getEngineName ()
+   public @Override String getEngineName()
    {
       return (String) getParameter(ScriptEngine.ENGINE);
    }
    
-   public @Override String getEngineVersion ()
+   public @Override String getEngineVersion()
    {
       return (String) getParameter(ScriptEngine.ENGINE_VERSION);
    }
    
-   public @Override List<String> getExtensions ()
+   public @Override List<String> getExtensions()
    {
       return SkarendalScriptEngineFactory.extensions;
    }
    
-   public @Override String getLanguageName ()
+   public @Override String getLanguageName()
    {
       return (String) getParameter(ScriptEngine.LANGUAGE);
    }
    
-   public @Override String getLanguageVersion ()
+   public @Override String getLanguageVersion()
    {
       return (String) getParameter(ScriptEngine.LANGUAGE_VERSION);
    }
    
-   public @Override String getMethodCallSyntax (final String target, final String method, final String... args)
+   public @Override String getMethodCallSyntax(final String target,
+         final String method, final String... args)
    {
-      final StringBuilder builder = new StringBuilder(target).append('.').append(method).append('(');
+      final StringBuilder builder = new StringBuilder(target).append('.')
+            .append(method).append('(');
       for (int i = 0, len = args.length, lenm1 = len - 1; i < len; i++)
       {
          builder.append(args[i]);
@@ -72,22 +79,22 @@ public final class SkarendalScriptEngineFactory implements ScriptEngineFactory
       return builder.append(')').toString();
    }
    
-   public @Override List<String> getMimeTypes ()
+   public @Override List<String> getMimeTypes()
    {
       return SkarendalScriptEngineFactory.mimeTypes;
    }
    
-   public @Override List<String> getNames ()
+   public @Override List<String> getNames()
    {
       return SkarendalScriptEngineFactory.names;
    }
    
-   public @Override String getOutputStatement (final String output)
+   public @Override String getOutputStatement(final String output)
    {
       return "println(" + output + ");";
    }
    
-   public @Override Object getParameter (final String key)
+   public @Override Object getParameter(final String key)
    {
       switch (key)
       {
@@ -106,7 +113,7 @@ public final class SkarendalScriptEngineFactory implements ScriptEngineFactory
       }
    }
    
-   public @Override String getProgram (final String... statements)
+   public @Override String getProgram(final String... statements)
    {
       final StringBuilder sb = new StringBuilder();
       final int len = statements.length;
@@ -121,12 +128,13 @@ public final class SkarendalScriptEngineFactory implements ScriptEngineFactory
       return sb.toString();
    }
    
-   public @Override SkarendalScriptEngine getScriptEngine ()
+   public @Override SkarendalScriptEngine getScriptEngine()
    {
       SkarendalScriptEngine engine = SkarendalScriptEngineFactory.engines.get();
       if (engine == null)
       {
-         engine = new SkarendalScriptEngine(this, SkarendalScriptEngineFactory.getAppClassLoader());
+         engine = new SkarendalScriptEngine(this,
+               SkarendalScriptEngineFactory.getAppClassLoader());
          SkarendalScriptEngineFactory.engines.set(engine);
       }
       return engine;

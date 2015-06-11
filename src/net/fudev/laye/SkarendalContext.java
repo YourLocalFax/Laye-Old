@@ -13,19 +13,20 @@ import javax.script.SimpleScriptContext;
 
 import net.fudev.laye.internal.Root;
 
-public final class SkarendalContext extends SimpleScriptContext implements ScriptContext
+public final class SkarendalContext extends SimpleScriptContext
+      implements ScriptContext
 {
    private static final class WriterOutputStream extends OutputStream
    {
       private final Writer writer;
       
-      WriterOutputStream (final Writer writer)
+      WriterOutputStream(final Writer writer)
       {
          this.writer = writer;
       }
       
       @Override
-      public void write (final int b) throws IOException
+      public void write(final int b) throws IOException
       {
          writer.write(new String(new byte[] {
                (byte) b
@@ -35,14 +36,14 @@ public final class SkarendalContext extends SimpleScriptContext implements Scrip
    
    public final Root root;
    
-   public SkarendalContext ()
+   public SkarendalContext()
    {
       root = new Root();
       setBindings(root, ScriptContext.ENGINE_SCOPE);
    }
    
    @Override
-   public void setBindings (final Bindings bindings, final int scope)
+   public void setBindings(final Bindings bindings, final int scope)
    {
       if (scope == ScriptContext.ENGINE_SCOPE)
       {
@@ -56,19 +57,19 @@ public final class SkarendalContext extends SimpleScriptContext implements Scrip
    }
    
    @Override
-   public void setErrorWriter (final Writer writer)
+   public void setErrorWriter(final Writer writer)
    {
       root.setErr(new PrintStream(new WriterOutputStream(writer)));
    }
    
    @Override
-   public void setReader (final Reader reader)
+   public void setReader(final Reader reader)
    {
       root.setIn(new Scanner(reader));
    }
    
    @Override
-   public void setWriter (final Writer writer)
+   public void setWriter(final Writer writer)
    {
       root.setOut(new PrintStream(new WriterOutputStream(writer)));
    }

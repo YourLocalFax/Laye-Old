@@ -7,7 +7,7 @@ public final class ListIndexOutOfBounds extends LayeException
    
    public final int index;
    
-   public ListIndexOutOfBounds (final int index)
+   public ListIndexOutOfBounds(final int index)
    {
       super(Integer.toString(index));
       this.index = index;

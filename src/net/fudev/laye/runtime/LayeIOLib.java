@@ -10,7 +10,7 @@ import net.fudev.laye.util.Util;
 
 public final class LayeIOLib extends LayeStdLib
 {
-   protected LayeIOLib (final Vector<LayeStdLib> natives, final Root thisRoot)
+   protected LayeIOLib(final Vector<LayeStdLib> natives, final Root thisRoot)
    {
       super(natives, thisRoot);
       
@@ -25,7 +25,8 @@ public final class LayeIOLib extends LayeStdLib
       {
          if (args.length == 0)
          {
-            throw new LayeException("at least one argument expected in fn 'print'.");
+            throw new LayeException(
+                  "at least one argument expected in fn 'print'.");
          }
          root.getOut().print(Util.concatValues(args, " "));
          return LayeValue.NULL;
@@ -40,7 +41,8 @@ public final class LayeIOLib extends LayeStdLib
       {
          if (args.length == 0)
          {
-            throw new LayeException("at least one argument expected in fn 'error'.");
+            throw new LayeException(
+                  "at least one argument expected in fn 'error'.");
          }
          root.getErr().print(Util.concatValues(args, " "));
          return LayeValue.NULL;

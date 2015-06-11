@@ -20,48 +20,48 @@ public final class LayeLexer
    private Token peekedToken = Token.NO_TOKEN;
    private TokenData peekedTokenData;
    
-   public LayeLexer (final Reader reader)
+   public LayeLexer(final Reader reader)
    {
       this.reader = reader;
       read();
    }
    
-   public TokenData getTokenData ()
+   public TokenData getTokenData()
    {
       return tokenData;
    }
    
-   public TokenData getPeekedTokenData ()
+   public TokenData getPeekedTokenData()
    {
       return peekedTokenData;
    }
    
-   public int getLine ()
+   public int getLine()
    {
       return line;
    }
    
    // ---------- TEMP STRING ---------- //
    
-   private void beginTempString ()
+   private void beginTempString()
    {
       stringBuilder.setLength(0);
       stringBuilder.trimToSize();
    }
    
-   private String endTempString ()
+   private String endTempString()
    {
       final String string = stringBuilder.toString();
       tokenData = new TokenData(string);
       return string;
    }
    
-   private void putChar (final char c)
+   private void putChar(final char c)
    {
       stringBuilder.append(c);
    }
    
-   private void putChar ()
+   private void putChar()
    {
       stringBuilder.append(c);
       read();
@@ -69,7 +69,7 @@ public final class LayeLexer
    
    // ---------- LEXING ---------- //
    
-   private void read ()
+   private void read()
    {
       int value = -1;
       try
@@ -87,7 +87,7 @@ public final class LayeLexer
       c = (char) value;
    }
    
-   public Token peek ()
+   public Token peek()
    {
       if (peekedToken == Token.NO_TOKEN)
       {
@@ -99,7 +99,7 @@ public final class LayeLexer
       return peekedToken;
    }
    
-   public Token lex ()
+   public Token lex()
    {
       if (peekedToken != Token.NO_TOKEN)
       {
@@ -128,7 +128,7 @@ public final class LayeLexer
             case '\'':
             case '"':
                return stringLiteral();
-            // simple
+               // simple
             case '(':
                read();
                return Token.OPEN_BRACKET;
@@ -150,6 +150,9 @@ public final class LayeLexer
             case ';':
                read();
                return Token.SEMI;
+            case ':':
+               read();
+               return Token.COLON;
             case ',':
                read();
                return Token.COMMA;
@@ -164,7 +167,7 @@ public final class LayeLexer
             case '@':
                read();
                return Token.AT;
-            // Anything else
+               // Anything else
             default:
                // check operators
                beginTempString();
@@ -203,7 +206,7 @@ public final class LayeLexer
       return Token.NO_TOKEN;
    }
    
-   private Token stringLiteral ()
+   private Token stringLiteral()
    {
       final char closing = c; // " | '
       beginTempString();
@@ -234,14 +237,15 @@ public final class LayeLexer
       return Token.STRING_LITERAL;
    }
    
-   private int readEscape ()
+   private int readEscape()
    {
       int res = -1;
       switch (c)
       {
          case 'u':
             read();
-            final StringBuilder sb = new StringBuilder(stringBuilder.toString());
+            final StringBuilder sb = new StringBuilder(
+                  stringBuilder.toString());
             beginTempString();
             int idx = 0;
             for (; !eos && Character.isDigit(c); idx++)
@@ -250,7 +254,9 @@ public final class LayeLexer
             }
             if (idx != 4)
             {
-               throw new LayeException("4 digits are expected when defining a unicode char, " + idx + " given.");
+               throw new LayeException(
+                     "4 digits are expected when defining a unicode char, "
+                           + idx + " given.");
             }
             // Put the value into the intValue, since the compiler takes
             // from there for char literals
@@ -278,33 +284,35 @@ public final class LayeLexer
             read();
             break;
          default:
-            throw new LayeException("Escape character '" + c + "' not recognized.");
+            throw new LayeException(
+                  "Escape character '" + c + "' not recognized.");
       }
       return res;
    }
    
-   private static boolean doesCharDefineIntBase (final char c)
+   private static boolean doesCharDefineIntBase(final char c)
    {
       return c == 'x' || c == 'X' || c == 'b' || c == 'B';
    }
    
-   private static boolean isHexChar (final char c)
+   private static boolean isHexChar(final char c)
    {
-      return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+      return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f')
+            || (c >= 'A' && c <= 'F');
    }
    
-   private static boolean isOctalChar (final char c)
+   private static boolean isOctalChar(final char c)
    {
       return (c >= '0' && c <= '7');
    }
    
-   private static boolean isBinaryChar (final char c)
+   private static boolean isBinaryChar(final char c)
    {
       return c == '0' || c == '1';
    }
    
    // TODO check that this works plz
-   private Token numberLiteral ()
+   private Token numberLiteral()
    {
       beginTempString();
       int radix = 10;
@@ -356,7 +364,8 @@ public final class LayeLexer
             }
             if (lastChar == '_')
             {
-               throw new LayeException("Cannot place an underscore at the end of a number.");
+               throw new LayeException(
+                     "Cannot place an underscore at the end of a number.");
             }
          }
          else
@@ -377,7 +386,8 @@ public final class LayeLexer
             }
             if (lastChar == '_')
             {
-               throw new LayeException("Cannot place an underscore at the end of a number.");
+               throw new LayeException(
+                     "Cannot place an underscore at the end of a number.");
             }
          }
       }
@@ -388,13 +398,15 @@ public final class LayeLexer
          // The only "letter" characters we can accept are 'e' and 'f'
          // (exponent and float definition).
          putChar(lastChar);
-         while (!eos && (Character.isDigit(c) || c == '_' || c == '.' || c == 'e'))
+         while (!eos
+               && (Character.isDigit(c) || c == '_' || c == '.' || c == 'e'))
          {
             if (c == '_')
             {
                if (lastChar == '.')
                {
-                  throw new LayeException("Cannot place an underscore next to a decimal point in numbers.");
+                  throw new LayeException(
+                        "Cannot place an underscore next to a decimal point in numbers.");
                }
                lastChar = c;
                read(); // get rid of it
@@ -403,7 +415,8 @@ public final class LayeLexer
             {
                if (lastChar == '_')
                {
-                  throw new LayeException("Cannot place a decimal point next to an underscore in numbers.");
+                  throw new LayeException(
+                        "Cannot place a decimal point next to an underscore in numbers.");
                }
                if (numberType == Token.FLOAT_LITERAL)
                {
@@ -432,7 +445,8 @@ public final class LayeLexer
          }
          if (lastChar == '_')
          {
-            throw new LayeException("Cannot place an underscore at the end of a number.");
+            throw new LayeException(
+                  "Cannot place an underscore at the end of a number.");
          }
       }
       // if the final char is 'f', We know this should be a float literal.
@@ -443,7 +457,8 @@ public final class LayeLexer
       }
       if (!eos && Character.isAlphabetic(c) || Character.isDigit(c) || c == '_')
       {
-         throw new LayeException("unexpected characters at end of numeric literal.");
+         throw new LayeException(
+               "unexpected characters at end of numeric literal.");
       }
       if (numberType == Token.INT_LITERAL)
       {
@@ -457,10 +472,11 @@ public final class LayeLexer
       }
    }
    
-   private Token identifier ()
+   private Token identifier()
    {
       beginTempString();
-      while (!eos && Character.isAlphabetic(c) || Character.isDigit(c) || c == '_')
+      while (!eos && Character.isAlphabetic(c) || Character.isDigit(c)
+            || c == '_')
       {
          putChar();
       }
@@ -468,7 +484,7 @@ public final class LayeLexer
       return getTokenFromIdent(string);
    }
    
-   private static Token getTokenFromIdent (final String ident)
+   private static Token getTokenFromIdent(final String ident)
    {
       switch (ident)
       {

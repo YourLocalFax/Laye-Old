@@ -9,7 +9,7 @@ public final class LayeString extends LayeValue
 {
    private static final Map<String, LayeString> strings = new HashMap<>();
    
-   public static LayeString valueOf (final String value)
+   public static LayeString valueOf(final String value)
    {
       LayeString string = strings.get(value);
       if (string == null)
@@ -24,14 +24,14 @@ public final class LayeString extends LayeValue
    // between them.
    public final String value;
    
-   private LayeString (final String value)
+   private LayeString(final String value)
    {
       super(ValueType.STRING);
       this.value = value;
    }
    
    @Override
-   public boolean equalTo_b (final LayeValue other)
+   public boolean equalTo_b(final LayeValue other)
    {
       if (!other.isstring())
       {
@@ -41,19 +41,19 @@ public final class LayeString extends LayeValue
    }
    
    @Override
-   public int hashCode ()
+   public int hashCode()
    {
       return value.hashCode();
    }
    
    @Override
-   public String asstring ()
+   public String asstring()
    {
       return value;
    }
    
    @Override
-   public LayeString checkstring ()
+   public LayeString checkstring()
    {
       return this;
    }

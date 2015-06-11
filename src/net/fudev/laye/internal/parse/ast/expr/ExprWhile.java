@@ -8,14 +8,15 @@ public final class ExprWhile implements Expression
    public Expression condition;
    public Expression body;
    
-   public ExprWhile (final Expression condition, final Expression body)
+   public ExprWhile(final Expression condition, final Expression body)
    {
       this.condition = condition;
       this.body = body;
    }
    
    @Override
-   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired)
    {
       final int listLocal, pushMethodName;
       final int startLoc, test;
@@ -27,7 +28,7 @@ public final class ExprWhile implements Expression
             listLocal = builder.addLocal("$while-" + System.nanoTime(), true);
             pushMethodName = builder.addConsts(LayeList.METHOD_PUSH_BACK);
             
-            builder.visitOpMutList(0);
+            builder.visitOpList(0);
             builder.visitOpStore(listLocal);
             builder.visitOpPop(1);
          }

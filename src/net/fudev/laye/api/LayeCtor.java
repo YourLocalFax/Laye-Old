@@ -23,5 +23,5 @@ public @interface LayeCtor
     * provided, the constructor is used as a default constructor. Names must
     * comply with Laye's identifiers.
     */
-   String name () default "";
+   String name() default "";
 }

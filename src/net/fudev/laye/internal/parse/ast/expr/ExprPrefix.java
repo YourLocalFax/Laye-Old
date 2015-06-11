@@ -8,16 +8,17 @@ public class ExprPrefix implements Expression
    public Expression value;
    public Operator op;
    
-   public ExprPrefix (final Expression value, final Operator op)
+   public ExprPrefix(final Expression value, final Operator op)
    {
       this.value = value;
       this.op = op;
    }
    
    @Override
-   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired)
    {
-      Expression.convertFromListToValueInOperatorExpression(builder, value);
+      value.accept(builder, true);
       builder.visitPrefixExpr(op);
       
       if (!isResultRequired)

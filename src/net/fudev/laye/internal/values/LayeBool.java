@@ -9,38 +9,38 @@ public final class LayeBool extends LayeValue
    
    public final boolean value;
    
-   LayeBool (final boolean value)
+   LayeBool(final boolean value)
    {
       super(ValueType.BOOL);
       this.value = value;
    }
    
    @Override
-   public LayeBool tobool ()
+   public LayeBool tobool()
    {
       return this;
    }
    
    @Override
-   public boolean asbool ()
+   public boolean asbool()
    {
       return value;
    }
    
    @Override
-   public String asstring ()
+   public String asstring()
    {
       return value ? "true" : "false";
    }
    
    @Override
-   public boolean equalTo_b (final LayeValue other)
+   public boolean equalTo_b(final LayeValue other)
    {
       return other == this;
    }
    
    @Override
-   public int hashCode ()
+   public int hashCode()
    {
       return Boolean.hashCode(value);
    }

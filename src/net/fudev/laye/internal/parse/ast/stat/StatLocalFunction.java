@@ -10,7 +10,8 @@ public final class StatLocalFunction implements Statement
    public String name;
    public ASTFunctionPrototype prototype;
    
-   public StatLocalFunction (final boolean gen, final boolean con, final String name,
+   public StatLocalFunction(final boolean gen, final boolean con,
+         final String name,
          final ASTFunctionPrototype prototype)
    {
       this.gen = gen;
@@ -20,7 +21,8 @@ public final class StatLocalFunction implements Statement
    }
    
    @Override
-   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired)
    {
       final int local = builder.addLocal(name, con);
       final FunctionPrototype proto = prototype.generate(builder, gen);

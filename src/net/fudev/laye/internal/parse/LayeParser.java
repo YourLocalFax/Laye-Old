@@ -29,11 +29,11 @@ public class LayeParser
    
    private LayeLexer lexer;
    
-   public LayeParser ()
+   public LayeParser()
    {
    }
    
-   public ASTFunctionPrototype parse (final Reader reader)
+   public ASTFunctionPrototype parse(final Reader reader)
    {
       final Vector<SyntaxNode> nodes = new Vector<>();
       
@@ -58,13 +58,13 @@ public class LayeParser
       return proto;
    }
    
-   private void error (final String message)
+   private void error(final String message)
    {
       // Logger.error(LOG_GROUP, message);
       throw new CompilerException("line " + lexer.getLine() + ": " + message);
    }
    
-   private static void debug (final String message)
+   private static void debug(final String message)
    {
       Logger.debug(LayeParser.LOG_GROUP, message);
    }
@@ -78,7 +78,7 @@ public class LayeParser
    private TokenData tokenData = TokenData.EMPTY;
    private TokenData peekedTokenData = TokenData.EMPTY;
    
-   private Token getNextToken ()
+   private Token getNextToken()
    {
       Token result = lexer.lex();
       switch (result)
@@ -101,7 +101,7 @@ public class LayeParser
       return result;
    }
    
-   private void lex ()
+   private void lex()
    {
       if (peekedToken != Token.NO_TOKEN)
       {
@@ -118,7 +118,7 @@ public class LayeParser
       }
    }
    
-   private void peek ()
+   private void peek()
    {
       if (peekedToken == Token.NO_TOKEN)
       {
@@ -127,12 +127,12 @@ public class LayeParser
       }
    }
    
-   private boolean expect (final Token kind)
+   private boolean expect(final Token kind)
    {
       return expect(kind, kind + " expected, got " + token);
    }
    
-   private boolean expect (final Token kind, final String msg)
+   private boolean expect(final Token kind, final String msg)
    {
       if (token != kind)
       {
@@ -143,16 +143,17 @@ public class LayeParser
       return true;
    }
    
-   private void checkSemi (final String message)
+   private void checkSemi(final String message)
    {
       peek();
-      if ((lastToken != Token.SEMI && lastToken != Token.END) && !expect(Token.SEMI))
+      if ((lastToken != Token.SEMI && lastToken != Token.END)
+            && !expect(Token.SEMI))
       {
          error(message);
       }
    }
    
-   private Modifiers gatherModifiers ()
+   private Modifiers gatherModifiers()
    {
       boolean isLocal = false;
       boolean isMutable = false;
@@ -195,12 +196,12 @@ public class LayeParser
       return Modifiers.get(isLocal, isMutable, isStatic);
    }
    
-   private String ident ()
+   private String ident()
    {
       return ident("identifier expected as function name");
    }
    
-   private String ident (final String message)
+   private String ident(final String message)
    {
       if (token != Token.IDENT)
       {
@@ -215,7 +216,7 @@ public class LayeParser
    
    // ---------- PARSING ---------- //
    
-   private SyntaxNode topLevel ()
+   private SyntaxNode topLevel()
    {
       debug("starting top level with " + token);
       final SyntaxNode result;
@@ -271,7 +272,7 @@ public class LayeParser
    
    // ---------- STATEMENTS ---------- //
    
-   private Statement statLocVarDef (final boolean con)
+   private Statement statLocVarDef(final boolean con)
    {
       final Vector<String> names = new Vector<>();
       final Vector<Expression> values = new Vector<>();
@@ -307,7 +308,7 @@ public class LayeParser
       return new StatLocalVariable(con, names, values);
    }
    
-   private Statement statNewSlotMut ()
+   private Statement statNewSlotMut()
    {
       final Vector<String> names = new Vector<>();
       final Vector<Expression> values = new Vector<>();
@@ -343,7 +344,7 @@ public class LayeParser
       return new StatNewSlotMutable(names, values);
    }
    
-   private Statement statFnDef (final boolean isLocal, final boolean isConst)
+   private Statement statFnDef(final boolean isLocal, final boolean isConst)
    {
       // TODO make use of the isGen thing for generators
       final boolean isGen = token == Token.GEN;
@@ -363,7 +364,7 @@ public class LayeParser
       }
    }
    
-   private ASTFunctionPrototype parseFnPrototype ()
+   private ASTFunctionPrototype parseFnPrototype()
    {
       final ASTFunctionPrototype proto = new ASTFunctionPrototype();
       
@@ -442,7 +443,7 @@ public class LayeParser
     * new value on the stack, always, as Laye expressions are guaranteed to have
     * exactly one value.
     */
-   private Expression expression ()
+   private Expression expression()
    {
       final Expression expr = factor();
       if (expr == null)
@@ -468,7 +469,8 @@ public class LayeParser
       }
    }
    
-   private Vector<Expression> commaSeparatedExpressions (final boolean allowTrailingComma)
+   private Vector<Expression> commaSeparatedExpressions(
+         final boolean allowTrailingComma)
    {
       final Vector<Expression> exprs = new Vector<>();
       while (true)
@@ -495,14 +497,13 @@ public class LayeParser
       return exprs;
    }
    
-   private Expression primaryExpression ()
+   private Expression primaryExpression()
    {
       return primaryExpression(true);
    }
    
-   private Expression primaryExpression (final boolean allowPostfixCall)
+   private Expression primaryExpression(final boolean allowPostfixCall)
    {
-      final Expression result;
       switch (token)
       {
          case OPERATOR:
@@ -510,8 +511,7 @@ public class LayeParser
             final Operator prefix = tokenData.operator;
             lex(); // operator
             final Expression expr = primaryExpression();
-            result = new ExprPrefix(expr, prefix);
-            break;
+            return new ExprPrefix(expr, prefix);
          }
          case OPEN_SQUARE_BRACKET: // list
          {
@@ -519,8 +519,7 @@ public class LayeParser
             final Vector<Expression> items = commaSeparatedExpressions(true);
             // TODO better error messages.
             expect(Token.CLOSE_SQUARE_BRACKET, "']' expected.");
-            result = new ExprListCtor(items, false);
-            break;
+            return postfix(new ExprListCtor(items), allowPostfixCall);
          }
          case OPEN_BRACKET: // immutable list
          {
@@ -528,8 +527,21 @@ public class LayeParser
             final Vector<Expression> items = commaSeparatedExpressions(true);
             // TODO better error messages.
             expect(Token.CLOSE_BRACKET, "')' expected.");
-            result = new ExprListCtor(items, true);
-            break;
+            final int size = items.size();
+            if (size == 0)
+            {
+               // TODO better error messages
+               error("values expected.");
+               return null;
+            }
+            else if (size == 1)
+            {
+               return postfix(items.get(0), allowPostfixCall);
+            }
+            else
+            {
+               return postfix(new ExprTupleCtor(items), allowPostfixCall);
+            }
          }
          case OPEN_CURLY_BRACKET:
          {
@@ -560,30 +572,83 @@ public class LayeParser
                   break;
                }
             }
-            result = table;
             expect(Token.CLOSE_CURLY_BRACKET);
-            break;
+            return postfix(table, allowPostfixCall);
+         }
+         case NEW:
+         {
+            lex(); // new
+            final Expression type = primaryExpression(false);
+            final String name;
+            if (token == Token.COLON)
+            {
+               lex(); // :
+               name = ident();
+            }
+            else
+            {
+               name = null;
+            }
+            final Vector<Expression> args;
+            switch (token)
+            {
+               case OPEN_BRACKET:
+               {
+                  lex(); // (
+                  args = commaSeparatedExpressions(false);
+                  expect(Token.CLOSE_BRACKET);
+                  break;
+               }
+               case INT_LITERAL:
+               {
+                  final Expression literal = new ExprLiteralInt(
+                        tokenData.integer);
+                  lex(); // 'int'
+                  args = new Vector<>();
+                  args.add(literal);
+                  break;
+               }
+               case FLOAT_LITERAL:
+               {
+                  final Expression literal = new ExprLiteralFloat(
+                        tokenData.fractional);
+                  lex(); // 'float'
+                  args = new Vector<>();
+                  args.add(literal);
+                  break;
+               }
+               case STRING_LITERAL:
+               {
+                  final Expression literal = new ExprLiteralString(
+                        tokenData.string);
+                  lex(); // 'string'
+                  args = new Vector<>();
+                  args.add(literal);
+                  break;
+               }
+               default:
+                  args = new Vector<>();
+                  break;
+            }
+            return new ExprNewInstance(type, name, args);
          }
          case REF:
          {
             lex(); // ref
             final Expression expr = primaryExpression();
-            result = new ExprRef(expr);
-            break;
+            return new ExprRef(expr);
          }
          case DEREF:
          {
             lex(); // deref
             final Expression expr = primaryExpression();
-            result = new ExprDeref(expr);
-            break;
+            return new ExprDeref(expr);
          }
          case DELETE:
          {
             lex(); // 'delete'
             final Expression expr = primaryExpression();
-            result = new ExprDelSlot(expr);
-            break;
+            return new ExprDelSlot(expr);
          }
          case FN:
          case GEN:
@@ -600,56 +665,56 @@ public class LayeParser
          }
          case TYPEOF:
             lex(); // typeof
-            result = new ExprPrefixTypeof(expression());
-            break;
+            return new ExprPrefixTypeof(expression());
          case IDENT:
-            result = new ExprGetVar(tokenData.string);
-            lex(); // ident
-            break;
+            return postfix(new ExprGetVar(ident()), allowPostfixCall);
          case NULL:
-            result = new ExprLiteralNull();
             lex(); // null
-            break;
+            return new ExprLiteralNull();
          case TRUE:
          case FALSE:
-            result = new ExprLiteralBool(token == Token.TRUE);
+         {
+            final Expression result = new ExprLiteralBool(token == Token.TRUE);
             lex(); // (bool)
-            break;
+            return result;
+         }
          case INT_LITERAL:
-            result = new ExprLiteralInt(tokenData.integer);
+         {
+            final Expression result = new ExprLiteralInt(tokenData.integer);
             lex(); // int_literal
-            break;
+            return result;
+         }
          case FLOAT_LITERAL:
-            result = new ExprLiteralFloat(tokenData.fractional);
+         {
+            final Expression result = new ExprLiteralFloat(
+                  tokenData.fractional);
             lex(); // float_literal
-            break;
+            return result;
+         }
          case STRING_LITERAL:
-            result = new ExprLiteralString(tokenData.string);
+         {
+            final Expression result = new ExprLiteralString(tokenData.string);
             lex(); // string_literal
-            break;
+            return result;
+         }
          case DO:
-            result = exprBlock();
-            break;
+            return exprBlock();
          case IF:
-            result = exprIf();
-            break;
+            return exprIf();
          case FOR:
             peek();
             if (peekedToken == Token.EACH)
             {
-               result = exprForEach();
+               return exprForEach();
             }
             else
             {
-               result = exprFor();
+               return exprFor();
             }
-            break;
          case WHILE:
-            result = exprWhile();
-            break;
+            return exprWhile();
          case MATCH:
-            result = exprMatch();
-            break;
+            return exprMatch();
          case RET:
             lex(); // ret
             final Expression value;
@@ -661,22 +726,14 @@ public class LayeParser
             {
                value = null;
             }
-            result = new ExprReturn(value);
-            break;
+            return new ExprReturn(value);
          default:
-            result = null;
-      }
-      if (lastToken == Token.END)
-      {
-         return result;
-      }
-      else
-      {
-         return postfix(result, allowPostfixCall);
+            return null;
       }
    }
    
-   private Expression postfix (final Expression target, final boolean allowPostfixCall)
+   private Expression postfix(final Expression target,
+         final boolean allowPostfixCall)
    {
       if (target == null)
       {
@@ -694,7 +751,8 @@ public class LayeParser
                lex(); // (
                final Vector<Expression> args = commaSeparatedExpressions(false);
                expect(Token.CLOSE_BRACKET);
-               return postfix(new ExprMethodCall(target, name, args), allowPostfixCall);
+               return postfix(new ExprMethodCall(target, name, args),
+                     allowPostfixCall);
             }
             else
             {
@@ -712,11 +770,13 @@ public class LayeParser
                lex(); // (
                final Vector<Expression> args = commaSeparatedExpressions(false);
                expect(Token.CLOSE_BRACKET);
-               return postfix(new ExprMethodCall(target, index, args), allowPostfixCall);
+               return postfix(new ExprMethodCall(target, index, args),
+                     allowPostfixCall);
             }
             else
             {
-               return postfix(new ExprGetIndex(target, index), allowPostfixCall);
+               return postfix(new ExprGetIndex(target, index),
+                     allowPostfixCall);
             }
          }
          case OPEN_BRACKET:
@@ -728,26 +788,32 @@ public class LayeParser
             lex(); // (
             final Vector<Expression> args = commaSeparatedExpressions(false);
             expect(Token.CLOSE_BRACKET);
-            return postfix(new ExprFunctionCall(target, args), allowPostfixCall);
+            return postfix(new ExprFunctionCall(target, args),
+                  allowPostfixCall);
          }
          case INT_LITERAL:
          {
             final Expression literal = new ExprLiteralInt(tokenData.integer);
             lex(); // 'int'
-            return postfix(new ExprFunctionCall(target, literal), allowPostfixCall);
+            return postfix(new ExprFunctionCall(target, literal),
+                  allowPostfixCall);
          }
          case FLOAT_LITERAL:
          {
-            final Expression literal = new ExprLiteralFloat(tokenData.fractional);
+            final Expression literal = new ExprLiteralFloat(
+                  tokenData.fractional);
             lex(); // 'float'
-            return postfix(new ExprFunctionCall(target, literal), allowPostfixCall);
+            return postfix(new ExprFunctionCall(target, literal),
+                  allowPostfixCall);
          }
          case STRING_LITERAL:
          {
             final Expression literal = new ExprLiteralString(tokenData.string);
             lex(); // 'string'
-            return postfix(new ExprFunctionCall(target, literal), allowPostfixCall);
+            return postfix(new ExprFunctionCall(target, literal),
+                  allowPostfixCall);
          }
+         // as an operator, mind you
          case IDENT:
          {
             if (!allowPostfixCall)
@@ -759,21 +825,27 @@ public class LayeParser
             {
                case INT_LITERAL:
                {
-                  final Expression literal = new ExprLiteralInt(tokenData.integer);
+                  final Expression literal = new ExprLiteralInt(
+                        tokenData.integer);
                   lex(); // 'int'
-                  return postfix(new ExprMethodCall(target, name, literal), allowPostfixCall);
+                  return postfix(new ExprMethodCall(target, name, literal),
+                        allowPostfixCall);
                }
                case FLOAT_LITERAL:
                {
-                  final Expression literal = new ExprLiteralFloat(tokenData.fractional);
+                  final Expression literal = new ExprLiteralFloat(
+                        tokenData.fractional);
                   lex(); // 'float'
-                  return postfix(new ExprMethodCall(target, name, literal), allowPostfixCall);
+                  return postfix(new ExprMethodCall(target, name, literal),
+                        allowPostfixCall);
                }
                case STRING_LITERAL:
                {
-                  final Expression literal = new ExprLiteralString(tokenData.string);
+                  final Expression literal = new ExprLiteralString(
+                        tokenData.string);
                   lex(); // 'string'
-                  return postfix(new ExprMethodCall(target, name, literal), allowPostfixCall);
+                  return postfix(new ExprMethodCall(target, name, literal),
+                        allowPostfixCall);
                }
                default:
                   // TODO how do we handle this..?
@@ -787,7 +859,7 @@ public class LayeParser
       return target;
    }
    
-   private Expression factor ()
+   private Expression factor()
    {
       final Expression left;
       if ((left = primaryExpression()) == null)
@@ -797,7 +869,7 @@ public class LayeParser
       return factorRHS(0, left);
    }
    
-   private Expression factorRHS (final int minp, Expression left)
+   private Expression factorRHS(final int minp, Expression left)
    {
       while (token == Token.OPERATOR && tokenData.operator.precedence >= minp)
       {
@@ -807,13 +879,15 @@ public class LayeParser
          Expression right;
          if ((right = primaryExpression()) != null)
          {
-            while (token == Token.OPERATOR && tokenData.operator.precedence > op.precedence)
+            while (token == Token.OPERATOR
+                  && tokenData.operator.precedence > op.precedence)
             {
                right = factorRHS(tokenData.operator.precedence, right);
             }
             if (op.isAssignment())
             {
-               left = new ExprAssign(left, new ExprInfix(left, right, op.infixFromAssignment()));
+               left = new ExprAssign(left,
+                     new ExprInfix(left, right, op.infixFromAssignment()));
             }
             else
             {
@@ -828,7 +902,7 @@ public class LayeParser
       return left;
    }
    
-   private ExprBlock exprBlock ()
+   private ExprBlock exprBlock()
    {
       final ExprBlock result = new ExprBlock();
       
@@ -846,7 +920,7 @@ public class LayeParser
       return result;
    }
    
-   private ExprIf exprIf ()
+   private ExprIf exprIf()
    {
       lex(); // if
       
@@ -871,7 +945,7 @@ public class LayeParser
             fail == null ? new ExprLiteralNull() : fail);
    }
    
-   private ExprFor exprFor ()
+   private ExprFor exprFor()
    {
       lex(); // for
       
@@ -905,7 +979,7 @@ public class LayeParser
       return new ExprFor(indexName, initial, limit, step, body);
    }
    
-   private Expression exprForEach ()
+   private Expression exprForEach()
    {
       // TODO for each
       lex(); // for
@@ -913,7 +987,7 @@ public class LayeParser
       return null;
    }
    
-   private ExprWhile exprWhile ()
+   private ExprWhile exprWhile()
    {
       lex(); // while
       
@@ -926,7 +1000,7 @@ public class LayeParser
       return new ExprWhile(condition, body);
    }
    
-   private ExprMatch exprMatch ()
+   private ExprMatch exprMatch()
    {
       lex(); // match
       

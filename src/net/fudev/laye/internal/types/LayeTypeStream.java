@@ -10,19 +10,19 @@ public final class LayeTypeStream extends LayeValueType
    private final int hashCode = name.hashCode() * 61;
    
    @Override
-   public String asstring ()
+   public String asstring()
    {
       return name;
    }
    
    @Override
-   public int hashCode ()
+   public int hashCode()
    {
       return hashCode;
    }
    
    @Override
-   public boolean equalTo_b (final LayeValue other)
+   public boolean equalTo_b(final LayeValue other)
    {
       return other == this;
    }

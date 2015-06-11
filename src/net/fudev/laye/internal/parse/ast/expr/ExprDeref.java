@@ -6,13 +6,14 @@ public class ExprDeref implements Expression
 {
    public Expression value;
    
-   public ExprDeref (final Expression value)
+   public ExprDeref(final Expression value)
    {
       this.value = value;
    }
    
    @Override
-   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired)
    {
       if (isResultRequired)
       {

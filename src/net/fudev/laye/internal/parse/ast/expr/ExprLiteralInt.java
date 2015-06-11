@@ -6,13 +6,14 @@ public class ExprLiteralInt implements Expression
 {
    public long value;
    
-   public ExprLiteralInt (final long value)
+   public ExprLiteralInt(final long value)
    {
       this.value = value;
    }
    
    @Override
-   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired)
    {
       if (isResultRequired)
       {

@@ -10,19 +10,19 @@ public final class LayeTypeList extends LayeValueType
    private final int hashCode = name.hashCode() * 43;
    
    @Override
-   public String asstring ()
+   public String asstring()
    {
       return name;
    }
    
    @Override
-   public int hashCode ()
+   public int hashCode()
    {
       return hashCode;
    }
    
    @Override
-   public boolean equalTo_b (final LayeValue other)
+   public boolean equalTo_b(final LayeValue other)
    {
       return other == this;
    }

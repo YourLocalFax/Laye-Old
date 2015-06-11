@@ -39,10 +39,13 @@ public final class FunctionPrototype
    /** Does this prototype define a generator? */
    public final boolean generator;
    
-   public FunctionPrototype (/* final LayeFileData file, */final LayeValue[] k,
-         final List<Map<LayeValue, Integer>> jumpTables, final int[] code, final FunctionPrototype[] nested,
-         final UpValueInfo[] upValues, final int[] lineInfo, final boolean hasLineInfos, final int numParams,
-         final boolean hasVargs, final int maxLocalsSize, final int maxStackSize, final boolean generator)
+   public FunctionPrototype(/* final LayeFileData file, */final LayeValue[] k,
+         final List<Map<LayeValue, Integer>> jumpTables, final int[] code,
+         final FunctionPrototype[] nested,
+         final UpValueInfo[] upValues, final int[] lineInfo,
+         final boolean hasLineInfos, final int numParams,
+         final boolean hasVargs, final int maxLocalsSize,
+         final int maxStackSize, final boolean generator)
    {
       // this.file = file;
       this.k = k;
@@ -60,7 +63,7 @@ public final class FunctionPrototype
    }
    
    @Override
-   public int hashCode ()
+   public int hashCode()
    {
       final int prime = 31;
       int result = 1;
@@ -68,7 +71,8 @@ public final class FunctionPrototype
       result = prime * result + (generator ? 1231 : 1237);
       result = prime * result + (hasLineInfos ? 1231 : 1237);
       result = prime * result + (hasVargs ? 1231 : 1237);
-      result = prime * result + ((jumpTables == null) ? 0 : jumpTables.hashCode());
+      result = prime * result
+            + ((jumpTables == null) ? 0 : jumpTables.hashCode());
       result = prime * result + Arrays.hashCode(k);
       result = prime * result + Arrays.hashCode(lineInfo);
       result = prime * result + maxLocalsSize;
@@ -80,7 +84,7 @@ public final class FunctionPrototype
    }
    
    @Override
-   public boolean equals (final Object obj)
+   public boolean equals(final Object obj)
    {
       if (this == obj)
       {

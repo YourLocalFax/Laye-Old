@@ -3,7 +3,7 @@ package net.fudev.laye;
 public class Version
 {
    
-   private Version ()
+   private Version()
    {
    }
    
@@ -16,6 +16,7 @@ public class Version
    
    public static final int VERSION_NUMBER = 00_0_01;
    
-   public static final String VERSION = Version.NAME + " " + Version.VERSION_STRING + " " + Version.BUILD;
-   
+   public static final String VERSION = Version.NAME + " "
+         + Version.VERSION_STRING + " " + Version.BUILD;
+         
 }

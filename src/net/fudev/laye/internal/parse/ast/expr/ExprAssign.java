@@ -8,14 +8,15 @@ public class ExprAssign implements Expression
 {
    public Expression index, value;
    
-   public ExprAssign (final Expression index, final Expression value)
+   public ExprAssign(final Expression index, final Expression value)
    {
       this.index = index;
       this.value = value;
    }
    
    @Override
-   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired)
    {
       // we make this leave its value because we have to get the insn for it:
       index.accept(builder, true);
@@ -29,7 +30,8 @@ public class ExprAssign implements Expression
             if (builder.isLocalConst(local))
             {
                throw new CompilerException(
-                     "local " + builder.getLocalName(local) + " was defined constant, cannot modify.");
+                     "local " + builder.getLocalName(local)
+                           + " was defined constant, cannot modify.");
             }
             // undo load
             builder.popOp();
@@ -44,7 +46,8 @@ public class ExprAssign implements Expression
             if (builder.isUpValueConst(up))
             {
                throw new CompilerException(
-                     "local " + builder.getUpValueName(up) + " was defined constant, cannot modify.");
+                     "local " + builder.getUpValueName(up)
+                           + " was defined constant, cannot modify.");
             }
             // undo get_up
             builder.popOp();

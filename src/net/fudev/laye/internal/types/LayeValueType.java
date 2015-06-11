@@ -5,7 +5,7 @@ import net.fudev.laye.internal.values.LayeValue;
 
 public abstract class LayeValueType extends LayeValue
 {
-   protected LayeValueType ()
+   protected LayeValueType()
    {
       super(ValueType.TYPE);
    }

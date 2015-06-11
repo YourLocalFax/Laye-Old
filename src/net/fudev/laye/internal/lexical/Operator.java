@@ -13,7 +13,7 @@ public final class Operator
    
    private static final Map<String, Operator> operators = new HashMap<>();
    
-   public static Operator get (final String operator)
+   public static Operator get(final String operator)
    {
       Operator result = Operator.operators.get(operator);
       if (result == null)
@@ -30,7 +30,7 @@ public final class Operator
     * @return <code>true</code> for all valid operator symbols,
     *         <code>false</code> otherwise.
     */
-   public static boolean isValidOperatorSymbol (final char symbol)
+   public static boolean isValidOperatorSymbol(final char symbol)
    {
       switch (symbol)
       {
@@ -59,8 +59,10 @@ public final class Operator
    static
    {
       final String[] defaultOperators = {
-            "+", "-", "*", "/", "//", "%", "^", "+=", "-=", "*=", "/=", "//=", "%=", "^=", "&", "|", "~", "<<", ">>",
-            ">>>", "<>", "&=", "|=", "~=", "<<=", ">>=", ">>>=", "<>=", "==", "!=", "<", "<=", ">", ">=", "<=>", "<-",
+            "+", "-", "*", "/", "//", "%", "^", "+=", "-=", "*=", "/=", "//=",
+            "%=", "^=", "&", "|", "~", "<<", ">>",
+            ">>>", "<>", "&=", "|=", "~=", "<<=", ">>=", ">>>=", "<>=", "==",
+            "!=", "<", "<=", ">", ">=", "<=>", "<-",
             "=",
       };
       for (final String operator : defaultOperators)
@@ -69,7 +71,9 @@ public final class Operator
          {
             if (!Operator.isValidOperatorSymbol(c))
             {
-               throw new IllegalArgumentException("operator contains an invalid operator token, '" + c + "'");
+               throw new IllegalArgumentException(
+                     "operator contains an invalid operator token, '" + c
+                           + "'");
             }
          }
          Operator.get(operator);
@@ -80,7 +84,7 @@ public final class Operator
    
    public int precedence = Operator.PREC_DEFAULT;
    
-   private Operator (final String image)
+   private Operator(final String image)
    {
       this.image = image;
    }
@@ -94,7 +98,7 @@ public final class Operator
     * @param operator
     * @return
     */
-   public boolean isOverloadable ()
+   public boolean isOverloadable()
    {
       // TODO will <= and >= stick around in Laye, or will those be changed? (to
       // match the standard '=' postfix standard)
@@ -124,7 +128,7 @@ public final class Operator
       }
    }
    
-   public boolean isAssignment ()
+   public boolean isAssignment()
    {
       if (image.endsWith("="))
       {
@@ -142,7 +146,7 @@ public final class Operator
       return false;
    }
    
-   public Operator infixFromAssignment ()
+   public Operator infixFromAssignment()
    {
       return Operator.get(image.substring(0, image.length() - 2));
    }

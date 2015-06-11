@@ -22,46 +22,46 @@ import net.fudev.laye.internal.values.LayeString;
 import net.fudev.laye.internal.values.LayeValue;
 
 public final class SkarendalScriptEngine extends AbstractScriptEngine
-implements ScriptEngine, Compilable
+      implements ScriptEngine, Compilable
 {
    public final class LayeScript extends CompiledScript
    {
       
       private final LayeFunction func;
       
-      LayeScript (final LayeFunction func)
+      LayeScript(final LayeFunction func)
       {
          this.func = func;
       }
       
       @Override
-      public LayeValue eval () throws ScriptException
+      public LayeValue eval() throws ScriptException
       {
          return eval(getContext());
       }
       
       @Override
-      public LayeValue eval (final Bindings bindings) throws ScriptException
+      public LayeValue eval(final Bindings bindings) throws ScriptException
       {
          final ScriptContext context = getContext();
          return eval(((SkarendalContext) context).root, bindings);
       }
       
       @Override
-      public LayeValue eval (final ScriptContext context) throws ScriptException
+      public LayeValue eval(final ScriptContext context) throws ScriptException
       {
          return eval(((SkarendalContext) context).root,
                context.getBindings(ScriptContext.ENGINE_SCOPE));
       }
       
-      private LayeValue eval (final Root root, final Bindings b)
+      private LayeValue eval(final Root root, final Bindings b)
       {
          func.setRoot(root);
          return func.call();
       }
       
       @Override
-      public ScriptEngine getEngine ()
+      public ScriptEngine getEngine()
       {
          return SkarendalScriptEngine.this;
       }
@@ -72,7 +72,7 @@ implements ScriptEngine, Compilable
    
    private final SkarendalContext context;
    
-   SkarendalScriptEngine (final SkarendalScriptEngineFactory factory,
+   SkarendalScriptEngine(final SkarendalScriptEngineFactory factory,
          final ClassLoader classLoader)
    {
       this.factory = factory;
@@ -82,53 +82,53 @@ implements ScriptEngine, Compilable
    }
    
    @Override
-   protected ScriptContext getScriptContext (final Bindings nn)
+   protected ScriptContext getScriptContext(final Bindings nn)
    {
       throw new IllegalStateException(
             "SkaredalScriptEngine should not be allocating contexts.");
    }
    
-   public @Override Bindings createBindings ()
+   public @Override Bindings createBindings()
    {
       return new Root();
    }
    
-   public @Override Object eval (final String script,
+   public @Override Object eval(final String script,
          final ScriptContext context) throws ScriptException
    {
       return compile(new StringReader(script)).eval(context);
    }
    
-   public @Override Object eval (final Reader reader,
+   public @Override Object eval(final Reader reader,
          final ScriptContext context) throws ScriptException
    {
       return compile(reader).eval(context);
    }
    
-   public @Override Object eval (final String script, final Bindings bindings)
+   public @Override Object eval(final String script, final Bindings bindings)
          throws ScriptException
    {
       return eval(new StringReader(script), bindings);
    }
    
-   public @Override Object eval (final Reader reader, final Bindings bindings)
+   public @Override Object eval(final Reader reader, final Bindings bindings)
          throws ScriptException
    {
       return compile(reader).eval(context.root, bindings);
    }
    
-   public @Override ScriptEngineFactory getFactory ()
+   public @Override ScriptEngineFactory getFactory()
    {
       return factory;
    }
    
-   public @Override LayeScript compile (final String script)
+   public @Override LayeScript compile(final String script)
          throws ScriptException
    {
       return compile(new StringReader(script));
    }
    
-   public @Override LayeScript compile (final Reader reader)
+   public @Override LayeScript compile(final Reader reader)
          throws ScriptException
    {
       try
@@ -144,28 +144,28 @@ implements ScriptEngine, Compilable
       return null;
    }
    
-   public void put (final String key, final long value)
+   public void put(final String key, final long value)
    {
       put(key, LayeInt.valueOf(value));
    }
    
-   public void put (final String key, final double value)
+   public void put(final String key, final double value)
    {
       put(key, LayeFloat.valueOf(value));
    }
    
-   public void put (final String key, final String value)
+   public void put(final String key, final String value)
    {
       put(key, LayeString.valueOf(value));
    }
    
-   public void put (final String key, final Class<?> value)
+   public void put(final String key, final Class<?> value)
    {
       put(key, LayeJavaType.get(value));
    }
    
    @Override
-   public void put (final String key, final Object value)
+   public void put(final String key, final Object value)
    {
       if (!(value instanceof LayeValue))
       {
@@ -176,7 +176,7 @@ implements ScriptEngine, Compilable
    }
    
    @Override
-   public LayeValue get (final String key)
+   public LayeValue get(final String key)
    {
       return context.root.get(key);
    }

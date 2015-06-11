@@ -12,7 +12,7 @@ public final class ASTFunctionPrototype
       public final String name;
       public final boolean con;
       
-      public Param (final String name, final boolean con)
+      public Param(final String name, final boolean con)
       {
          this.name = name;
          this.con = con;
@@ -23,16 +23,16 @@ public final class ASTFunctionPrototype
    public final Vector<Param> args = new Vector<>();
    public final Vector<SyntaxNode> nodes = new Vector<>();
    
-   public ASTFunctionPrototype ()
+   public ASTFunctionPrototype()
    {
    }
    
-   public void addParam (final String name, final boolean con)
+   public void addParam(final String name, final boolean con)
    {
       args.add(new Param(name, con));
    }
    
-   public void addNodes (final SyntaxNode... nodes)
+   public void addNodes(final SyntaxNode... nodes)
    {
       for (final SyntaxNode node : nodes)
       {
@@ -40,7 +40,8 @@ public final class ASTFunctionPrototype
       }
    }
    
-   public FunctionPrototype generate (final LayeFunctionBuilder parent, final boolean gen)
+   public FunctionPrototype generate(final LayeFunctionBuilder parent,
+         final boolean gen)
    {
       final LayeFunctionBuilder builder = new LayeFunctionBuilder(parent);
       builder.generator = gen;

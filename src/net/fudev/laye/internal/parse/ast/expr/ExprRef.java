@@ -8,13 +8,14 @@ public class ExprRef implements Expression
 {
    public Expression value;
    
-   public ExprRef (final Expression value)
+   public ExprRef(final Expression value)
    {
       this.value = value;
    }
    
    @Override
-   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired)
    {
       if (isResultRequired)
       {
@@ -40,7 +41,8 @@ public class ExprRef implements Expression
                builder.visitRefIndex();
                break;
             default:
-               throw new CompilerException("can only reference variable locations!");
+               throw new CompilerException(
+                     "can only reference variable locations!");
          }
       }
    }

@@ -2,7 +2,7 @@ package net.fudev.laye.internal;
 
 public final class InsnPrint
 {
-   public static String getOpCodeName (final int op)
+   public static String getOpCodeName(final int op)
    {
       // & it so you can pass in the instruction raw, just in case.
       switch (op & Laye.MAX_OP)
@@ -134,10 +134,10 @@ public final class InsnPrint
             return "deref";
          case Laye.OP_IS:
             return "is";
-         case Laye.OP_MUT_LIST:
-            return "mut_list";
          case Laye.OP_LIST:
             return "list";
+         case Laye.OP_TUPLE:
+            return "tuple";
          case Laye.OP_NEW_TABLE:
             return "new_table";
          case Laye.OP_NEW_INSTANCE:
@@ -160,7 +160,7 @@ public final class InsnPrint
       }
    }
    
-   private InsnPrint ()
+   private InsnPrint()
    {
    }
 }

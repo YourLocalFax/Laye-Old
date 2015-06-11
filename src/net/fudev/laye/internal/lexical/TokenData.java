@@ -9,7 +9,7 @@ public final class TokenData
    
    private static final Map<Token, TokenData> constantTokens = new HashMap<>();
    
-   public static TokenData get (final Token token)
+   public static TokenData get(final Token token)
    {
       TokenData result = TokenData.constantTokens.get(token);
       if (result == null)
@@ -27,7 +27,7 @@ public final class TokenData
    public final String string;
    public final Operator operator;
    
-   private TokenData (final Token token)
+   private TokenData(final Token token)
    {
       this.token = token;
       integer = 0L;
@@ -36,7 +36,7 @@ public final class TokenData
       operator = null;
    }
    
-   public TokenData (final long integer)
+   public TokenData(final long integer)
    {
       token = Token.INT_LITERAL;
       this.integer = integer;
@@ -45,7 +45,7 @@ public final class TokenData
       operator = null;
    }
    
-   public TokenData (final double fractional)
+   public TokenData(final double fractional)
    {
       token = Token.FLOAT_LITERAL;
       integer = 0L;
@@ -54,7 +54,7 @@ public final class TokenData
       operator = null;
    }
    
-   public TokenData (final String string)
+   public TokenData(final String string)
    {
       token = Token.STRING_LITERAL;
       integer = 0L;
@@ -63,7 +63,7 @@ public final class TokenData
       operator = null;
    }
    
-   public TokenData (final Operator operator)
+   public TokenData(final Operator operator)
    {
       token = Token.OPERATOR;
       integer = 0L;

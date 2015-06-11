@@ -14,7 +14,7 @@ public final class LayeOperator
       RIGHT;
    }
    
-   public LayeOperator ()
+   public LayeOperator()
    {
    }
 }

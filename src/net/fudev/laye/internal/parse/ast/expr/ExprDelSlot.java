@@ -8,13 +8,14 @@ public class ExprDelSlot implements Expression
 {
    public Expression value;
    
-   public ExprDelSlot (final Expression value)
+   public ExprDelSlot(final Expression value)
    {
       this.value = value;
    }
    
    @Override
-   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired)
    {
       if (isResultRequired)
       {
@@ -30,7 +31,8 @@ public class ExprDelSlot implements Expression
                builder.visitOpDelSlot();
                break;
             default:
-               throw new CompilerException("can only delete non-local variable locations!");
+               throw new CompilerException(
+                     "can only delete non-local variable locations!");
          }
       }
    }

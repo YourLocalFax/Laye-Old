@@ -11,11 +11,16 @@ public enum Token
    // Brackets
    
    /** ( */
-   OPEN_BRACKET, /** ) */
-   CLOSE_BRACKET, /** { */
-   OPEN_CURLY_BRACKET, /** } */
-   CLOSE_CURLY_BRACKET, /** [ */
-   OPEN_SQUARE_BRACKET, /** ] */
+   OPEN_BRACKET,
+   /** ) */
+   CLOSE_BRACKET,
+   /** { */
+   OPEN_CURLY_BRACKET,
+   /** } */
+   CLOSE_CURLY_BRACKET,
+   /** [ */
+   OPEN_SQUARE_BRACKET,
+   /** ] */
    CLOSE_SQUARE_BRACKET,
    
    // Operators and Symbols
@@ -26,36 +31,87 @@ public enum Token
    // Other symbols or non-overloadable operators.
    
    /** _ */
-   WILDCARD, /** ; */
-   SEMI, /** , */
-   COMMA, /** <- */
-   NEW_SLOT, /** = */
-   EQUAL, /** . */
-   DOT, /** @ */
-   AT, /** .. */
+   WILDCARD,
+   /** ; */
+   SEMI,
+   /** : */
+   COLON,
+   /** , */
+   COMMA,
+   /** <- */
+   NEW_SLOT,
+   /** = */
+   EQUAL,
+   /** . */
+   DOT,
+   /** @ */
+   AT,
+   /** .. */
    VARGS,
    
    // Keyword operators
    
-   AND, OR, XOR, NAND, NOR, XNOR, NOT, REF, DEREF, DELETE, TYPEOF, NOT_TYPEOF,
+   AND,
+   OR,
+   XOR,
+   NAND,
+   NOR,
+   XNOR,
+   NOT,
+   REF,
+   DEREF,
+   DELETE,
+   TYPEOF,
+   NOT_TYPEOF,
    
    // Literals
    
-   INT_LITERAL, FLOAT_LITERAL, STRING_LITERAL, TRUE, FALSE, NULL,
+   INT_LITERAL,
+   FLOAT_LITERAL,
+   STRING_LITERAL,
+   TRUE,
+   FALSE,
+   NULL,
    
    // Modifiers
    
-   LOC, MUT, STAT,
+   LOC,
+   MUT,
+   STAT,
    
    // Object keywords
    
-   FN, GEN, TYPE,
+   FN,
+   GEN,
+   TYPE,
    
    // Type-related keywords
    
-   HAS, CTOR, PREFIX, POSTFIX, INFIX, NEW,
+   HAS,
+   CTOR,
+   PREFIX,
+   POSTFIX,
+   INFIX,
+   NEW,
    
    // Control flow keywords
    
-   IF, EL, FOR, EACH, TO, BY, IN, WHILE, TAKE, MATCH, CASE, RET, BREAK, CONT, RESUME, YIELD, DO, END,
+   IF,
+   EL,
+   FOR,
+   EACH,
+   TO,
+   BY,
+   IN,
+   WHILE,
+   TAKE,
+   MATCH,
+   CASE,
+   RET,
+   BREAK,
+   CONT,
+   RESUME,
+   YIELD,
+   DO,
+   END,
 }

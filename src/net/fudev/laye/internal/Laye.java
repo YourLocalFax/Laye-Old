@@ -2,7 +2,7 @@ package net.fudev.laye.internal;
 
 public final class Laye
 {
-   private Laye ()
+   private Laye()
    {
    }
    
@@ -15,7 +15,8 @@ public final class Laye
    
    public static final int VERSION_NUMBER = 00_0_01;
    
-   public static final String VERSION = Laye.NAME + " " + Laye.VERSION_STRING + " " + Laye.BUILD;
+   public static final String VERSION = Laye.NAME + " " + Laye.VERSION_STRING
+         + " " + Laye.BUILD;
    
    // ---------- Constants ---------- //
    
@@ -111,7 +112,7 @@ public final class Laye
    /**
     * @return the operation code of the given instruction
     */
-   public static int GET_OP (final int i)
+   public static int GET_OP(final int i)
    {
       return (i >>> Laye.POS_OP) & Laye.MAX_OP;
    }
@@ -119,7 +120,7 @@ public final class Laye
    /**
     * @return argument a of the given instruction
     */
-   public static int GET_A (final int i)
+   public static int GET_A(final int i)
    {
       return (i >>> Laye.POS_A) & Laye.MAX_A;
    }
@@ -127,7 +128,7 @@ public final class Laye
    /**
     * @return argument a of the given instruction, signed
     */
-   public static int GET_SA (final int i)
+   public static int GET_SA(final int i)
    {
       return ((i >>> Laye.POS_A) & Laye.MAX_A) + Laye.MIN_SA;
    }
@@ -135,7 +136,7 @@ public final class Laye
    /**
     * @return argument b of the given instruction
     */
-   public static int GET_B (final int i)
+   public static int GET_B(final int i)
    {
       return (i >>> Laye.POS_B) & Laye.MAX_B;
    }
@@ -143,7 +144,7 @@ public final class Laye
    /**
     * @return argument b of the given instruction, signed
     */
-   public static int GET_SB (final int i)
+   public static int GET_SB(final int i)
    {
       return ((i >>> Laye.POS_B) & Laye.MAX_B) + Laye.MIN_SB;
    }
@@ -151,7 +152,7 @@ public final class Laye
    /**
     * @return argument c of the given instruction
     */
-   public static int GET_C (final int i)
+   public static int GET_C(final int i)
    {
       return (i >>> Laye.POS_C) & Laye.MAX_C;
    }
@@ -159,7 +160,7 @@ public final class Laye
    /**
     * @return argument c of the given instruction, signed
     */
-   public static int GET_SC (final int i)
+   public static int GET_SC(final int i)
    {
       return ((i >>> Laye.POS_C) & Laye.MAX_C) + Laye.MIN_SC;
    }
@@ -168,7 +169,7 @@ public final class Laye
     * @return the given instruction with the operation code set to the given
     *         argument
     */
-   public static int SET_OP (final int i, final int arg)
+   public static int SET_OP(final int i, final int arg)
    {
       return (i & Laye.MASK_NOT_OP) | ((arg & Laye.MAX_OP) << Laye.POS_OP);
    }
@@ -176,7 +177,7 @@ public final class Laye
    /**
     * @return the given instruction with argument A set to the given argument
     */
-   public static int SET_A (final int i, final int arg)
+   public static int SET_A(final int i, final int arg)
    {
       return (i & Laye.MASK_NOT_A) | ((arg & Laye.MAX_A) << Laye.POS_A);
    }
@@ -185,15 +186,16 @@ public final class Laye
     * @return the given instruction with argument A, signed, set to the given
     *         argument
     */
-   public static int SET_SA (final int i, final int arg)
+   public static int SET_SA(final int i, final int arg)
    {
-      return (i & Laye.MASK_NOT_A) | (((arg - Laye.MIN_SA) & Laye.MAX_A) << Laye.POS_A);
+      return (i & Laye.MASK_NOT_A)
+            | (((arg - Laye.MIN_SA) & Laye.MAX_A) << Laye.POS_A);
    }
    
    /**
     * @return the given instruction with argument B set to the given argument
     */
-   public static int SET_B (final int i, final int arg)
+   public static int SET_B(final int i, final int arg)
    {
       return (i & Laye.MASK_NOT_B) | ((arg & Laye.MAX_B) << Laye.POS_B);
    }
@@ -202,15 +204,16 @@ public final class Laye
     * @return the given instruction with argument B, signed, set to the given
     *         argument
     */
-   public static int SET_SB (final int i, final int arg)
+   public static int SET_SB(final int i, final int arg)
    {
-      return (i & Laye.MASK_NOT_B) | (((arg - Laye.MIN_SB) & Laye.MAX_B) << Laye.POS_B);
+      return (i & Laye.MASK_NOT_B)
+            | (((arg - Laye.MIN_SB) & Laye.MAX_B) << Laye.POS_B);
    }
    
    /**
     * @return the given instruction with argument C set to the given argument
     */
-   public static int SET_C (final int i, final int arg)
+   public static int SET_C(final int i, final int arg)
    {
       return (i & Laye.MASK_NOT_C) | ((arg & Laye.MAX_C) << Laye.POS_C);
    }
@@ -219,9 +222,10 @@ public final class Laye
     * @return the given instruction with argument C, signed, set to the given
     *         argument
     */
-   public static int SET_SC (final int i, final int arg)
+   public static int SET_SC(final int i, final int arg)
    {
-      return (i & Laye.MASK_NOT_C) | (((arg - Laye.MIN_SC) & Laye.MAX_C) << Laye.POS_C);
+      return (i & Laye.MASK_NOT_C)
+            | (((arg - Laye.MIN_SC) & Laye.MAX_C) << Laye.POS_C);
    }
    
    // ---------- Operation Codes ---------- //
@@ -445,15 +449,9 @@ public final class Laye
    public static final int OP_IS = 0x3B;
    
    /** */
-   public static final int OP_MUT_LIST = 0x3C;
-   /**
-    * Creates a tuple of A elements where A != 1.
-    * 
-    * <pre>
-    * [1 - A] OP_LIST(A)<br/>(STK[TOP - A - 1], STK[TOP - A], ..., STK[TOP - 1]);
-    * </pre>
-    */
-   public static final int OP_LIST = 0x3D;
+   public static final int OP_LIST = 0x3C;
+   /** */
+   public static final int OP_TUPLE = 0x3D;
    /** */
    public static final int OP_NEW_TABLE = 0x3E;
    /** */

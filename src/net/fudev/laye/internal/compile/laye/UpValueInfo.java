@@ -10,7 +10,8 @@ public final class UpValueInfo
    public int type;
    public boolean isConst;
    
-   public UpValueInfo (final String name, final int pos, final int type, final boolean isConst)
+   public UpValueInfo(final String name, final int pos, final int type,
+         final boolean isConst)
    {
       this.name = name;
       this.pos = pos;
@@ -18,13 +19,13 @@ public final class UpValueInfo
       this.isConst = isConst;
    }
    
-   public UpValueInfo (final UpValueInfo other)
+   public UpValueInfo(final UpValueInfo other)
    {
       this(other.name, other.pos, other.type, other.isConst);
    }
    
    @Override
-   public int hashCode ()
+   public int hashCode()
    {
       final int prime = 31;
       int result = 1;
@@ -36,7 +37,7 @@ public final class UpValueInfo
    }
    
    @Override
-   public boolean equals (final Object obj)
+   public boolean equals(final Object obj)
    {
       if (this == obj)
       {

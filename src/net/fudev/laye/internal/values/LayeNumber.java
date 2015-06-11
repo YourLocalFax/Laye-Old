@@ -5,19 +5,19 @@ import net.fudev.laye.internal.ValueType;
 public abstract class LayeNumber extends LayeValue
 {
    
-   LayeNumber (final ValueType type)
+   LayeNumber(final ValueType type)
    {
       super(type);
    }
    
    @Override
-   public int hashCode ()
+   public int hashCode()
    {
       return isint() ? Long.hashCode(aslong()) : Double.hashCode(asdouble());
    }
    
    @Override
-   public boolean equalTo_b (final LayeValue other)
+   public boolean equalTo_b(final LayeValue other)
    {
       if (other.isfloat() || other.isint())
       {
@@ -27,21 +27,21 @@ public abstract class LayeNumber extends LayeValue
    }
    
    @Override
-   public abstract byte asbyte ();
+   public abstract byte asbyte();
    
    @Override
-   public abstract short asshort ();
+   public abstract short asshort();
    
    @Override
-   public abstract int asint ();
+   public abstract int asint();
    
    @Override
-   public abstract long aslong ();
+   public abstract long aslong();
    
    @Override
-   public abstract float asfloat ();
+   public abstract float asfloat();
    
    @Override
-   public abstract double asdouble ();
+   public abstract double asdouble();
    
 }

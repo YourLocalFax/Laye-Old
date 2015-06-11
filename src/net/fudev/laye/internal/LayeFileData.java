@@ -6,7 +6,7 @@ public final class LayeFileData
    
    public final String location;
    
-   public LayeFileData (final String location)
+   public LayeFileData(final String location)
    {
       this.location = location;
    }

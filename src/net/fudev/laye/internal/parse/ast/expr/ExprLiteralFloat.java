@@ -6,13 +6,14 @@ public class ExprLiteralFloat implements Expression
 {
    public double value;
    
-   public ExprLiteralFloat (final double value)
+   public ExprLiteralFloat(final double value)
    {
       this.value = value;
    }
    
    @Override
-   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired)
    {
       if (isResultRequired)
       {

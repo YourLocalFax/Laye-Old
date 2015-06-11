@@ -6,12 +6,13 @@ public final class LayeInstance extends LayeValue
 {
    public final LayeType type;
    
-   public LayeInstance (final LayeType type, final LayeValue... ctorArgs)
+   public LayeInstance(final LayeType type, final LayeValue... ctorArgs)
    {
       this(type, null, ctorArgs);
    }
    
-   public LayeInstance (final LayeType type, final String ctorName, final LayeValue... ctorArgs)
+   public LayeInstance(final LayeType type, final String ctorName,
+         final LayeValue... ctorArgs)
    {
       super(ValueType.INSTANCE);
       this.type = type;
@@ -25,27 +26,27 @@ public final class LayeInstance extends LayeValue
    }
    
    @Override
-   public int hashCode ()
+   public int hashCode()
    {
       // TODO hashCode
       return 0;
    }
    
    @Override
-   public boolean equalTo_b (final LayeValue other)
+   public boolean equalTo_b(final LayeValue other)
    {
       // TODO overloaded == operator
       return other == this;
    }
    
    @Override
-   public String asstring ()
+   public String asstring()
    {
       return "instance-TODO";
    }
    
    @Override
-   public LayeValue infixOp (final String op, final LayeValue right)
+   public LayeValue infixOp(final String op, final LayeValue right)
    {
       final LayeFunction leftOp = type.getLeftInfixOperator(op);
       if (leftOp != null)
@@ -69,7 +70,7 @@ public final class LayeInstance extends LayeValue
    }
    
    @Override
-   public LayeValue add (final LayeValue right)
+   public LayeValue add(final LayeValue right)
    {
       return infixOp("+", right);
    }

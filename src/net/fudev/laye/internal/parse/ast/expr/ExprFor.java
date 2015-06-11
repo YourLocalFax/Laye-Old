@@ -9,7 +9,8 @@ public final class ExprFor implements Expression
    public Expression initial, limit, step;
    public Expression body;
    
-   public ExprFor (final String indexName, final Expression initial, final Expression limit, final Expression step,
+   public ExprFor(final String indexName, final Expression initial,
+         final Expression limit, final Expression step,
          final Expression body)
    {
       this.indexName = indexName;
@@ -20,7 +21,8 @@ public final class ExprFor implements Expression
    }
    
    @Override
-   public void accept (final LayeFunctionBuilder builder, final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder,
+         final boolean isResultRequired)
    {
       final int localName, limitName, stepName;
       final int listLocal, pushMethodName;
@@ -59,7 +61,7 @@ public final class ExprFor implements Expression
             listLocal = builder.addLocal("$for-" + System.nanoTime(), true);
             pushMethodName = builder.addConsts(LayeList.METHOD_PUSH_BACK);
             
-            builder.visitOpMutList(0);
+            builder.visitOpList(0);
             builder.visitOpStore(listLocal);
             builder.visitOpPop(1);
          }

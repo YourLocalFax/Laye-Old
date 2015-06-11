@@ -6,7 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.RandomAccess;
 
-public class ImmutableArrayList<E> extends AbstractList<E>implements List<E>, RandomAccess, Cloneable, Serializable
+public class ImmutableArrayList<E> extends AbstractList<E>
+      implements List<E>, RandomAccess, Cloneable, Serializable
 {
    
    private static final long serialVersionUID = 325689144664986201L;
@@ -14,13 +15,13 @@ public class ImmutableArrayList<E> extends AbstractList<E>implements List<E>, Ra
    private final E[] values;
    private final int length;
    
-   public ImmutableArrayList (final E[] values)
+   public ImmutableArrayList(final E[] values)
    {
       this.length = values.length;
       this.values = Arrays.copyOf(values, this.length);
    }
    
-   public @Override E get (final int index)
+   public @Override E get(final int index)
    {
       if (index < 0 || index >= this.length)
       {
@@ -29,7 +30,7 @@ public class ImmutableArrayList<E> extends AbstractList<E>implements List<E>, Ra
       return this.values[index];
    }
    
-   public @Override int size ()
+   public @Override int size()
    {
       return this.length;
    }

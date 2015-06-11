@@ -22,31 +22,32 @@ import net.fudev.laye.runtime.LayeStdLib;
 
 public final class Root extends LayeTable implements Bindings
 {
-   private static final class LayeTableEntry implements Map.Entry<String, Object>
+   private static final class LayeTableEntry
+         implements Map.Entry<String, Object>
    {
       private final String key;
       private Object value;
       
-      LayeTableEntry (final String key, final LayeValue value)
+      LayeTableEntry(final String key, final LayeValue value)
       {
          this.key = key;
          this.value = value;
       }
       
       @Override
-      public String getKey ()
+      public String getKey()
       {
          return key;
       }
       
       @Override
-      public Object getValue ()
+      public Object getValue()
       {
          return value;
       }
       
       @Override
-      public Object setValue (final Object value)
+      public Object setValue(final Object value)
       {
          final Object old = this.value;
          this.value = value;
@@ -58,23 +59,23 @@ public final class Root extends LayeTable implements Bindings
    private PrintStream err = System.err;
    private Scanner in = new Scanner(System.in);
    
-   public Root ()
+   public Root()
    {
       LayeStdLib.register(this);
    }
    
-   public Root (final Bindings bindings)
+   public Root(final Bindings bindings)
    {
       this();
       setToBindings(bindings);
    }
    
-   public PrintStream getOut ()
+   public PrintStream getOut()
    {
       return out;
    }
    
-   public void setOut (final PrintStream out)
+   public void setOut(final PrintStream out)
    {
       if (out == null)
       {
@@ -83,12 +84,12 @@ public final class Root extends LayeTable implements Bindings
       this.out = out;
    }
    
-   public PrintStream getErr ()
+   public PrintStream getErr()
    {
       return err;
    }
    
-   public void setErr (final PrintStream err)
+   public void setErr(final PrintStream err)
    {
       if (err == null)
       {
@@ -97,12 +98,12 @@ public final class Root extends LayeTable implements Bindings
       this.err = err;
    }
    
-   public Scanner getIn ()
+   public Scanner getIn()
    {
       return in;
    }
    
-   public void setIn (final Scanner in)
+   public void setIn(final Scanner in)
    {
       if (in == null)
       {
@@ -111,17 +112,18 @@ public final class Root extends LayeTable implements Bindings
       this.in = in;
    }
    
-   public LayeFunction load (final Reader reader, final SkarendalContext context)
+   public LayeFunction load(final Reader reader, final SkarendalContext context)
    {
       // TODO preprocessing, which puts all of the files together into a big
       // string basically
       final LayeParser parser = new LayeParser();
       final ASTFunctionPrototype nodes = parser.parse(reader);
-      final LayeFunction func = new LayeFunction(nodes.generate(null, false), context.root);
+      final LayeFunction func = new LayeFunction(nodes.generate(null, false),
+            context.root);
       return func;
    }
    
-   public void setToBindings (final Bindings bindings)
+   public void setToBindings(final Bindings bindings)
    {
       if (bindings == this)
       {
@@ -140,7 +142,8 @@ public final class Root extends LayeTable implements Bindings
          else
          {
             // TODO own exception type
-            throw new LayeException("values expected to be instances of LayeValue.");
+            throw new LayeException(
+                  "values expected to be instances of LayeValue.");
          }
       }
    }
@@ -148,37 +151,37 @@ public final class Root extends LayeTable implements Bindings
    // BINDINGS
    
    @Override
-   public int size ()
+   public int size()
    {
       return table.size();
    }
    
    @Override
-   public boolean isEmpty ()
+   public boolean isEmpty()
    {
       return table.isEmpty();
    }
    
    @Override
-   public boolean containsValue (final Object value)
+   public boolean containsValue(final Object value)
    {
       return table.containsValue(value);
    }
    
    @Override
-   public void clear ()
+   public void clear()
    {
       table.clear();
    }
    
    @Override
-   public Set<String> keySet ()
+   public Set<String> keySet()
    {
       return table.keySet();
    }
    
    @Override
-   public Collection<Object> values ()
+   public Collection<Object> values()
    {
       final Vector<Object> result = new Vector<>();
       table.values().forEach(value -> result.add(value));
@@ -186,15 +189,16 @@ public final class Root extends LayeTable implements Bindings
    }
    
    @Override
-   public Set<Map.Entry<String, Object>> entrySet ()
+   public Set<Map.Entry<String, Object>> entrySet()
    {
       final Set<Map.Entry<String, Object>> result = new HashSet<>();
-      table.entrySet().forEach(entry -> result.add(new LayeTableEntry(entry.getKey(), entry.getValue().getValue())));
+      table.entrySet().forEach(entry -> result.add(
+            new LayeTableEntry(entry.getKey(), entry.getValue().getValue())));
       return result;
    }
    
    @Override
-   public Object put (final String name, final Object value)
+   public Object put(final String name, final Object value)
    {
       final LayeValue layeValue;
       if (value instanceof LayeValue)
@@ -208,7 +212,7 @@ public final class Root extends LayeTable implements Bindings
       return put(name, layeValue);
    }
    
-   public LayeValue put (final String name, final LayeValue value)
+   public LayeValue put(final String name, final LayeValue value)
    {
       final LayeTable.Entry oldEntry = table.get(name);
       final LayeValue old;
@@ -225,19 +229,19 @@ public final class Root extends LayeTable implements Bindings
    }
    
    @Override
-   public LayeValue delSlot (final LayeValue key)
+   public LayeValue delSlot(final LayeValue key)
    {
       return super.delSlot(key);
    }
    
    @Override
-   public void putAll (final Map<? extends String, ? extends Object> toMerge)
+   public void putAll(final Map<? extends String, ? extends Object> toMerge)
    {
       toMerge.forEach(this::put);
    }
    
    @Override
-   public boolean containsKey (final Object key)
+   public boolean containsKey(final Object key)
    {
       if (key instanceof String)
       {
@@ -247,7 +251,7 @@ public final class Root extends LayeTable implements Bindings
    }
    
    @Override
-   public LayeValue get (final Object key)
+   public LayeValue get(final Object key)
    {
       if (key instanceof String)
       {
@@ -257,7 +261,7 @@ public final class Root extends LayeTable implements Bindings
    }
    
    @Override
-   public Object remove (final Object key)
+   public Object remove(final Object key)
    {
       if (key instanceof String)
       {

@@ -10,21 +10,21 @@ public enum ValueType
    BOOL(LayeTypeBool.TYPE),
    NUMBER(LayeTypeNumber.TYPE),
    INT(LayeTypeInt.TYPE),
-   FLOAT(
-         LayeTypeFloat.TYPE),
+   FLOAT(LayeTypeFloat.TYPE),
    STRING(LayeTypeString.TYPE),
+   TUPLE(LayeTypeTuple.TYPE),
    TABLE(LayeTypeTable.TYPE),
    LIST(LayeTypeList.TYPE),
-   STREAM(
-         LayeTypeStream.TYPE),
+   STREAM(LayeTypeStream.TYPE),
    FUNCTION(LayeTypeFunction.TYPE),
    // TODO remove Reference type?
    REFERENCE(LayeTypeReference.TYPE),
-   USERDATA(LayeTypeUserdata.TYPE),
-   TYPE(null),
-   INSTANCE(null);
+   TYPE(LayeTypeType.TYPE),
+   INSTANCE(LayeTypeInstance.TYPE),
+   JAVA_TYPE(LayeTypeJavaType.TYPE),
+   JAVA_INSTANCE(LayeTypeJavaInstance.TYPE);
    
-   public static ValueType getFromClass (final Class<?> cls)
+   public static ValueType getFromClass(final Class<?> cls)
    {
       if (cls.isArray() || List.class.isAssignableFrom(cls))
       {
@@ -51,18 +51,19 @@ public enum ValueType
       {
          return BOOL;
       }
-      return USERDATA;
+      // TODO others
+      return JAVA_INSTANCE;
    }
    
    public final LayeValueType type;
    
-   ValueType (final LayeValueType type)
+   ValueType(final LayeValueType type)
    {
       this.type = type;
    }
    
    @Override
-   public String toString ()
+   public String toString()
    {
       return type == null ? "<no-type>" : type.toString();
    }
