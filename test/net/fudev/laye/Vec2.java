@@ -16,52 +16,58 @@ public class Vec2
    
    // new Vec2:zero();
    @LayeCtor(name = "zero")
-   public Vec2 ()
+   public Vec2()
    {
       this(0.0f, 0.0f);
    }
    
    // new Vec2:xy(10.0f);
    @LayeCtor(name = "xy")
-   public Vec2 (final float c)
+   public Vec2(final float c)
    {
       this(c, c);
    }
    
    // new Vec2:copy(vec);
    @LayeCtor(name = "copy")
-   public Vec2 (final Vec2 other)
+   public Vec2(final Vec2 other)
    {
       this(other.x, other.y);
    }
    
    // new Vec2(1.0f, 2.0f);
    @LayeCtor
-   public Vec2 (final float x, final float y)
+   public Vec2(final float x, final float y)
    {
       this.x = x;
       this.y = y;
+   }
+   
+   @Override
+   public String toString()
+   {
+      return "<" + x + ", " + y + ">";
    }
    
    // ========== Addition ========== //
    
    // loc vecC = vecA + vecB;
    @LayeInfix(operator = "+")
-   public Vec2 add (final Vec2 right)
+   public Vec2 add(final Vec2 right)
    {
       return new Vec2(this.x + right.x, this.y + right.y);
    }
    
    // vecA + 2.0f
    @LayeInfix(operator = "+")
-   public Vec2 add (final float scalar)
+   public Vec2 add(final float scalar)
    {
       return new Vec2(this.x + scalar, this.y + scalar);
    }
    
    // vecA !+ vecB #/ vecA
    @LayeInfix(operator = "!+")
-   public Vec2 addLocal (final Vec2 right)
+   public Vec2 addLocal(final Vec2 right)
    {
       this.x += right.x;
       this.y += right.y;
@@ -70,7 +76,7 @@ public class Vec2
    
    // vecA !+ 2.0f
    @LayeInfix(operator = "!+")
-   public Vec2 addLocal (final float scalar)
+   public Vec2 addLocal(final float scalar)
    {
       this.x += scalar;
       this.y += scalar;
@@ -81,21 +87,21 @@ public class Vec2
    
    // loc vecC = vecA - vecB;
    @LayeInfix(operator = "-")
-   public Vec2 sub (final Vec2 right)
+   public Vec2 sub(final Vec2 right)
    {
       return new Vec2(this.x - right.x, this.y - right.y);
    }
    
    // vecA - 2.0f
    @LayeInfix(operator = "-")
-   public Vec2 sub (final float scalar)
+   public Vec2 sub(final float scalar)
    {
       return new Vec2(this.x - scalar, this.y - scalar);
    }
    
    // vecA !- vecB #/ vecA
    @LayeInfix(operator = "!-")
-   public Vec2 subLocal (final Vec2 right)
+   public Vec2 subLocal(final Vec2 right)
    {
       this.x -= right.x;
       this.y -= right.y;
@@ -104,7 +110,7 @@ public class Vec2
    
    // vecA !- 2.0f
    @LayeInfix(operator = "!-")
-   public Vec2 subLocal (final float scalar)
+   public Vec2 subLocal(final float scalar)
    {
       this.x -= scalar;
       this.y -= scalar;
@@ -115,7 +121,7 @@ public class Vec2
    
    // loc vecC = vecA * vecB;
    @LayeInfix(operator = "*")
-   public Vec2 mul (final Vec2 right)
+   public Vec2 mul(final Vec2 right)
    {
       return new Vec2(this.x * right.x, this.y * right.y);
    }
@@ -123,14 +129,14 @@ public class Vec2
    // vecA * 2.0f OR 2.0f * vecA
    @LayeInfix(operator = "*")
    @LayeInfix(operator = "*", assoc = LayeOperator.Assoc.RIGHT)
-   public Vec2 mul (final float scalar)
+   public Vec2 mul(final float scalar)
    {
       return new Vec2(this.x * scalar, this.y * scalar);
    }
    
    // vecA !* vecB #/ vecA
    @LayeInfix(operator = "!*")
-   public Vec2 mulLocal (final Vec2 right)
+   public Vec2 mulLocal(final Vec2 right)
    {
       this.x *= right.x;
       this.y *= right.y;
@@ -139,7 +145,7 @@ public class Vec2
    
    // vecA !* 2.0f
    @LayeInfix(operator = "!*")
-   public Vec2 mulLocal (final float scalar)
+   public Vec2 mulLocal(final float scalar)
    {
       this.x *= scalar;
       this.y *= scalar;
@@ -150,21 +156,21 @@ public class Vec2
    
    // loc vecC = vecA / vecB;
    @LayeInfix(operator = "/")
-   public Vec2 div (final Vec2 right)
+   public Vec2 div(final Vec2 right)
    {
       return new Vec2(this.x / right.x, this.y / right.y);
    }
    
    // vecA / 2.0f
    @LayeInfix(operator = "/")
-   public Vec2 div (final float scalar)
+   public Vec2 div(final float scalar)
    {
       return new Vec2(this.x / scalar, this.y / scalar);
    }
    
    // vecA !/ vecB #/ vecA
    @LayeInfix(operator = "!/")
-   public Vec2 divLocal (final Vec2 right)
+   public Vec2 divLocal(final Vec2 right)
    {
       this.x /= right.x;
       this.y /= right.y;
@@ -173,7 +179,7 @@ public class Vec2
    
    // vecA !/ 2.0f
    @LayeInfix(operator = "!/")
-   public Vec2 divLocal (final float scalar)
+   public Vec2 divLocal(final float scalar)
    {
       this.x /= scalar;
       this.y /= scalar;
@@ -184,7 +190,7 @@ public class Vec2
    
    // loc vecC = vecA // vecB;
    @LayeInfix(operator = "//")
-   public Vec2 idiv (final Vec2 right)
+   public Vec2 idiv(final Vec2 right)
    {
       return new Vec2((int) this.x / (int) right.x,
             (int) this.y / (int) right.y);
@@ -192,14 +198,14 @@ public class Vec2
    
    // vecA // 2.0f
    @LayeInfix(operator = "//")
-   public Vec2 idiv (final float scalar)
+   public Vec2 idiv(final float scalar)
    {
       return new Vec2((int) this.x / (int) scalar, (int) this.y / (int) scalar);
    }
    
    // vecA !// vecB #/ vecA
    @LayeInfix(operator = "!//")
-   public Vec2 idivLocal (final Vec2 right)
+   public Vec2 idivLocal(final Vec2 right)
    {
       this.x = (int) this.x / (int) right.x;
       this.y = (int) this.x / (int) right.y;
@@ -208,7 +214,7 @@ public class Vec2
    
    // vecA !// 2.0f
    @LayeInfix(operator = "!//")
-   public Vec2 idivLocal (final float scalar)
+   public Vec2 idivLocal(final float scalar)
    {
       this.x = (int) this.x / (int) scalar;
       this.y = (int) this.y / (int) scalar;

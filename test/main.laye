@@ -1,2 +1,10 @@
-loc value = Static.doubleInt(123);
-value <> " is typeof " <> typeof value;
+loc value = Static.doubleInt((100) + 1 + (23));
+println(value <> " is typeof " <> typeof value);
+
+loc vec00 = new Vec2:zero;
+loc vec11 = new Vec2:xy 1.0;
+loc vec23 = new Vec2(2.0, 3.0);
+println(typeof Vec2, typeof vec00);
+println(vec00, vec11, vec23);
+vec23 !+ vec11;
+println(vec23);
