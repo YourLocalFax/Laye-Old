@@ -43,8 +43,7 @@ public class LayeStream extends LayeValue
       return stream.filter(predicate);
    }
    
-   public Stream<LayeValue> map(
-         final Function<? super LayeValue, ? extends LayeValue> function)
+   public Stream<LayeValue> map(final Function<? super LayeValue, ? extends LayeValue> function)
    {
       return stream.map(function);
    }

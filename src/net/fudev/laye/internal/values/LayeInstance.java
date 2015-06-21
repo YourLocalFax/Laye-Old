@@ -11,8 +11,7 @@ public final class LayeInstance extends LayeValue
       this(type, null, ctorArgs);
    }
    
-   public LayeInstance(final LayeType type, final String ctorName,
-         final LayeValue... ctorArgs)
+   public LayeInstance(final LayeType type, final String ctorName, final LayeValue... ctorArgs)
    {
       super(ValueType.INSTANCE);
       this.type = type;

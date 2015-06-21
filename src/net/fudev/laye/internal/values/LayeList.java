@@ -34,8 +34,7 @@ public final class LayeList extends LayeValue
       return new LayeList(values, length);
    }
    
-   public static LayeList valueOf(LayeValue[] values, final int offset,
-         final int length)
+   public static LayeList valueOf(LayeValue[] values, final int offset, final int length)
    {
       values = Arrays.copyOfRange(values, offset, offset + length);
       for (int i = 0; i < length; i++)
@@ -48,8 +47,7 @@ public final class LayeList extends LayeValue
       return new LayeList(values, length);
    }
    
-   public static LayeList valueOfUnsafe(LayeValue[] values, final int offset,
-         final int length)
+   public static LayeList valueOfUnsafe(LayeValue[] values, final int offset, final int length)
    {
       values = Arrays.copyOfRange(values, offset, offset + length);
       return new LayeList(values, length);
@@ -100,17 +98,15 @@ public final class LayeList extends LayeValue
       {
          return false;
       }
-      final LayeList list = ((LayeList) other);
+      final LayeList list = (LayeList) other;
       final int length = this.length;
-      return other == this || (length == list.length
-            && Util.arrayEquals(values, list.values, length));
+      return other == this || length == list.length && Util.arrayEquals(values, list.values, length);
    }
    
    @Override
    public String asstring()
    {
-      final StringBuilder builder = new StringBuilder()
-            .append('[');
+      final StringBuilder builder = new StringBuilder().append('[');
       final LayeValue[] values = this.values;
       for (int i = 0, length = this.length; i < length; i++)
       {
@@ -240,15 +236,14 @@ public final class LayeList extends LayeValue
    }
    
    @Override
-   public LayeValue callChildMethod(final LayeValue key,
-         final LayeValue... args)
+   public LayeValue callChildMethod(final LayeValue key, final LayeValue... args)
    {
       if (key.isstring())
       {
          final String name = key.asstring();
          switch (name)
          {
-            // TODO more list methods!
+         // TODO more list methods!
             case "pushBack": // list.pushBack(all..)
                for (final LayeValue arg : args)
                {

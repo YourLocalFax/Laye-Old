@@ -11,7 +11,7 @@ import java.util.Vector;
 
 import javax.script.Bindings;
 
-import net.fudev.laye.SkarendalContext;
+import net.fudev.laye.LayeContext;
 import net.fudev.laye.err.LayeException;
 import net.fudev.laye.internal.parse.LayeParser;
 import net.fudev.laye.internal.parse.ast.ASTFunctionPrototype;
@@ -22,8 +22,7 @@ import net.fudev.laye.runtime.LayeStdLib;
 
 public final class Root extends LayeTable implements Bindings
 {
-   private static final class LayeTableEntry
-         implements Map.Entry<String, Object>
+   private static final class LayeTableEntry implements Map.Entry<String, Object>
    {
       private final String key;
       private Object value;
@@ -112,14 +111,13 @@ public final class Root extends LayeTable implements Bindings
       this.in = in;
    }
    
-   public LayeFunction load(final Reader reader, final SkarendalContext context)
+   public LayeFunction load(final Reader reader, final LayeContext context)
    {
       // TODO preprocessing, which puts all of the files together into a big
       // string basically
       final LayeParser parser = new LayeParser();
       final ASTFunctionPrototype nodes = parser.parse(reader);
-      final LayeFunction func = new LayeFunction(nodes.generate(null, false),
-            context.root);
+      final LayeFunction func = new LayeFunction(nodes.generate(null, false), context.root);
       return func;
    }
    
@@ -142,8 +140,7 @@ public final class Root extends LayeTable implements Bindings
          else
          {
             // TODO own exception type
-            throw new LayeException(
-                  "values expected to be instances of LayeValue.");
+            throw new LayeException("values expected to be instances of LayeValue.");
          }
       }
    }
@@ -192,8 +189,7 @@ public final class Root extends LayeTable implements Bindings
    public Set<Map.Entry<String, Object>> entrySet()
    {
       final Set<Map.Entry<String, Object>> result = new HashSet<>();
-      table.entrySet().forEach(entry -> result.add(
-            new LayeTableEntry(entry.getKey(), entry.getValue().getValue())));
+      table.entrySet().forEach(entry -> result.add(new LayeTableEntry(entry.getKey(), entry.getValue().getValue())));
       return result;
    }
    

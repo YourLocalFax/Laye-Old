@@ -10,8 +10,7 @@ import net.fudev.laye.internal.values.LayeTable;
 
 public final class LayeStringLib extends LayeStdLib
 {
-   protected LayeStringLib(final Vector<LayeStdLib> natives,
-         final Root thisRoot)
+   protected LayeStringLib(final Vector<LayeStdLib> natives, final Root thisRoot)
    {
       super(natives, thisRoot);
       
@@ -35,8 +34,7 @@ public final class LayeStringLib extends LayeStdLib
          final int idx;
          if (args.length == 0)
          {
-            throw new LayeException(
-                  "string expected as first argument, no arguments given.");
+            throw new LayeException("string expected as first argument, no arguments given.");
          }
          else if (args.length == 1)
          {

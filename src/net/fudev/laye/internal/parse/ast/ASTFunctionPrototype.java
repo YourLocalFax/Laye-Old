@@ -40,8 +40,7 @@ public final class ASTFunctionPrototype
       }
    }
    
-   public FunctionPrototype generate(final LayeFunctionBuilder parent,
-         final boolean gen)
+   public FunctionPrototype generate(final LayeFunctionBuilder parent, final boolean gen)
    {
       final LayeFunctionBuilder builder = new LayeFunctionBuilder(parent);
       builder.generator = gen;

@@ -19,23 +19,19 @@ public final class ExprMatch implements Expression
       this.value = value;
    }
    
-   public void addCase(final Vector<LayeValue> caseValues,
-         final Expression result)
+   public void addCase(final Vector<LayeValue> caseValues, final Expression result)
    {
-      cases.addElement(caseValues.size() == 0 ? null
-            : caseValues.toArray(new LayeValue[caseValues.size()]));
+      cases.addElement(caseValues.size() == 0 ? null : caseValues.toArray(new LayeValue[caseValues.size()]));
       results.addElement(result);
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       final int size = cases.size();
       if (size != results.size())
       {
-         throw new CompilerException(
-               "number of cases does not match number of results in match expression.");
+         throw new CompilerException("number of cases does not match number of results in match expression.");
       }
       
       value.accept(builder, true);

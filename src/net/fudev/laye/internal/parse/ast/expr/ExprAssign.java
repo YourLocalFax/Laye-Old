@@ -15,8 +15,7 @@ public class ExprAssign implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       // we make this leave its value because we have to get the insn for it:
       index.accept(builder, true);
@@ -29,9 +28,8 @@ public class ExprAssign implements Expression
             final int local = Laye.GET_A(lastOp);
             if (builder.isLocalConst(local))
             {
-               throw new CompilerException(
-                     "local " + builder.getLocalName(local)
-                           + " was defined constant, cannot modify.");
+               throw new CompilerException("local " + builder.getLocalName(local)
+                     + " was defined constant, cannot modify.");
             }
             // undo load
             builder.popOp();
@@ -45,9 +43,8 @@ public class ExprAssign implements Expression
             final int up = Laye.GET_A(lastOp);
             if (builder.isUpValueConst(up))
             {
-               throw new CompilerException(
-                     "local " + builder.getUpValueName(up)
-                           + " was defined constant, cannot modify.");
+               throw new CompilerException("local " + builder.getUpValueName(up)
+                     + " was defined constant, cannot modify.");
             }
             // undo get_up
             builder.popOp();

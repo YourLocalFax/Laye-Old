@@ -16,8 +16,7 @@ public final class ExprFunction implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       final FunctionPrototype proto = prototype.generate(builder, gen);
       builder.visitLoadFn(proto);

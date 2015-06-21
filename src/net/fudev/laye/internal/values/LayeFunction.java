@@ -35,8 +35,7 @@ public final class LayeFunction extends LayeValue
       this.root = root;
       ups = new UpValue[proto.maxStackSize];
       stringValue = LayeString.valueOf("func:" + hashCode());
-      insnFormat = "%" + Integer.toString(proto.code.length - 1).length()
-            + "d <%S>";
+      insnFormat = "%" + Integer.toString(proto.code.length - 1).length() + "d <%S>";
    }
    
    @Override
@@ -44,13 +43,11 @@ public final class LayeFunction extends LayeValue
    {
       final int prime = 31;
       int result = 1;
-      result = prime * result
-            + ((insnFormat == null) ? 0 : insnFormat.hashCode());
+      result = prime * result + (insnFormat == null ? 0 : insnFormat.hashCode());
       result = prime * result + pc;
-      result = prime * result + ((proto == null) ? 0 : proto.hashCode());
-      result = prime * result + ((root == null) ? 0 : root.hashCode());
-      result = prime * result
-            + ((stringValue == null) ? 0 : stringValue.hashCode());
+      result = prime * result + (proto == null ? 0 : proto.hashCode());
+      result = prime * result + (root == null ? 0 : root.hashCode());
+      result = prime * result + (stringValue == null ? 0 : stringValue.hashCode());
       result = prime * result + Arrays.hashCode(ups);
       return result;
    }
@@ -98,16 +95,14 @@ public final class LayeFunction extends LayeValue
    }
    
    @Override
-   public LayeValue callAsMethod(final LayeValue parent,
-         final LayeValue... args)
+   public LayeValue callAsMethod(final LayeValue parent, final LayeValue... args)
    {
       if (LayeFunction.DO_DEBUG)
       {
          Logger.debug("EXE", "calling function...");
       }
       pc = 0;
-      final LayeValue[] locals = Util
-            .createValueArrayLocals(proto.maxLocalsSize, proto.hasVargs, args);
+      final LayeValue[] locals = Util.createValueArrayLocals(proto.maxLocalsSize, proto.hasVargs, args);
       final LayeValue[] stack = Util.createValueArray(proto.maxStackSize);
       return execute(parent, locals, stack);
    }
@@ -115,14 +110,13 @@ public final class LayeFunction extends LayeValue
    // TODO move resume to a generator class
    /*
     * public LayeValue resume() { if (!proto.generator) { throw new
-    * IllegalStateException("function is not a generator, cannot resume."); }
-    * return execute(lastParent, lastLocals, lastStack); } //
+    * IllegalStateException("function is not a generator, cannot resume."); } return execute(lastParent, lastLocals,
+    * lastStack); } //
     */
    
    // TODO refactor some of this to move the loop into a separate method for
    // convenience?
-   private LayeValue execute(final LayeValue parent, final LayeValue[] locals,
-         final LayeValue[] stack)
+   private LayeValue execute(final LayeValue parent, final LayeValue[] locals, final LayeValue[] stack)
    {
       final LayeValue[] k = proto.k;
       final FunctionPrototype[] p = proto.nested;
@@ -151,8 +145,7 @@ public final class LayeFunction extends LayeValue
             
             if (LayeFunction.DO_DEBUG)
             {
-               Logger.debug("EXE", String.format(insnFormat, (pc - 1),
-                     InsnPrint.getOpCodeName(i)));
+               Logger.debug("EXE", String.format(insnFormat, pc - 1, InsnPrint.getOpCodeName(i)));
                Logger.debug("STK", top + " " + Arrays.toString(stack));
                Logger.debug("LOC", Arrays.toString(locals));
             }
@@ -172,7 +165,7 @@ public final class LayeFunction extends LayeValue
                   continue;
                   
                case Laye.OP_POP: // [A, -A] POP(A) TOP -= A;
-                  top -= (i >>> Laye.POS_A);
+                  top -= i >>> Laye.POS_A;
                   continue;
                   
                case Laye.OP_DUP: // [0, 1] DUP(A) STK[TOP++] = STK[TOP - A - 1];
@@ -210,15 +203,13 @@ public final class LayeFunction extends LayeValue
                   {
                      target = ((LayeReference) target).getValue();
                   }
-                  if ((i >>> Laye.POS_A) != 0)
+                  if (i >>> Laye.POS_A != 0)
                   {
-                     target.newSlot(stack[top - 2],
-                           stack[top - 3] = stack[top - 1]);
+                     target.newSlot(stack[top - 2], stack[top - 3] = stack[top - 1]);
                   }
                   else
                   {
-                     target.newSlotMutable(stack[top - 2],
-                           stack[top - 3] = stack[top - 1]);
+                     target.newSlotMutable(stack[top - 2], stack[top - 3] = stack[top - 1]);
                   }
                   top -= 2;
                   continue;
@@ -253,8 +244,7 @@ public final class LayeFunction extends LayeValue
                case Laye.OP_SET_INDEX: // [-2] SET_INDEX() STK[TOP -
                   // 3].set(STK[TOP - 2], STK[TOP - 1]);
                   // STK[TOP - 3] = STK[TOP - 1]; TOP -= 2;
-                  stack[top - 3].set(stack[top - 2],
-                        stack[top - 3] = stack[top - 1]);
+                  stack[top - 3].set(stack[top - 2], stack[top - 3] = stack[top - 1]);
                   top -= 2;
                   continue;
                   
@@ -264,8 +254,7 @@ public final class LayeFunction extends LayeValue
                   
                case Laye.OP_LOAD_BOOL: // [1] LOAD_BOOL(A) STK[TOP++] = if B
                   // then true; else false;
-                  stack[top++] = (i >>> Laye.POS_A) != 0 ? LayeValue.TRUE
-                        : LayeValue.FALSE;
+                  stack[top++] = i >>> Laye.POS_A != 0 ? LayeValue.TRUE : LayeValue.FALSE;
                   continue;
                   
                case Laye.OP_LOAD_NULL: // [A] LOAD_NULL(A) (for i = 1 to A)
@@ -286,8 +275,7 @@ public final class LayeFunction extends LayeValue
                   {
                      if (protoUps[temp].type == UpValueInfo.LOCAL)
                      {
-                        func.ups[temp] = findUpValue(locals, protoUps[temp].pos,
-                              openUps);
+                        func.ups[temp] = findUpValue(locals, protoUps[temp].pos, openUps);
                      }
                      else
                      {
@@ -346,14 +334,12 @@ public final class LayeFunction extends LayeValue
                   
                case Laye.OP_PREFIX: // [0] PREFIX(A) STK[TOP - 1] = STK[TOP -
                   // 1].unaryPrefixOp(k[A]);
-                  stack[top - 1] = stack[top - 1]
-                        .unaryPrefixOp(k[i >>> Laye.POS_A].asstring());
+                  stack[top - 1] = stack[top - 1].unaryPrefixOp(k[i >>> Laye.POS_A].asstring());
                   continue;
                   
                case Laye.OP_POSTFIX: // [0] POSTFIX(A) STK[TOP - 1] = STK[TOP -
                   // 1].unaryPostfixOp(k[A]);
-                  stack[top - 1] = stack[top - 1]
-                        .unaryPostfixOp(k[i >>> Laye.POS_A].asstring());
+                  stack[top - 1] = stack[top - 1].unaryPostfixOp(k[i >>> Laye.POS_A].asstring());
                   continue;
                   
                   // ---------- Binary Operations ---------- //
@@ -420,8 +406,7 @@ public final class LayeFunction extends LayeValue
                   
                case Laye.OP_URSH: // [-1] URSH() STK[TOP - 2] = STK[TOP -
                   // 2].shiftRightUnsigned(STK[--TOP]);
-                  stack[top - 2] = stack[top - 2]
-                        .shiftRightUnsigned(stack[--top]);
+                  stack[top - 2] = stack[top - 2].shiftRightUnsigned(stack[--top]);
                   continue;
                   
                case Laye.OP_CONCAT: // [-1] CONCAT() STK[TOP - 2] = STK[TOP -
@@ -431,8 +416,7 @@ public final class LayeFunction extends LayeValue
                   
                case Laye.OP_INFIX: // [-1] INFIX(A) STK[TOP - 2] = STK[TOP -
                   // 2].infixOp(K[A], STK[--TOP]);
-                  stack[top - 2] = stack[top - 2]
-                        .infixOp(k[i >>> Laye.POS_A].asstring(), stack[--top]);
+                  stack[top - 2] = stack[top - 2].infixOp(k[i >>> Laye.POS_A].asstring(), stack[--top]);
                   continue;
                   
                   // ---------- Misc Binary Operators ---------- //
@@ -460,8 +444,7 @@ public final class LayeFunction extends LayeValue
                   continue;
                   
                case Laye.OP_BOOL_XOR: // [-1]
-                  stack[top - 2] = stack[top - 2].not() != stack[top - 1].not()
-                  ? LayeValue.TRUE : LayeValue.FALSE;
+                  stack[top - 2] = stack[top - 2].not() != stack[top - 1].not() ? LayeValue.TRUE : LayeValue.FALSE;
                   continue;
                   
                case Laye.OP_IS_TYPEOF: // [-1]
@@ -483,45 +466,38 @@ public final class LayeFunction extends LayeValue
                   continue;
                   
                case Laye.OP_3COMP: // [-1]
-                  stack[top - 2] = LayeInt
-                  .valueOf(stack[top - 2].compareTo(stack[--top]));
+                  stack[top - 2] = LayeInt.valueOf(stack[top - 2].compareTo(stack[--top]));
                   continue;
                   
                   // ---------- Program Counter ---------- //
                   
                case Laye.OP_TEST: // [-1] TEST(SA, B)
-                  if (stack[--top]
-                        .asbool() != (((i >>> Laye.POS_B) & Laye.MAX_B) != 0))
+                  if (stack[--top].asbool() != ((i >>> Laye.POS_B & Laye.MAX_B) != 0))
                   {
-                     pc += ((i >>> Laye.POS_A) & Laye.MAX_A) + Laye.MIN_SA;
+                     pc += (i >>> Laye.POS_A & Laye.MAX_A) + Laye.MIN_SA;
                   }
                   continue;
                   
                case Laye.OP_JUMP: // [0] JUMP(SA)
-                  pc += ((i >>> Laye.POS_A) & Laye.MAX_A) + Laye.MIN_SA;
+                  pc += (i >>> Laye.POS_A & Laye.MAX_A) + Laye.MIN_SA;
                   continue;
                   
                   // ---------- Functions ---------- //
                   
                case Laye.OP_CALL: // []
                {
-                  final LayeValue[] argList = Arrays.copyOfRange(stack,
-                        top - (a = i >>> Laye.POS_A), top);
+                  final LayeValue[] argList = Arrays.copyOfRange(stack, top - (a = i >>> Laye.POS_A), top);
                   final LayeValue target = stack[top = top - a - 1];
                   
                   stack[top++] = target.call(argList);
                   
                   /*
-                   * switch (target.valueType) { case FUNCTION: { if (target
-                   * instanceof LayeFunction) { final LayeFunction func =
-                   * ((LayeFunction) target); if (func.proto.generator) { throw
-                   * new LayeRuntimeException("<unknown>", proto.hasLineInfos ?
-                   * proto.lineInfo[pc] : 0,
-                   * "cannot call a generator function. use 'resume' instead.");
-                   * } stack[top++] = func.call(argList); } else if (target
-                   * instanceof LayeJavaFunction) { stack[top++] =
-                   * ((LayeJavaFunction) target).call(argList); } continue; }
-                   * default: throw new IllegalArgumentException(
+                   * switch (target.valueType) { case FUNCTION: { if (target instanceof LayeFunction) { final
+                   * LayeFunction func = ((LayeFunction) target); if (func.proto.generator) { throw new
+                   * LayeRuntimeException("<unknown>", proto.hasLineInfos ? proto.lineInfo[pc] : 0,
+                   * "cannot call a generator function. use 'resume' instead."); } stack[top++] = func.call(argList); }
+                   * else if (target instanceof LayeJavaFunction) { stack[top++] = ((LayeJavaFunction)
+                   * target).call(argList); } continue; } default: throw new IllegalArgumentException(
                    * "could not call type " + target.typeof().asstring()); }
                    */
                   
@@ -530,8 +506,7 @@ public final class LayeFunction extends LayeValue
                
                case Laye.OP_METHOD:
                {
-                  final LayeValue[] argList = Arrays.copyOfRange(stack,
-                        top - (a = i >>> Laye.POS_A), top);
+                  final LayeValue[] argList = Arrays.copyOfRange(stack, top - (a = i >>> Laye.POS_A), top);
                   final LayeValue key = stack[top = top - a - 1];
                   final LayeValue target = stack[top - 1];
                   stack[top - 1] = target.callChildMethod(key, argList);
@@ -542,7 +517,7 @@ public final class LayeFunction extends LayeValue
                   // null
                   returned = true;
                   pc = 0;
-                  if ((i >>> Laye.POS_A) == 1)
+                  if (i >>> Laye.POS_A == 1)
                   {
                      return stack[top - 1];
                   }
@@ -550,7 +525,7 @@ public final class LayeFunction extends LayeValue
                   
                   // TODO do things with yield
                case Laye.OP_YIELD:
-                  if ((i >>> Laye.POS_A) == 1)
+                  if (i >>> Laye.POS_A == 1)
                   {
                      return stack[top - 1];
                   }
@@ -560,8 +535,7 @@ public final class LayeFunction extends LayeValue
                {
                   // TODO create generator type and use checkgenerator();
                   /*
-                   * final LayeFunction gen = stack[--top].checkfunction();
-                   * gen.resume();
+                   * final LayeFunction gen = stack[--top].checkfunction(); gen.resume();
                    */
                   continue;
                }
@@ -578,38 +552,32 @@ public final class LayeFunction extends LayeValue
                   continue;
                   
                case Laye.OP_REF: // [0]
-                  switch ((i >>> Laye.POS_B) & Laye.MAX_B)
+                  switch (i >>> Laye.POS_B & Laye.MAX_B)
                   {
                      case 0: // local
-                        stack[top++] = new LayeLocalRef(locals,
-                              i >>> Laye.POS_A);
+                        stack[top++] = new LayeLocalRef(locals, i >>> Laye.POS_A);
                         continue;
                      case 1: // up-value
-                        stack[top++] = new LayeUpValueRef(ups,
-                              i >>> Laye.POS_A);
+                        stack[top++] = new LayeUpValueRef(ups, i >>> Laye.POS_A);
                         continue;
                      case 2: // indices
-                        stack[top - 2] = new LayeIndexRef(stack[top - 2],
-                              stack[--top]);
+                        stack[top - 2] = new LayeIndexRef(stack[top - 2], stack[--top]);
                         continue;
                      default:
-                        throw new RuntimeException(
-                              "Unexpected reference type.");
+                        throw new RuntimeException("Unexpected reference type.");
                   }
                   
                case Laye.OP_DEREF: // [0]
                   if (!stack[top - 1].isref())
                   {
-                     throw new LayeRuntimeException("<unknown>",
-                           proto.hasLineInfos ? proto.lineInfo[pc] : 0,
+                     throw new LayeRuntimeException("<unknown>", proto.hasLineInfos ? proto.lineInfo[pc] : 0,
                            "Can only dereference references to variables.");
                   }
                   stack[top - 1] = ((LayeReference) stack[top - 1]).getValue();
                   continue;
                   
                case Laye.OP_IS: // [-1]
-                  stack[top - 2] = stack[top - 2] == stack[top - 1]
-                        ? LayeValue.TRUE : LayeValue.FALSE;
+                  stack[top - 2] = stack[top - 2] == stack[top - 1] ? LayeValue.TRUE : LayeValue.FALSE;
                   continue;
                   
                case Laye.OP_LIST: // [1 - A] LIST(A)
@@ -620,15 +588,13 @@ public final class LayeFunction extends LayeValue
                   else
                   {
                      final int to = top;
-                     stack[(top -= a - 1) - 1] = LayeList
-                           .valueOf(Arrays.copyOfRange(stack, top - 1, to));
+                     stack[(top -= a - 1) - 1] = LayeList.valueOf(Arrays.copyOfRange(stack, top - 1, to));
                   }
                   continue;
                   
                case Laye.OP_TUPLE: // [A, 1 - A] TUPLE(A) (STK[TOP - A - 1],
                   // STK[TOP - A], ..., STK[TOP - 1])
-                  stack[(top -= (a = i >>> Laye.POS_A) - 1) - 1] = LayeList
-                  .valueOfUnsafe(stack, top - 1, a);
+                  stack[(top -= (a = i >>> Laye.POS_A) - 1) - 1] = LayeTuple.valueOf(stack, top - 1, a);
                   continue;
                   
                case Laye.OP_NEW_TABLE: // [1] NEW_TABLE()
@@ -640,10 +606,9 @@ public final class LayeFunction extends LayeValue
                case Laye.OP_NEW_INSTANCE: // [1 - A] NEW_INSTANCE(A, B)
                {
                   // TODO check these top calcs
-                  final LayeValue[] argList = Arrays.copyOfRange(stack,
-                        top - (a = i >>> Laye.POS_A), top);
+                  final LayeValue[] argList = Arrays.copyOfRange(stack, top - (a = i >>> Laye.POS_A), top);
                   final LayeValue type = stack[top = top - a - 1];
-                  if ((b = (i >>> Laye.POS_B) & Laye.MAX_B) == Laye.MAX_B)
+                  if ((b = i >>> Laye.POS_B & Laye.MAX_B) == Laye.MAX_B)
                   {
                      // new LayeInstance(type, argList);
                      stack[top++] = type.newinstance(argList);
@@ -660,19 +625,17 @@ public final class LayeFunction extends LayeValue
                {
                   final LayeValue index, limit, step;
                   // index
-                  (index = locals[b = (i >>> Laye.POS_B) & Laye.MAX_B])
-                  .checknumber();
+                  (index = locals[b = i >>> Laye.POS_B & Laye.MAX_B]).checknumber();
                   // limit
                   (limit = locals[b + 1]).checknumber();
                   // step
-                  if ((i >>> Laye.POS_A) == 1)
+                  if (i >>> Laye.POS_A == 1)
                   {
                      (step = locals[b + 2]).checknumber();
                   }
                   else
                   {
-                     step = locals[b + 2] = LayeInt
-                           .valueOf(index.lessThan_b(limit) ? 1 : -1);
+                     step = locals[b + 2] = LayeInt.valueOf(index.lessThan_b(limit) ? 1 : -1);
                   }
                   locals[b] = index.subtract(step);
                   // System.out.println("FOR PREP " + locals[b] + ", " + limit +
@@ -682,18 +645,16 @@ public final class LayeFunction extends LayeValue
                
                case Laye.OP_FOR_TEST: // [0] FOR_TEST(SA, B)
                {
-                  final LayeValue limit = locals[(b = (i >>> Laye.POS_B)
-                        & Laye.MAX_B) + 1];
+                  final LayeValue limit = locals[(b = i >>> Laye.POS_B & Laye.MAX_B) + 1];
                   final LayeValue step = locals[b + 2];
                   final LayeValue index = locals[b].add(step);
-                  if (step.greaterThan_b(0) ? index.lessThan_b(limit)
-                        : index.greaterThan_b(limit))
+                  if (step.greaterThan_b(0) ? index.lessThan_b(limit) : index.greaterThan_b(limit))
                   {
                      locals[b] = index;
                   }
                   else
                   {
-                     pc += ((i >>> Laye.POS_A) & Laye.MAX_A) + Laye.MIN_SA;
+                     pc += (i >>> Laye.POS_A & Laye.MAX_A) + Laye.MIN_SA;
                   }
                   continue;
                }
@@ -707,8 +668,7 @@ public final class LayeFunction extends LayeValue
                case Laye.OP_MATCH: // [-1] MATCH(A, B)
                {
                   final LayeValue value = stack[--top];
-                  final Map<LayeValue, Integer> map = proto.jumpTables
-                        .get((i >>> Laye.POS_B) & Laye.MAX_B);
+                  final Map<LayeValue, Integer> map = proto.jumpTables.get(i >>> Laye.POS_B & Laye.MAX_B);
                   final Integer jumpAmt = map.get(value);
                   if (jumpAmt == null)
                   {
@@ -723,8 +683,7 @@ public final class LayeFunction extends LayeValue
                
                case Laye.OP_RETURN:
                {
-                  final boolean leaveValue = ((i >>> Laye.POS_B)
-                        & Laye.MAX_B) == 1;
+                  final boolean leaveValue = (i >>> Laye.POS_B & Laye.MAX_B) == 1;
                   if (!leaveValue)
                   {
                      --top;
@@ -734,16 +693,13 @@ public final class LayeFunction extends LayeValue
                }
                
                default:
-                  throw new IllegalArgumentException(
-                        "Unrecognized operation code "
-                              + String.format("0x%02x", i));
+                  throw new IllegalArgumentException("Unrecognized operation code " + String.format("0x%02x", i));
             }
          }
       }
       catch (final LayeRuntimeException e)
       {
-         throw new LayeRuntimeException("<unknown>",
-               proto.hasLineInfos ? proto.lineInfo[pc] : 0, e);
+         throw new LayeRuntimeException("<unknown>", proto.hasLineInfos ? proto.lineInfo[pc] : 0, e);
       }
       catch (final Exception e)
       {
@@ -765,8 +721,7 @@ public final class LayeFunction extends LayeValue
       }
    }
    
-   private static UpValue findUpValue(final LayeValue[] locals, final int idx,
-         final UpValue[] openUps)
+   private static UpValue findUpValue(final LayeValue[] locals, final int idx, final UpValue[] openUps)
    {
       final int n = openUps.length;
       for (int i = 0; i < n; i++)

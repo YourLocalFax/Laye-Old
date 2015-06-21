@@ -124,10 +124,7 @@ public final class LayeFunctionBuilder implements FunctionBuilder
          if (Laye.GET_OP(c) == Laye.TEMP_OP_RETURN)
          {
             final boolean isResultRequired = Laye.GET_B(c) == 1;
-            code.set(i,
-                  Laye.SET_A(
-                        Laye.SET_B(Laye.OP_RETURN, isResultRequired ? 1 : 0),
-                        endPosition - i));
+            code.set(i, Laye.SET_A(Laye.SET_B(Laye.OP_RETURN, isResultRequired ? 1 : 0), endPosition - i));
          }
       }
       block = block.previous;
@@ -143,13 +140,10 @@ public final class LayeFunctionBuilder implements FunctionBuilder
       // final HashMap<LayeValue, Integer>[] jumpTables =
       // this.jumpTables.toArray(new HashMap<LayeValue, Integer>[0]);
       final int[] code = Util.toIntArray(this.code); // convertTempOps();
-      final FunctionPrototype[] nested = this.nested
-            .toArray(new FunctionPrototype[this.nested.size()]);
-      final UpValueInfo[] upValues = upvals
-            .toArray(new UpValueInfo[upvals.size()]);
+      final FunctionPrototype[] nested = this.nested.toArray(new FunctionPrototype[this.nested.size()]);
+      final UpValueInfo[] upValues = upvals.toArray(new UpValueInfo[upvals.size()]);
       final int[] lineInfo = Util.toIntArray(this.lineInfo);
-      return new FunctionPrototype(k, jumpTables, code, nested, upValues,
-            lineInfo, LayeFunctionBuilder.LINE_INFOS,
+      return new FunctionPrototype(k, jumpTables, code, nested, upValues, lineInfo, LayeFunctionBuilder.LINE_INFOS,
             numParams, hasVargs, maxLocalsSize, maxStackSize, generator);
    }
    
@@ -164,9 +158,8 @@ public final class LayeFunctionBuilder implements FunctionBuilder
    }
    
    /*
-    * private int[] convertTempOps() { final Stack<Integer> newCode = new
-    * Stack<>(); for (final int op : code) { newCode.push(op); } return
-    * Util.toIntArray(newCode); }
+    * private int[] convertTempOps() { final Stack<Integer> newCode = new Stack<>(); for (final int op : code) {
+    * newCode.push(op); } return Util.toIntArray(newCode); }
     */
    
    public int addNestedFunction(final LayeFunctionBuilder builder)
@@ -202,8 +195,7 @@ public final class LayeFunctionBuilder implements FunctionBuilder
       {
          if ((maxLocalsSize = localsSize) > Laye.MAX_STACK_SIZE)
          {
-            throw new IllegalStateException(
-                  "compiler error: too many local variables");
+            throw new IllegalStateException("compiler error: too many local variables");
          }
       }
       return pos;
@@ -215,17 +207,14 @@ public final class LayeFunctionBuilder implements FunctionBuilder
       stackSize += amt;
       if (LayeFunctionBuilder.DEBUG_STACK_SIZE)
       {
-         System.out.println(
-               "@line " + new Exception().getStackTrace()[1].getLineNumber()
-               + " alloc:" + stackSize + "/"
+         System.out.println("@line " + new Exception().getStackTrace()[1].getLineNumber() + " alloc:" + stackSize + "/"
                + maxStackSize);
       }
       if (stackSize > maxStackSize)
       {
          if ((maxStackSize = stackSize) > Laye.MAX_STACK_SIZE)
          {
-            throw new IllegalStateException(
-                  "compiler error: too many stack slots");
+            throw new IllegalStateException("compiler error: too many stack slots");
          }
       }
       else if (stackSize < 0)
@@ -249,8 +238,7 @@ public final class LayeFunctionBuilder implements FunctionBuilder
       final int local = allocLocalVar(name, isConst);
       if (local == -1)
       {
-         throw new IllegalArgumentException(
-               "local variable '" + name + "' already defined in function."); // TODO
+         throw new IllegalArgumentException("local variable '" + name + "' already defined in function."); // TODO
          // different
          // exception
       }
@@ -312,16 +300,14 @@ public final class LayeFunctionBuilder implements FunctionBuilder
             pos = parent.getUpValue(name);
             if (pos != -1)
             {
-               upvals.add(new UpValueInfo(name, pos, UpValueInfo.UP_VALUE,
-                     parent.isUpValueConst(pos)));
+               upvals.add(new UpValueInfo(name, pos, UpValueInfo.UP_VALUE, parent.isUpValueConst(pos)));
                return upvals.size() - 1;
             }
          }
          else
          {
             parent.markLocalAsUpValue(pos);
-            upvals.add(new UpValueInfo(name, pos, UpValueInfo.LOCAL,
-                  parent.isLocalConst(pos)));
+            upvals.add(new UpValueInfo(name, pos, UpValueInfo.LOCAL, parent.isLocalConst(pos)));
             return upvals.size() - 1;
          }
       }
@@ -430,8 +416,7 @@ public final class LayeFunctionBuilder implements FunctionBuilder
    }
    
    /*
-    * private void addOp_SB(final int op, final int b) {
-    * code.add(Laye.SET_SB(op, b)); }
+    * private void addOp_SB(final int op, final int b) { code.add(Laye.SET_SB(op, b)); }
     */
    
    private void addOp_AB(final int op, final int a, final int b)
@@ -445,17 +430,13 @@ public final class LayeFunctionBuilder implements FunctionBuilder
    }
    
    /*
-    * private void addOp_ASB(final int op, final int a, final int b) {
-    * code.add(Laye.SET_SB(Laye.SET_A(op, a), b)); }
+    * private void addOp_ASB(final int op, final int a, final int b) { code.add(Laye.SET_SB(Laye.SET_A(op, a), b)); }
     * 
-    * private void addOp_SASB(final int op, final int a, final int b) {
-    * code.add(Laye.SET_SB(Laye.SET_SA(op, a), b)); }
+    * private void addOp_SASB(final int op, final int a, final int b) { code.add(Laye.SET_SB(Laye.SET_SA(op, a), b)); }
     * 
-    * private void addOp_C(final int op, final int c) { code.add(Laye.SET_C(op,
-    * c)); }
+    * private void addOp_C(final int op, final int c) { code.add(Laye.SET_C(op, c)); }
     * 
-    * private void addOp_SC(final int op, final int c) {
-    * code.add(Laye.SET_SC(op, c)); }
+    * private void addOp_SC(final int op, final int c) { code.add(Laye.SET_SC(op, c)); }
     */
    
    public void setOp_SA(final int idx, final int sa)
@@ -561,8 +542,7 @@ public final class LayeFunctionBuilder implements FunctionBuilder
    {
       if (operator.image.endsWith("="))
       {
-         throw new CompilerException(
-               "operators ending in '=' are reserved for assignment expressions.");
+         throw new CompilerException("operators ending in '=' are reserved for assignment expressions.");
       }
       switch (operator.image)
       {
@@ -585,8 +565,7 @@ public final class LayeFunctionBuilder implements FunctionBuilder
    {
       if (operator.image.endsWith("="))
       {
-         throw new CompilerException(
-               "operators ending in '=' are reserved for assignment expressions.");
+         throw new CompilerException("operators ending in '=' are reserved for assignment expressions.");
       }
       final int operatork = addConsts(operator.image);
       visitOpPostfix(operatork);
@@ -596,8 +575,7 @@ public final class LayeFunctionBuilder implements FunctionBuilder
    {
       if (operator.isAssignment())
       {
-         throw new CompilerException(
-               "operators ending in '=' are reserved for assignment expressions.");
+         throw new CompilerException("operators ending in '=' are reserved for assignment expressions.");
       }
       switch (operator.image)
       {

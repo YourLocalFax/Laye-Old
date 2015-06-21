@@ -20,15 +20,13 @@ public final class JavaMethod
    {
       if (method.isVarArgs())
       {
-         throw new LayeException(
-               "VarArgs methods are not supported currently.");
+         throw new LayeException("VarArgs methods are not supported currently.");
       }
-      final LayeTypeSignature sig = LayeTypeSignature.createTypeSignature(
-            method.getParameterTypes());
+      final LayeTypeSignature sig = LayeTypeSignature.createTypeSignature(method.getParameterTypes());
       if (methods.containsKey(sig))
       {
-         throw new LayeException("Signature for method " + method.toString()
-         + " conflicts with method " + methods.get(sig).toString());
+         throw new LayeException("Signature for method " + method.toString() + " conflicts with method "
+               + methods.get(sig).toString());
       }
       methods.put(sig, method);
    }
@@ -40,18 +38,15 @@ public final class JavaMethod
       final Method method = methods.get(sig);
       if (method == null)
       {
-         throw new LayeException(
-               "No suitable method found for argument types " + sig.toString());
+         throw new LayeException("No suitable method found for argument types " + sig.toString());
       }
       final Class<?>[] javaTypes = method.getParameterTypes();
-      final Object[] javaArgs = JUtil.toJavaObjectArrayFromArgs(sig, args,
-            javaTypes);
+      final Object[] javaArgs = JUtil.toJavaObjectArrayFromArgs(sig, args, javaTypes);
       try
       {
          return method.invoke(owner, javaArgs);
       }
-      catch (final IllegalAccessException | IllegalArgumentException
-            | InvocationTargetException e)
+      catch (final IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
       {
          e.printStackTrace();
          return null;

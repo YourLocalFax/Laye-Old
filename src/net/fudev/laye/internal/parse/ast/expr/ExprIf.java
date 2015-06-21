@@ -7,8 +7,7 @@ public final class ExprIf implements Expression
    public Expression condition;
    public Expression pass, fail;
    
-   public ExprIf(final Expression condition, final Expression pass,
-         final Expression fail)
+   public ExprIf(final Expression condition, final Expression pass, final Expression fail)
    {
       this.condition = condition;
       this.pass = pass;
@@ -16,8 +15,7 @@ public final class ExprIf implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       condition.accept(builder, true);
       

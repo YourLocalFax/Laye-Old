@@ -333,11 +333,9 @@ public final class LayeFloat extends LayeNumber
       switch (right.valueType)
       {
          case INT:
-            return value == ((LayeInt) right).value ? LayeValue.TRUE
-                  : LayeValue.FALSE;
+            return value == ((LayeInt) right).value ? LayeValue.TRUE : LayeValue.FALSE;
          case FLOAT:
-            return value == ((LayeFloat) right).value ? LayeValue.TRUE
-                  : LayeValue.FALSE;
+            return value == ((LayeFloat) right).value ? LayeValue.TRUE : LayeValue.FALSE;
          default:
             return LayeValue.FALSE;
       }
@@ -345,17 +343,17 @@ public final class LayeFloat extends LayeNumber
    
    // Less than
    
-   public @Override LayeBool lessThan(final LayeValue right)
+   public @Override LayeValue lessThan(final LayeValue right)
    {
       return right.greaterThan(value);
    }
    
-   public @Override LayeBool lessThan(final long right)
+   public @Override LayeValue lessThan(final long right)
    {
       return value < right ? LayeValue.TRUE : LayeValue.FALSE;
    }
    
-   public @Override LayeBool lessThan(final double right)
+   public @Override LayeValue lessThan(final double right)
    {
       return value < right ? LayeValue.TRUE : LayeValue.FALSE;
    }
@@ -377,17 +375,17 @@ public final class LayeFloat extends LayeNumber
    
    // Less than or Equal
    
-   public @Override LayeBool lessEqual(final LayeValue right)
+   public @Override LayeValue lessEqual(final LayeValue right)
    {
       return right.greaterEqual(value);
    }
    
-   public @Override LayeBool lessEqual(final long right)
+   public @Override LayeValue lessEqual(final long right)
    {
       return value < right ? LayeValue.TRUE : LayeValue.FALSE;
    }
    
-   public @Override LayeBool lessEqual(final double right)
+   public @Override LayeValue lessEqual(final double right)
    {
       return value < right ? LayeValue.TRUE : LayeValue.FALSE;
    }
@@ -409,17 +407,17 @@ public final class LayeFloat extends LayeNumber
    
    // Greater than
    
-   public @Override LayeBool greaterThan(final LayeValue right)
+   public @Override LayeValue greaterThan(final LayeValue right)
    {
       return right.lessThan(value);
    }
    
-   public @Override LayeBool greaterThan(final long right)
+   public @Override LayeValue greaterThan(final long right)
    {
       return value > right ? LayeValue.TRUE : LayeValue.FALSE;
    }
    
-   public @Override LayeBool greaterThan(final double right)
+   public @Override LayeValue greaterThan(final double right)
    {
       return value > right ? LayeValue.TRUE : LayeValue.FALSE;
    }
@@ -441,17 +439,17 @@ public final class LayeFloat extends LayeNumber
    
    // Greater than or Equal
    
-   public @Override LayeBool greaterEqual(final LayeValue right)
+   public @Override LayeValue greaterEqual(final LayeValue right)
    {
       return right.lessEqual(value);
    }
    
-   public @Override LayeBool greaterEqual(final long right)
+   public @Override LayeValue greaterEqual(final long right)
    {
       return value >= right ? LayeValue.TRUE : LayeValue.FALSE;
    }
    
-   public @Override LayeBool greaterEqual(final double right)
+   public @Override LayeValue greaterEqual(final double right)
    {
       return value >= right ? LayeValue.TRUE : LayeValue.FALSE;
    }

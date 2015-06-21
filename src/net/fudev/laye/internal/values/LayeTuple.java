@@ -17,8 +17,7 @@ public final class LayeTuple extends LayeValue
       return new LayeTuple(values, 0, values.length);
    }
    
-   public static LayeTuple valueOf(final LayeValue[] values, final int index,
-         final int count)
+   public static LayeTuple valueOf(final LayeValue[] values, final int index, final int count)
    {
       if (values.length < 2 || count < 2)
       {

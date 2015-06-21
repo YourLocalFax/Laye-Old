@@ -11,8 +11,7 @@ public final class StatLocalVariable implements Statement
    public final Vector<String> names;
    public final Vector<Expression> values;
    
-   public StatLocalVariable(final boolean con, final Vector<String> names,
-         final Vector<Expression> values)
+   public StatLocalVariable(final boolean con, final Vector<String> names, final Vector<Expression> values)
    {
       this.con = con;
       this.names = names;
@@ -20,8 +19,7 @@ public final class StatLocalVariable implements Statement
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       final int size = names.size(), sizem1 = size - 1;
       for (int i = 0; i < size; i++)

@@ -192,8 +192,7 @@ public class Vec2
    @LayeInfix(operator = "//")
    public Vec2 idiv(final Vec2 right)
    {
-      return new Vec2((int) this.x / (int) right.x,
-            (int) this.y / (int) right.y);
+      return new Vec2((int) this.x / (int) right.x, (int) this.y / (int) right.y);
    }
    
    // vecA // 2.0f

@@ -15,8 +15,7 @@ public final class ExprWhile implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       final int listLocal, pushMethodName;
       final int startLoc, test;

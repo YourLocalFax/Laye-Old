@@ -11,7 +11,36 @@ import net.fudev.laye.internal.lexical.Token;
 import net.fudev.laye.internal.lexical.TokenData;
 import net.fudev.laye.internal.parse.ast.ASTFunctionPrototype;
 import net.fudev.laye.internal.parse.ast.SyntaxNode;
-import net.fudev.laye.internal.parse.ast.expr.*;
+import net.fudev.laye.internal.parse.ast.expr.ExprAssign;
+import net.fudev.laye.internal.parse.ast.expr.ExprBlock;
+import net.fudev.laye.internal.parse.ast.expr.ExprDelSlot;
+import net.fudev.laye.internal.parse.ast.expr.ExprDeref;
+import net.fudev.laye.internal.parse.ast.expr.ExprFor;
+import net.fudev.laye.internal.parse.ast.expr.ExprFunction;
+import net.fudev.laye.internal.parse.ast.expr.ExprFunctionCall;
+import net.fudev.laye.internal.parse.ast.expr.ExprGetIndex;
+import net.fudev.laye.internal.parse.ast.expr.ExprGetVar;
+import net.fudev.laye.internal.parse.ast.expr.ExprIf;
+import net.fudev.laye.internal.parse.ast.expr.ExprInfix;
+import net.fudev.laye.internal.parse.ast.expr.ExprListCtor;
+import net.fudev.laye.internal.parse.ast.expr.ExprLiteralBool;
+import net.fudev.laye.internal.parse.ast.expr.ExprLiteralFloat;
+import net.fudev.laye.internal.parse.ast.expr.ExprLiteralInt;
+import net.fudev.laye.internal.parse.ast.expr.ExprLiteralNull;
+import net.fudev.laye.internal.parse.ast.expr.ExprLiteralString;
+import net.fudev.laye.internal.parse.ast.expr.ExprMatch;
+import net.fudev.laye.internal.parse.ast.expr.ExprMethodCall;
+import net.fudev.laye.internal.parse.ast.expr.ExprNewInstance;
+import net.fudev.laye.internal.parse.ast.expr.ExprNewSlot;
+import net.fudev.laye.internal.parse.ast.expr.ExprPostfix;
+import net.fudev.laye.internal.parse.ast.expr.ExprPrefix;
+import net.fudev.laye.internal.parse.ast.expr.ExprPrefixTypeof;
+import net.fudev.laye.internal.parse.ast.expr.ExprRef;
+import net.fudev.laye.internal.parse.ast.expr.ExprReturn;
+import net.fudev.laye.internal.parse.ast.expr.ExprTableCtor;
+import net.fudev.laye.internal.parse.ast.expr.ExprTupleCtor;
+import net.fudev.laye.internal.parse.ast.expr.ExprWhile;
+import net.fudev.laye.internal.parse.ast.expr.Expression;
 import net.fudev.laye.internal.parse.ast.stat.StatFunction;
 import net.fudev.laye.internal.parse.ast.stat.StatLocalFunction;
 import net.fudev.laye.internal.parse.ast.stat.StatLocalVariable;
@@ -146,8 +175,7 @@ public class LayeParser
    private void checkSemi(final String message)
    {
       peek();
-      if ((lastToken != Token.SEMI && lastToken != Token.END)
-            && !expect(Token.SEMI))
+      if (lastToken != Token.SEMI && lastToken != Token.END && !expect(Token.SEMI))
       {
          error(message);
       }
@@ -160,38 +188,38 @@ public class LayeParser
       boolean isStatic = false;
       
       loop:
-         while (true)
+      while (true)
+      {
+         switch (token)
          {
-            switch (token)
-            {
-               case LOC:
-                  if (isLocal)
-                  {
-                     error("cannot use a modifier twice.");
-                  }
-                  isLocal = true;
-                  lex(); // local
-                  break;
-               case MUT:
-                  if (isMutable)
-                  {
-                     error("cannot use a modifier twice.");
-                  }
-                  isMutable = true;
-                  lex(); // mut
-                  break;
-               case STAT:
-                  if (isStatic)
-                  {
-                     error("cannot use a modifier twice.");
-                  }
-                  isStatic = true;
-                  lex(); // static
-                  break;
-               default:
-                  break loop;
-            }
+            case LOC:
+               if (isLocal)
+               {
+                  error("cannot use a modifier twice.");
+               }
+               isLocal = true;
+               lex(); // local
+               break;
+            case MUT:
+               if (isMutable)
+               {
+                  error("cannot use a modifier twice.");
+               }
+               isMutable = true;
+               lex(); // mut
+               break;
+            case STAT:
+               if (isStatic)
+               {
+                  error("cannot use a modifier twice.");
+               }
+               isStatic = true;
+               lex(); // static
+               break;
+            default:
+               break loop;
          }
+      }
       
       return Modifiers.get(isLocal, isMutable, isStatic);
    }
@@ -439,9 +467,8 @@ public class LayeParser
    // ---------- EXPRESSIONS ---------- //
    
    /**
-    * Top level call for all expressions. This call will result in exactly one
-    * new value on the stack, always, as Laye expressions are guaranteed to have
-    * exactly one value.
+    * Top level call for all expressions. This call will result in exactly one new value on the stack, always, as Laye
+    * expressions are guaranteed to have exactly one value.
     */
    private Expression expression()
    {
@@ -469,8 +496,7 @@ public class LayeParser
       }
    }
    
-   private Vector<Expression> commaSeparatedExpressions(
-         final boolean allowTrailingComma)
+   private Vector<Expression> commaSeparatedExpressions(final boolean allowTrailingComma)
    {
       final Vector<Expression> exprs = new Vector<>();
       while (true)
@@ -601,8 +627,7 @@ public class LayeParser
                }
                case INT_LITERAL:
                {
-                  final Expression literal = new ExprLiteralInt(
-                        tokenData.integer);
+                  final Expression literal = new ExprLiteralInt(tokenData.integer);
                   lex(); // 'int'
                   args = new Vector<>();
                   args.add(literal);
@@ -610,8 +635,7 @@ public class LayeParser
                }
                case FLOAT_LITERAL:
                {
-                  final Expression literal = new ExprLiteralFloat(
-                        tokenData.fractional);
+                  final Expression literal = new ExprLiteralFloat(tokenData.fractional);
                   lex(); // 'float'
                   args = new Vector<>();
                   args.add(literal);
@@ -619,8 +643,7 @@ public class LayeParser
                }
                case STRING_LITERAL:
                {
-                  final Expression literal = new ExprLiteralString(
-                        tokenData.string);
+                  final Expression literal = new ExprLiteralString(tokenData.string);
                   lex(); // 'string'
                   args = new Vector<>();
                   args.add(literal);
@@ -686,8 +709,7 @@ public class LayeParser
          }
          case FLOAT_LITERAL:
          {
-            final Expression result = new ExprLiteralFloat(
-                  tokenData.fractional);
+            final Expression result = new ExprLiteralFloat(tokenData.fractional);
             lex(); // float_literal
             return result;
          }
@@ -732,8 +754,7 @@ public class LayeParser
       }
    }
    
-   private Expression postfix(final Expression target,
-         final boolean allowPostfixCall)
+   private Expression postfix(final Expression target, final boolean allowPostfixCall)
    {
       if (target == null)
       {
@@ -751,8 +772,7 @@ public class LayeParser
                lex(); // (
                final Vector<Expression> args = commaSeparatedExpressions(false);
                expect(Token.CLOSE_BRACKET);
-               return postfix(new ExprMethodCall(target, name, args),
-                     allowPostfixCall);
+               return postfix(new ExprMethodCall(target, name, args), allowPostfixCall);
             }
             else
             {
@@ -770,13 +790,11 @@ public class LayeParser
                lex(); // (
                final Vector<Expression> args = commaSeparatedExpressions(false);
                expect(Token.CLOSE_BRACKET);
-               return postfix(new ExprMethodCall(target, index, args),
-                     allowPostfixCall);
+               return postfix(new ExprMethodCall(target, index, args), allowPostfixCall);
             }
             else
             {
-               return postfix(new ExprGetIndex(target, index),
-                     allowPostfixCall);
+               return postfix(new ExprGetIndex(target, index), allowPostfixCall);
             }
          }
          case OPEN_BRACKET:
@@ -788,30 +806,25 @@ public class LayeParser
             lex(); // (
             final Vector<Expression> args = commaSeparatedExpressions(false);
             expect(Token.CLOSE_BRACKET);
-            return postfix(new ExprFunctionCall(target, args),
-                  allowPostfixCall);
+            return postfix(new ExprFunctionCall(target, args), allowPostfixCall);
          }
          case INT_LITERAL:
          {
             final Expression literal = new ExprLiteralInt(tokenData.integer);
             lex(); // 'int'
-            return postfix(new ExprFunctionCall(target, literal),
-                  allowPostfixCall);
+            return postfix(new ExprFunctionCall(target, literal), allowPostfixCall);
          }
          case FLOAT_LITERAL:
          {
-            final Expression literal = new ExprLiteralFloat(
-                  tokenData.fractional);
+            final Expression literal = new ExprLiteralFloat(tokenData.fractional);
             lex(); // 'float'
-            return postfix(new ExprFunctionCall(target, literal),
-                  allowPostfixCall);
+            return postfix(new ExprFunctionCall(target, literal), allowPostfixCall);
          }
          case STRING_LITERAL:
          {
             final Expression literal = new ExprLiteralString(tokenData.string);
             lex(); // 'string'
-            return postfix(new ExprFunctionCall(target, literal),
-                  allowPostfixCall);
+            return postfix(new ExprFunctionCall(target, literal), allowPostfixCall);
          }
          // as an operator, mind you
          case IDENT:
@@ -825,27 +838,21 @@ public class LayeParser
             {
                case INT_LITERAL:
                {
-                  final Expression literal = new ExprLiteralInt(
-                        tokenData.integer);
+                  final Expression literal = new ExprLiteralInt(tokenData.integer);
                   lex(); // 'int'
-                  return postfix(new ExprMethodCall(target, name, literal),
-                        allowPostfixCall);
+                  return postfix(new ExprMethodCall(target, name, literal), allowPostfixCall);
                }
                case FLOAT_LITERAL:
                {
-                  final Expression literal = new ExprLiteralFloat(
-                        tokenData.fractional);
+                  final Expression literal = new ExprLiteralFloat(tokenData.fractional);
                   lex(); // 'float'
-                  return postfix(new ExprMethodCall(target, name, literal),
-                        allowPostfixCall);
+                  return postfix(new ExprMethodCall(target, name, literal), allowPostfixCall);
                }
                case STRING_LITERAL:
                {
-                  final Expression literal = new ExprLiteralString(
-                        tokenData.string);
+                  final Expression literal = new ExprLiteralString(tokenData.string);
                   lex(); // 'string'
-                  return postfix(new ExprMethodCall(target, name, literal),
-                        allowPostfixCall);
+                  return postfix(new ExprMethodCall(target, name, literal), allowPostfixCall);
                }
                default:
                   // TODO how do we handle this..?
@@ -879,15 +886,13 @@ public class LayeParser
          Expression right;
          if ((right = primaryExpression()) != null)
          {
-            while (token == Token.OPERATOR
-                  && tokenData.operator.precedence > op.precedence)
+            while (token == Token.OPERATOR && tokenData.operator.precedence > op.precedence)
             {
                right = factorRHS(tokenData.operator.precedence, right);
             }
             if (op.isAssignment())
             {
-               left = new ExprAssign(left,
-                     new ExprInfix(left, right, op.infixFromAssignment()));
+               left = new ExprAssign(left, new ExprInfix(left, right, op.infixFromAssignment()));
             }
             else
             {
@@ -941,8 +946,8 @@ public class LayeParser
          fail = null;
       }
       
-      return new ExprIf(condition, pass == null ? new ExprLiteralNull() : pass,
-            fail == null ? new ExprLiteralNull() : fail);
+      return new ExprIf(condition, pass == null ? new ExprLiteralNull() : pass, fail == null ? new ExprLiteralNull()
+            : fail);
    }
    
    private ExprFor exprFor()

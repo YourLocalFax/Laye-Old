@@ -4,9 +4,7 @@ public final class Logger
 {
    public static enum LoggerLevel
    {
-      NONE(0),
-      ERROR(1),
-      DEBUG(2);
+      NONE(0), ERROR(1), DEBUG(2);
       
       final int level;
       
@@ -32,8 +30,7 @@ public final class Logger
       return Logger.level;
    }
    
-   private static void log(final LoggerLevel at, final String group,
-         final String message)
+   private static void log(final LoggerLevel at, final String group, final String message)
    {
       if (at.level <= Logger.level.level)
       {

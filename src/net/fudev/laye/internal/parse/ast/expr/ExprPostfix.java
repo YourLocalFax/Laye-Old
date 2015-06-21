@@ -15,8 +15,7 @@ public class ExprPostfix implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       value.accept(builder, true);
       builder.visitPostfixExpr(op);

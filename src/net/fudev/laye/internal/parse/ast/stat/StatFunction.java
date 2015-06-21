@@ -14,8 +14,7 @@ public final class StatFunction implements Statement
    public Expression name;
    public ASTFunctionPrototype prototype;
    
-   public StatFunction(final boolean gen, final boolean isConst,
-         final Expression name,
+   public StatFunction(final boolean gen, final boolean isConst, final Expression name,
          final ASTFunctionPrototype prototype)
    {
       this.gen = gen;
@@ -25,8 +24,7 @@ public final class StatFunction implements Statement
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       name.accept(builder, true);
       

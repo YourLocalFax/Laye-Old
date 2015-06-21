@@ -15,8 +15,7 @@ public class ExprNewSlot implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       // leave a value so we can check the instruction.
       index.accept(builder, true);
@@ -24,8 +23,7 @@ public class ExprNewSlot implements Expression
       if (Laye.GET_OP(lastOp) != Laye.OP_GET_INDEX)
       {
          // TODO better error messages
-         throw new CompilerException(
-               "Can only new-slot a variable or table field.");
+         throw new CompilerException("Can only new-slot a variable or table field.");
       }
       
       // undo the GET_INDEX

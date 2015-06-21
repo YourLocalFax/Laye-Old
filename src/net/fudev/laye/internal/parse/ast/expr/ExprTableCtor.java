@@ -14,8 +14,7 @@ public class ExprTableCtor implements Expression
    {
    }
    
-   public void addEntry(final Expression key, final Expression value,
-         final boolean con)
+   public void addEntry(final Expression key, final Expression value, final boolean con)
    {
       keys.addElement(key);
       values.addElement(value);
@@ -23,8 +22,7 @@ public class ExprTableCtor implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       if (isResultRequired)
       {

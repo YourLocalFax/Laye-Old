@@ -35,20 +35,18 @@ public class LayeJavaType extends LayeValue
       return type;
    }
    
-   private static void addMethod(final Method method,
-         final LayeMethod methodAnnot, final Map<String, JavaMethod> methods)
+   private static void addMethod(final Method method, final LayeMethod methodAnnot,
+         final Map<String, JavaMethod> methods)
    {
       final int modifiers = method.getModifiers();
       final boolean isPublic = Modifier.isPublic(modifiers);
       if (!isPublic)
       {
-         throw new LayeException("Method " + method.getName()
-         + " must be public to be exposed to Laye.");
+         throw new LayeException("Method " + method.getName() + " must be public to be exposed to Laye.");
       }
       
       // Method name
-      final String name = methodAnnot.name().isEmpty() ? method.getName()
-            : methodAnnot.name();
+      final String name = methodAnnot.name().isEmpty() ? method.getName() : methodAnnot.name();
       
       JavaMethod javaMethod = methods.get(name);
       if (javaMethod == null)
@@ -59,15 +57,13 @@ public class LayeJavaType extends LayeValue
       javaMethod.addMethod(method);
    }
    
-   private static void addOperator(final Method method,
-         final String operator, final Map<String, JavaMethod> operators)
+   private static void addOperator(final Method method, final String operator, final Map<String, JavaMethod> operators)
    {
       final int modifiers = method.getModifiers();
       final boolean isPublic = Modifier.isPublic(modifiers);
       if (!isPublic)
       {
-         throw new LayeException("Method " + method.getName()
-         + " must be public to be exposed to Laye.");
+         throw new LayeException("Method " + method.getName() + " must be public to be exposed to Laye.");
       }
       
       JavaMethod javaMethod = operators.get(operator);
@@ -98,28 +94,24 @@ public class LayeJavaType extends LayeValue
       final LayeType typeAnnot = value.getDeclaredAnnotation(LayeType.class);
       if (typeAnnot == null)
       {
-         throw new LayeException(
-               "Class must be tagged with the @LayeType annotation.");
+         throw new LayeException("Class must be tagged with the @LayeType annotation.");
       }
       
       // Gather methods (instance and static) TODO instance methods
       for (final Method method : value.getMethods())
       {
-         final LayeMethod methodAnnot = method
-               .getDeclaredAnnotation(LayeMethod.class);
+         final LayeMethod methodAnnot = method.getDeclaredAnnotation(LayeMethod.class);
          // final LayePrefix prefixAnnot = method
          // .getDeclaredAnnotation(LayePrefix.class);
          // final LayePostfix postfixAnnot = method
          // .getDeclaredAnnotation(LayePostfix.class);
-         final LayeInfix infixAnnot = method
-               .getDeclaredAnnotation(LayeInfix.class);
+         final LayeInfix infixAnnot = method.getDeclaredAnnotation(LayeInfix.class);
          
          final int modifiers = method.getModifiers();
          if (methodAnnot != null)
          {
             final boolean isStatic = Modifier.isStatic(modifiers);
-            addMethod(method, methodAnnot,
-                  isStatic ? staticMethods : instanceMethods);
+            addMethod(method, methodAnnot, isStatic ? staticMethods : instanceMethods);
          }
          else if (infixAnnot != null)
          {
@@ -130,8 +122,7 @@ public class LayeJavaType extends LayeValue
       // Gather methods (instance and static) TODO instance methods
       for (final Constructor<?> ctor : value.getConstructors())
       {
-         final LayeCtor methodAnnot = ctor
-               .getDeclaredAnnotation(LayeCtor.class);
+         final LayeCtor methodAnnot = ctor.getDeclaredAnnotation(LayeCtor.class);
          if (methodAnnot == null)
          {
             continue;
@@ -141,13 +132,11 @@ public class LayeJavaType extends LayeValue
          final boolean isPublic = Modifier.isPublic(modifiers);
          if (!isPublic)
          {
-            throw new LayeException("Constructor " + ctor.getName()
-            + " must be public to be exposed to Laye.");
+            throw new LayeException("Constructor " + ctor.getName() + " must be public to be exposed to Laye.");
          }
          
          // Method name
-         final String name = methodAnnot.name().isEmpty() ? "<default>"
-               : methodAnnot.name();
+         final String name = methodAnnot.name().isEmpty() ? "<default>" : methodAnnot.name();
          
          // TODO use a vector so we can check more methods of the same name
          JavaCtor javaMethod = constructors.get(name);
@@ -179,8 +168,7 @@ public class LayeJavaType extends LayeValue
    }
    
    @Override
-   public LayeValue callChildMethod(final LayeValue name,
-         final LayeValue... args)
+   public LayeValue callChildMethod(final LayeValue name, final LayeValue... args)
    {
       final String methodName = name.asstring();
       final JavaMethod method = staticMethods.get(methodName);

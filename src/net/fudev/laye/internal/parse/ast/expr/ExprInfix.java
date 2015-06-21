@@ -8,8 +8,7 @@ public class ExprInfix implements Expression
    public Expression left, right;
    public Operator op;
    
-   public ExprInfix(final Expression left, final Expression right,
-         final Operator op)
+   public ExprInfix(final Expression left, final Expression right, final Operator op)
    {
       this.left = left;
       this.right = right;
@@ -17,8 +16,7 @@ public class ExprInfix implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       left.accept(builder, true);
       right.accept(builder, true);

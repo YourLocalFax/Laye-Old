@@ -51,67 +51,25 @@ public enum Token
    
    // Keyword operators
    
-   AND,
-   OR,
-   XOR,
-   NAND,
-   NOR,
-   XNOR,
-   NOT,
-   REF,
-   DEREF,
-   DELETE,
-   TYPEOF,
-   NOT_TYPEOF,
+   AND, OR, XOR, NAND, NOR, XNOR, NOT, REF, DEREF, DELETE, TYPEOF, NOT_TYPEOF,
    
    // Literals
    
-   INT_LITERAL,
-   FLOAT_LITERAL,
-   STRING_LITERAL,
-   TRUE,
-   FALSE,
-   NULL,
+   INT_LITERAL, FLOAT_LITERAL, STRING_LITERAL, TRUE, FALSE, NULL,
    
    // Modifiers
    
-   LOC,
-   MUT,
-   STAT,
+   LOC, MUT, STAT,
    
    // Object keywords
    
-   FN,
-   GEN,
-   TYPE,
+   FN, GEN, TYPE,
    
    // Type-related keywords
    
-   HAS,
-   CTOR,
-   PREFIX,
-   POSTFIX,
-   INFIX,
-   NEW,
+   HAS, CTOR, PREFIX, POSTFIX, INFIX, NEW,
    
    // Control flow keywords
    
-   IF,
-   EL,
-   FOR,
-   EACH,
-   TO,
-   BY,
-   IN,
-   WHILE,
-   TAKE,
-   MATCH,
-   CASE,
-   RET,
-   BREAK,
-   CONT,
-   RESUME,
-   YIELD,
-   DO,
-   END,
+   IF, EL, FOR, EACH, TO, BY, IN, WHILE, TAKE, MATCH, CASE, RET, BREAK, CONT, RESUME, YIELD, DO, END,
 }

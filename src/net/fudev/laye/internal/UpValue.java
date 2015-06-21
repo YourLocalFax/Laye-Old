@@ -43,9 +43,7 @@ public final class UpValue
    public void close()
    {
       final LayeValue[] old = values;
-      values = new LayeValue[] {
-            old[index]
-      };
+      values = new LayeValue[] { old[index] };
       old[index] = null;
       index = 0;
    }

@@ -8,12 +8,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to be placed on class constructors. When that class is sent to
- * Laye as a type, this annotation is used to provide the correct implementation
- * details.
+ * Annotation to be placed on class constructors. When that class is sent to Laye as a type, this annotation is used to
+ * provide the correct implementation details.
  * 
- * Methods may be tagged with this annotation multiple times to generate
- * multiple operators.
+ * Methods may be tagged with this annotation multiple times to generate multiple operators.
  * 
  * 
  * @author YourLocalFax

@@ -9,16 +9,12 @@ public final class Modifiers
    public static final Modifiers STATIC = new Modifiers(false, false, true);
    
    public static final Modifiers LOCAL_CONST = new Modifiers(true, true, false);
-   public static final Modifiers LOCAL_STATIC = new Modifiers(true, false,
-         true);
-   public static final Modifiers STATIC_CONST = new Modifiers(false, true,
-         true);
-         
-   public static final Modifiers LOCAL_STATIC_CONST = new Modifiers(true, true,
-         true);
-         
-   public static Modifiers get(final boolean isLocal, final boolean isConst,
-         final boolean isStatic)
+   public static final Modifiers LOCAL_STATIC = new Modifiers(true, false, true);
+   public static final Modifiers STATIC_CONST = new Modifiers(false, true, true);
+   
+   public static final Modifiers LOCAL_STATIC_CONST = new Modifiers(true, true, true);
+   
+   public static Modifiers get(final boolean isLocal, final boolean isConst, final boolean isStatic)
    {
       if (isLocal)
       {

@@ -7,9 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to be placed on class constructors. When that class is sent to
- * Laye as a type, this annotation is used to provide the correct implementation
- * details.
+ * Annotation to be placed on class constructors. When that class is sent to Laye as a type, this annotation is used to
+ * provide the correct implementation details.
  * 
  * @author YourLocalFax
  */
@@ -19,9 +18,8 @@ import java.lang.annotation.Target;
 public @interface LayeCtor
 {
    /**
-    * The name of this constructor in the Laye exposed type. If no name is
-    * provided, the constructor is used as a default constructor. Names must
-    * comply with Laye's identifiers.
+    * The name of this constructor in the Laye exposed type. If no name is provided, the constructor is used as a
+    * default constructor. Names must comply with Laye's identifiers.
     */
    String name() default "";
 }

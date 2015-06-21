@@ -10,8 +10,7 @@ public final class UpValueInfo
    public int type;
    public boolean isConst;
    
-   public UpValueInfo(final String name, final int pos, final int type,
-         final boolean isConst)
+   public UpValueInfo(final String name, final int pos, final int type, final boolean isConst)
    {
       this.name = name;
       this.pos = pos;
@@ -30,7 +29,7 @@ public final class UpValueInfo
       final int prime = 31;
       int result = 1;
       result = prime * result + (isConst ? 1231 : 1237);
-      result = prime * result + ((name == null) ? 0 : name.hashCode());
+      result = prime * result + (name == null ? 0 : name.hashCode());
       result = prime * result + pos;
       result = prime * result + type;
       return result;

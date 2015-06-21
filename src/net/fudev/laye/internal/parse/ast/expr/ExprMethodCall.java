@@ -10,16 +10,14 @@ public class ExprMethodCall implements Expression
    public Expression name;
    public Vector<Expression> args;
    
-   public ExprMethodCall(final Expression value, final Expression name,
-         final Vector<Expression> args)
+   public ExprMethodCall(final Expression value, final Expression name, final Vector<Expression> args)
    {
       this.value = value;
       this.name = name;
       this.args = args;
    }
    
-   public ExprMethodCall(final Expression value, final Expression name,
-         final Expression arg)
+   public ExprMethodCall(final Expression value, final Expression name, final Expression arg)
    {
       this.value = value;
       this.name = name;
@@ -28,8 +26,7 @@ public class ExprMethodCall implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       value.accept(builder, true);
       name.accept(builder, true);

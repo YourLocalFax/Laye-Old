@@ -15,8 +15,7 @@ public final class Laye
    
    public static final int VERSION_NUMBER = 00_0_01;
    
-   public static final String VERSION = Laye.NAME + " " + Laye.VERSION_STRING
-         + " " + Laye.BUILD;
+   public static final String VERSION = Laye.NAME + " " + Laye.VERSION_STRING + " " + Laye.BUILD;
    
    // ---------- Constants ---------- //
    
@@ -33,29 +32,24 @@ public final class Laye
    /** The bit width of argument B and its signed counterpart */
    public static final int SIZE_B = 8;
    /**
-    * The bit width of argument C (a combination of A and B) and its signed
-    * counterpart
+    * The bit width of argument C (a combination of A and B) and its signed counterpart
     */
    public static final int SIZE_C = Laye.SIZE_A + Laye.SIZE_B;
    
    /**
-    * How many bits left, from the right-most bit of the instruction, the op
-    * code starts
+    * How many bits left, from the right-most bit of the instruction, the op code starts
     */
    public static final int POS_OP = 0;
    /**
-    * How many bits left, from the right-most bit of the instruction, argument B
-    * and its signed counterpart start
+    * How many bits left, from the right-most bit of the instruction, argument B and its signed counterpart start
     */
    public static final int POS_B = Laye.SIZE_OP;
    /**
-    * How many bits left, from the right-most bit of the instruction, argument A
-    * and its signed counterpart start
+    * How many bits left, from the right-most bit of the instruction, argument A and its signed counterpart start
     */
    public static final int POS_A = Laye.POS_B + Laye.SIZE_B;
    /**
-    * How many bits left, from the right-most bit of the instruction, argument C
-    * and its signed counterpart start
+    * How many bits left, from the right-most bit of the instruction, argument C and its signed counterpart start
     */
    public static final int POS_C = Laye.POS_B;
    
@@ -92,18 +86,15 @@ public final class Laye
    /** The bit-mask used to get everything but the op code */
    public static final int MASK_NOT_OP = ~Laye.MASK_OP;
    /**
-    * The bit-mask used to get everything but argument A or its signed
-    * counterpart
+    * The bit-mask used to get everything but argument A or its signed counterpart
     */
    public static final int MASK_NOT_A = ~Laye.MASK_A;
    /**
-    * The bit-mask used to get everything but argument B or its signed
-    * counterpart
+    * The bit-mask used to get everything but argument B or its signed counterpart
     */
    public static final int MASK_NOT_B = ~Laye.MASK_B;
    /**
-    * The bit-mask used to get everything but argument C or its signed
-    * counterpart
+    * The bit-mask used to get everything but argument C or its signed counterpart
     */
    public static final int MASK_NOT_C = ~Laye.MASK_C;
    
@@ -114,7 +105,7 @@ public final class Laye
     */
    public static int GET_OP(final int i)
    {
-      return (i >>> Laye.POS_OP) & Laye.MAX_OP;
+      return i >>> Laye.POS_OP & Laye.MAX_OP;
    }
    
    /**
@@ -122,7 +113,7 @@ public final class Laye
     */
    public static int GET_A(final int i)
    {
-      return (i >>> Laye.POS_A) & Laye.MAX_A;
+      return i >>> Laye.POS_A & Laye.MAX_A;
    }
    
    /**
@@ -130,7 +121,7 @@ public final class Laye
     */
    public static int GET_SA(final int i)
    {
-      return ((i >>> Laye.POS_A) & Laye.MAX_A) + Laye.MIN_SA;
+      return (i >>> Laye.POS_A & Laye.MAX_A) + Laye.MIN_SA;
    }
    
    /**
@@ -138,7 +129,7 @@ public final class Laye
     */
    public static int GET_B(final int i)
    {
-      return (i >>> Laye.POS_B) & Laye.MAX_B;
+      return i >>> Laye.POS_B & Laye.MAX_B;
    }
    
    /**
@@ -146,7 +137,7 @@ public final class Laye
     */
    public static int GET_SB(final int i)
    {
-      return ((i >>> Laye.POS_B) & Laye.MAX_B) + Laye.MIN_SB;
+      return (i >>> Laye.POS_B & Laye.MAX_B) + Laye.MIN_SB;
    }
    
    /**
@@ -154,7 +145,7 @@ public final class Laye
     */
    public static int GET_C(final int i)
    {
-      return (i >>> Laye.POS_C) & Laye.MAX_C;
+      return i >>> Laye.POS_C & Laye.MAX_C;
    }
    
    /**
@@ -162,16 +153,15 @@ public final class Laye
     */
    public static int GET_SC(final int i)
    {
-      return ((i >>> Laye.POS_C) & Laye.MAX_C) + Laye.MIN_SC;
+      return (i >>> Laye.POS_C & Laye.MAX_C) + Laye.MIN_SC;
    }
    
    /**
-    * @return the given instruction with the operation code set to the given
-    *         argument
+    * @return the given instruction with the operation code set to the given argument
     */
    public static int SET_OP(final int i, final int arg)
    {
-      return (i & Laye.MASK_NOT_OP) | ((arg & Laye.MAX_OP) << Laye.POS_OP);
+      return i & Laye.MASK_NOT_OP | (arg & Laye.MAX_OP) << Laye.POS_OP;
    }
    
    /**
@@ -179,17 +169,15 @@ public final class Laye
     */
    public static int SET_A(final int i, final int arg)
    {
-      return (i & Laye.MASK_NOT_A) | ((arg & Laye.MAX_A) << Laye.POS_A);
+      return i & Laye.MASK_NOT_A | (arg & Laye.MAX_A) << Laye.POS_A;
    }
    
    /**
-    * @return the given instruction with argument A, signed, set to the given
-    *         argument
+    * @return the given instruction with argument A, signed, set to the given argument
     */
    public static int SET_SA(final int i, final int arg)
    {
-      return (i & Laye.MASK_NOT_A)
-            | (((arg - Laye.MIN_SA) & Laye.MAX_A) << Laye.POS_A);
+      return i & Laye.MASK_NOT_A | (arg - Laye.MIN_SA & Laye.MAX_A) << Laye.POS_A;
    }
    
    /**
@@ -197,17 +185,15 @@ public final class Laye
     */
    public static int SET_B(final int i, final int arg)
    {
-      return (i & Laye.MASK_NOT_B) | ((arg & Laye.MAX_B) << Laye.POS_B);
+      return i & Laye.MASK_NOT_B | (arg & Laye.MAX_B) << Laye.POS_B;
    }
    
    /**
-    * @return the given instruction with argument B, signed, set to the given
-    *         argument
+    * @return the given instruction with argument B, signed, set to the given argument
     */
    public static int SET_SB(final int i, final int arg)
    {
-      return (i & Laye.MASK_NOT_B)
-            | (((arg - Laye.MIN_SB) & Laye.MAX_B) << Laye.POS_B);
+      return i & Laye.MASK_NOT_B | (arg - Laye.MIN_SB & Laye.MAX_B) << Laye.POS_B;
    }
    
    /**
@@ -215,17 +201,15 @@ public final class Laye
     */
    public static int SET_C(final int i, final int arg)
    {
-      return (i & Laye.MASK_NOT_C) | ((arg & Laye.MAX_C) << Laye.POS_C);
+      return i & Laye.MASK_NOT_C | (arg & Laye.MAX_C) << Laye.POS_C;
    }
    
    /**
-    * @return the given instruction with argument C, signed, set to the given
-    *         argument
+    * @return the given instruction with argument C, signed, set to the given argument
     */
    public static int SET_SC(final int i, final int arg)
    {
-      return (i & Laye.MASK_NOT_C)
-            | (((arg - Laye.MIN_SC) & Laye.MAX_C) << Laye.POS_C);
+      return i & Laye.MASK_NOT_C | (arg - Laye.MIN_SC & Laye.MAX_C) << Laye.POS_C;
    }
    
    // ---------- Operation Codes ---------- //
@@ -280,8 +264,8 @@ public final class Laye
     */
    public static final int OP_STORE = 0x05;
    /**
-    * Creates a new slot in STK[TOP - 3] with the key STK[TOP - 2] and value
-    * STK[TOP - 1]. If A is not zero, the slot is made constant.
+    * Creates a new slot in STK[TOP - 3] with the key STK[TOP - 2] and value STK[TOP - 1]. If A is not zero, the slot is
+    * made constant.
     * 
     * <pre>
     * [-2] NEW_SLOT(A)<br/>STK[TOP - 3].newSlot(STK[TOP - 2], STK[TOP - 1]);<br/>STK[TOP - 3] = STK[TOP - 1];
@@ -289,9 +273,8 @@ public final class Laye
     */
    public static final int OP_NEW_SLOT = 0x06;
    /**
-    * Deletes a slot in STK[top - 2] with the key STK[TOP - 1]. The value that
-    * was previously stored in that slot is pushed to the stack. If no slot
-    * existed, null is pushed instead.
+    * Deletes a slot in STK[top - 2] with the key STK[TOP - 1]. The value that was previously stored in that slot is
+    * pushed to the stack. If no slot existed, null is pushed instead.
     * 
     * <pre>
     * [-1] DEL_SLOT()<br/>STK[TOP - 2] = STK[TOP - 2].delSlot(STK[--TOP]);
@@ -315,8 +298,7 @@ public final class Laye
     */
    public static final int OP_SET_UP = 0x09;
    /**
-    * Gets a value at the key STK[TOP - 1] from value STK[TOP - 2] and pushes it
-    * to the stack.
+    * Gets a value at the key STK[TOP - 1] from value STK[TOP - 2] and pushes it to the stack.
     * 
     * <pre>
     * [-1] GET_INDEX()<br/>STK[TOP - 2] = STK[TOP - 2].get(STK[TOP - 1])
@@ -324,8 +306,8 @@ public final class Laye
     */
    public static final int OP_GET_INDEX = 0x0A;
    /**
-    * Sets a value at they key STK[TOP - 2] from the value STK[TOP - 3] to
-    * STK[TOP - 1] and leaves that value on the stack.
+    * Sets a value at they key STK[TOP - 2] from the value STK[TOP - 3] to STK[TOP - 1] and leaves that value on the
+    * stack.
     * 
     * <pre>
     * [-2] SET_INDEX()<br/>STK[TOP - 3].set(STK[TOP - 2], STK[TOP - 1]);<br/>STK[TOP - 3] = STK[TOP - 1];<br/>TOP -= 2;
@@ -341,8 +323,7 @@ public final class Laye
     */
    public static final int OP_LOAD_CONST = 0x0C;
    /**
-    * Loads a bool constant to the stack: <code>true</code> if A != 0,
-    * <code>false</code> otherwise.
+    * Loads a bool constant to the stack: <code>true</code> if A != 0, <code>false</code> otherwise.
     * 
     * <pre>
     * [1] LOAD_BOOL(A)<br/>STK[TOP++] = A != 0;

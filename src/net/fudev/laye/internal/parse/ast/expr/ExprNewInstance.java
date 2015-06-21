@@ -10,8 +10,7 @@ public class ExprNewInstance implements Expression
    public String name;
    public Vector<Expression> args;
    
-   public ExprNewInstance(final Expression type, final String name,
-         final Vector<Expression> args)
+   public ExprNewInstance(final Expression type, final String name, final Vector<Expression> args)
    {
       this.type = type;
       this.name = name;
@@ -19,8 +18,7 @@ public class ExprNewInstance implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       if (isResultRequired)
       {

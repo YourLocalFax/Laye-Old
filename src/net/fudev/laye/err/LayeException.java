@@ -16,25 +16,19 @@ public class LayeException extends RuntimeException
       return new LayeException(entryName + " is a const entry.");
    }
    
-   public static LayeException invalidTypeComparison(final ValueType left,
-         final ValueType right)
+   public static LayeException invalidTypeComparison(final ValueType left, final ValueType right)
    {
-      return new LayeException("attempt to compare type " + left.type
-            + " with type " + right.type + ".");
+      return new LayeException("attempt to compare type " + left.type + " with type " + right.type + ".");
    }
    
-   public static LayeException invalidTypeConversion(final ValueType left,
-         final ValueType right)
+   public static LayeException invalidTypeConversion(final ValueType left, final ValueType right)
    {
-      return new LayeException("attempt to convert from type " + left.type
-            + " to type " + right.type + ".");
+      return new LayeException("attempt to convert from type " + left.type + " to type " + right.type + ".");
    }
    
-   public static LayeException unexpectedType(final ValueType left,
-         final ValueType right)
+   public static LayeException unexpectedType(final ValueType left, final ValueType right)
    {
-      return new LayeException(
-            "expected type " + right.type + ", got type " + left.type + ".");
+      return new LayeException("expected type " + right.type + ", got type " + left.type + ".");
    }
    
    public static LayeException unsupportedOperation(final String operation)

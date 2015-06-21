@@ -9,8 +9,7 @@ public class ExprFunctionCall implements Expression
    public Expression value;
    public Vector<Expression> args;
    
-   public ExprFunctionCall(final Expression value,
-         final Vector<Expression> args)
+   public ExprFunctionCall(final Expression value, final Vector<Expression> args)
    {
       this.value = value;
       this.args = args;
@@ -24,8 +23,7 @@ public class ExprFunctionCall implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       value.accept(builder, true);
       for (final Expression arg : args)

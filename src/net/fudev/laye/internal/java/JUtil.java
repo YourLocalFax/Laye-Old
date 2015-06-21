@@ -10,8 +10,8 @@ import net.fudev.laye.internal.values.LayeValue;
 
 public final class JUtil
 {
-   static Object[] toJavaObjectArrayFromArgs(final LayeTypeSignature sig,
-         final LayeValue[] args, final Class<?>[] javaTypes)
+   static Object[] toJavaObjectArrayFromArgs(final LayeTypeSignature sig, final LayeValue[] args,
+         final Class<?>[] javaTypes)
    {
       final Object[] javaArgs = new Object[args.length];
       for (int i = 0; i < args.length; i++)
@@ -23,8 +23,7 @@ public final class JUtil
       return javaArgs;
    }
    
-   static Object toJavaObject(final ValueType type,
-         final Class<?> javaType, final LayeValue arg)
+   static Object toJavaObject(final ValueType type, final Class<?> javaType, final LayeValue arg)
    {
       switch (type)
       {

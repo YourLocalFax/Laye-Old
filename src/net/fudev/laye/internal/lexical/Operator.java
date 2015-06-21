@@ -27,8 +27,7 @@ public final class Operator
    /**
     * @param symbol
     *           The symbol in question
-    * @return <code>true</code> for all valid operator symbols,
-    *         <code>false</code> otherwise.
+    * @return <code>true</code> for all valid operator symbols, <code>false</code> otherwise.
     */
    public static boolean isValidOperatorSymbol(final char symbol)
    {
@@ -58,22 +57,16 @@ public final class Operator
    
    static
    {
-      final String[] defaultOperators = {
-            "+", "-", "*", "/", "//", "%", "^", "+=", "-=", "*=", "/=", "//=",
-            "%=", "^=", "&", "|", "~", "<<", ">>",
-            ">>>", "<>", "&=", "|=", "~=", "<<=", ">>=", ">>>=", "<>=", "==",
-            "!=", "<", "<=", ">", ">=", "<=>", "<-",
-            "=",
-      };
+      final String[] defaultOperators = { "+", "-", "*", "/", "//", "%", "^", "+=", "-=", "*=", "/=", "//=", "%=",
+            "^=", "&", "|", "~", "<<", ">>", ">>>", "<>", "&=", "|=", "~=", "<<=", ">>=", ">>>=", "<>=", "==", "!=",
+            "<", "<=", ">", ">=", "<=>", "<-", "=", };
       for (final String operator : defaultOperators)
       {
          for (final char c : operator.toCharArray())
          {
             if (!Operator.isValidOperatorSymbol(c))
             {
-               throw new IllegalArgumentException(
-                     "operator contains an invalid operator token, '" + c
-                           + "'");
+               throw new IllegalArgumentException("operator contains an invalid operator token, '" + c + "'");
             }
          }
          Operator.get(operator);
@@ -90,9 +83,8 @@ public final class Operator
    }
    
    /**
-    * Used to determine if a given operator can be overloaded. This returns
-    * false for any operator ending with <code>=</code>, as Laye reserves those
-    * for translation to assignment operations, and for the new-slot operator
+    * Used to determine if a given operator can be overloaded. This returns false for any operator ending with
+    * <code>=</code>, as Laye reserves those for translation to assignment operations, and for the new-slot operator
     * <code>&lt;-</code>
     *
     * @param operator
@@ -121,7 +113,7 @@ public final class Operator
          case ">": // is translated to {not (a <= b)}
          case "=": // covered by endsWith('='), but left here for clarity
          case ">=": // see >, covered by endsWith('='), but left here for
-                    // clarity
+            // clarity
             return false;
          default:
             return true;

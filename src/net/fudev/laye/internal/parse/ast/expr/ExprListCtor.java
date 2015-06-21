@@ -14,8 +14,7 @@ public class ExprListCtor implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       if (isResultRequired)
       {

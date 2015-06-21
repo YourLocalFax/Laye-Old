@@ -14,8 +14,7 @@ public class ExprBlock implements Expression
    }
    
    @Override
-   public void accept(final LayeFunctionBuilder builder,
-         final boolean isResultRequired)
+   public void accept(final LayeFunctionBuilder builder, final boolean isResultRequired)
    {
       builder.startBlock();
       final int size = nodes.size(), sizem1 = size - 1;

@@ -31,7 +31,7 @@ public class LayeTable extends LayeValue
          final int prime = 31;
          int result = 1;
          result = prime * result + (isConst ? 1231 : 1237);
-         result = prime * result + ((value == null) ? 0 : value.hashCode());
+         result = prime * result + (value == null ? 0 : value.hashCode());
          return result;
       }
       
@@ -150,8 +150,7 @@ public class LayeTable extends LayeValue
    }
    
    @Override
-   public LayeValue callChildMethod(final LayeValue key,
-         final LayeValue... args)
+   public LayeValue callChildMethod(final LayeValue key, final LayeValue... args)
    {
       return callChildMethod(key.asstring(), args);
    }
@@ -168,14 +167,12 @@ public class LayeTable extends LayeValue
       newSlotMutable(key.asstring(), value);
    }
    
-   public void newSlotMutable(final LayeValue key, final Root root,
-         final LayeJavaFunction.Function value)
+   public void newSlotMutable(final LayeValue key, final Root root, final LayeJavaFunction.Function value)
    {
       newSlotMutable(key.asstring(), LayeJavaFunction.create(root, value));
    }
    
-   public void newSlotMutable(final String key, final Root root,
-         final LayeJavaFunction.Function value)
+   public void newSlotMutable(final String key, final Root root, final LayeJavaFunction.Function value)
    {
       newSlotMutable(key, LayeJavaFunction.create(root, value));
    }
@@ -196,14 +193,12 @@ public class LayeTable extends LayeValue
       newSlot(key.asstring(), value);
    }
    
-   public void newSlot(final LayeValue key, final Root root,
-         final LayeJavaFunction.Function value)
+   public void newSlot(final LayeValue key, final Root root, final LayeJavaFunction.Function value)
    {
       newSlot(key.asstring(), LayeJavaFunction.create(root, value));
    }
    
-   public void newSlot(final String key, final Root root,
-         final LayeJavaFunction.Function value)
+   public void newSlot(final String key, final Root root, final LayeJavaFunction.Function value)
    {
       newSlot(key, LayeJavaFunction.create(root, value));
    }

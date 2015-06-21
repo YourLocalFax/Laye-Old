@@ -10,16 +10,14 @@ public class LocalValueInfo
    public int startOp = 0, endOp = 0;
    public boolean isConst;
    
-   public LocalValueInfo(final String name, final int location,
-         final boolean isConst)
+   public LocalValueInfo(final String name, final int location, final boolean isConst)
    {
       this.location = location;
       this.name = name;
       this.isConst = isConst;
    }
    
-   private LocalValueInfo(final String name, final int location,
-         final int startOp, final int endOp,
+   private LocalValueInfo(final String name, final int location, final int startOp, final int endOp,
          final boolean isConst)
    {
       this.location = location;

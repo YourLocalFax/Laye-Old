@@ -6,8 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.RandomAccess;
 
-public class ImmutableArrayList<E> extends AbstractList<E>
-      implements List<E>, RandomAccess, Cloneable, Serializable
+public class ImmutableArrayList<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable, Serializable
 {
    
    private static final long serialVersionUID = 325689144664986201L;

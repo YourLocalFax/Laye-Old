@@ -50,8 +50,7 @@ public final class LayeJavaInstance extends LayeValue
    }
    
    @Override
-   public LayeValue callChildMethod(final LayeValue name,
-         final LayeValue... args)
+   public LayeValue callChildMethod(final LayeValue name, final LayeValue... args)
    {
       final String methodName = name.asstring();
       final JavaMethod method = instanceMethods.get(methodName);

@@ -113,7 +113,7 @@ public final class LayeLexer
       {
          switch (c)
          {
-            // get rid of whitespace, woo
+         // get rid of whitespace, woo
             case ' ':
             case '\t':
             case '\r':
@@ -244,8 +244,7 @@ public final class LayeLexer
       {
          case 'u':
             read();
-            final StringBuilder sb = new StringBuilder(
-                  stringBuilder.toString());
+            final StringBuilder sb = new StringBuilder(stringBuilder.toString());
             beginTempString();
             int idx = 0;
             for (; !eos && Character.isDigit(c); idx++)
@@ -254,9 +253,7 @@ public final class LayeLexer
             }
             if (idx != 4)
             {
-               throw new LayeException(
-                     "4 digits are expected when defining a unicode char, "
-                           + idx + " given.");
+               throw new LayeException("4 digits are expected when defining a unicode char, " + idx + " given.");
             }
             // Put the value into the intValue, since the compiler takes
             // from there for char literals
@@ -284,8 +281,7 @@ public final class LayeLexer
             read();
             break;
          default:
-            throw new LayeException(
-                  "Escape character '" + c + "' not recognized.");
+            throw new LayeException("Escape character '" + c + "' not recognized.");
       }
       return res;
    }
@@ -297,13 +293,12 @@ public final class LayeLexer
    
    private static boolean isHexChar(final char c)
    {
-      return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f')
-            || (c >= 'A' && c <= 'F');
+      return c >= '0' && c <= '9' || c >= 'a' && c <= 'f' || c >= 'A' && c <= 'F';
    }
    
    private static boolean isOctalChar(final char c)
    {
-      return (c >= '0' && c <= '7');
+      return c >= '0' && c <= '7';
    }
    
    private static boolean isBinaryChar(final char c)
@@ -364,8 +359,7 @@ public final class LayeLexer
             }
             if (lastChar == '_')
             {
-               throw new LayeException(
-                     "Cannot place an underscore at the end of a number.");
+               throw new LayeException("Cannot place an underscore at the end of a number.");
             }
          }
          else
@@ -386,8 +380,7 @@ public final class LayeLexer
             }
             if (lastChar == '_')
             {
-               throw new LayeException(
-                     "Cannot place an underscore at the end of a number.");
+               throw new LayeException("Cannot place an underscore at the end of a number.");
             }
          }
       }
@@ -398,15 +391,13 @@ public final class LayeLexer
          // The only "letter" characters we can accept are 'e' and 'f'
          // (exponent and float definition).
          putChar(lastChar);
-         while (!eos
-               && (Character.isDigit(c) || c == '_' || c == '.' || c == 'e'))
+         while (!eos && (Character.isDigit(c) || c == '_' || c == '.' || c == 'e'))
          {
             if (c == '_')
             {
                if (lastChar == '.')
                {
-                  throw new LayeException(
-                        "Cannot place an underscore next to a decimal point in numbers.");
+                  throw new LayeException("Cannot place an underscore next to a decimal point in numbers.");
                }
                lastChar = c;
                read(); // get rid of it
@@ -415,8 +406,7 @@ public final class LayeLexer
             {
                if (lastChar == '_')
                {
-                  throw new LayeException(
-                        "Cannot place a decimal point next to an underscore in numbers.");
+                  throw new LayeException("Cannot place a decimal point next to an underscore in numbers.");
                }
                if (numberType == Token.FLOAT_LITERAL)
                {
@@ -445,8 +435,7 @@ public final class LayeLexer
          }
          if (lastChar == '_')
          {
-            throw new LayeException(
-                  "Cannot place an underscore at the end of a number.");
+            throw new LayeException("Cannot place an underscore at the end of a number.");
          }
       }
       // if the final char is 'f', We know this should be a float literal.
@@ -457,8 +446,7 @@ public final class LayeLexer
       }
       if (!eos && Character.isAlphabetic(c) || Character.isDigit(c) || c == '_')
       {
-         throw new LayeException(
-               "unexpected characters at end of numeric literal.");
+         throw new LayeException("unexpected characters at end of numeric literal.");
       }
       if (numberType == Token.INT_LITERAL)
       {
@@ -475,8 +463,7 @@ public final class LayeLexer
    private Token identifier()
    {
       beginTempString();
-      while (!eos && Character.isAlphabetic(c) || Character.isDigit(c)
-            || c == '_')
+      while (!eos && Character.isAlphabetic(c) || Character.isDigit(c) || c == '_')
       {
          putChar();
       }

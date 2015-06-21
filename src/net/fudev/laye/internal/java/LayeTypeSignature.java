@@ -8,8 +8,7 @@ import net.fudev.laye.internal.values.LayeValue;
 
 final class LayeTypeSignature
 {
-   static LayeTypeSignature createTypeSignature(
-         final Class<?>... argTypes)
+   static LayeTypeSignature createTypeSignature(final Class<?>... argTypes)
    {
       final Vector<ValueType> types = new Vector<>();
       for (final Class<?> type : argTypes)
@@ -19,8 +18,7 @@ final class LayeTypeSignature
       return new LayeTypeSignature(types.toArray(new ValueType[types.size()]));
    }
    
-   static LayeTypeSignature createTypeSignature(
-         final LayeValue... argValues)
+   static LayeTypeSignature createTypeSignature(final LayeValue... argValues)
    {
       final Vector<ValueType> types = new Vector<>();
       for (final LayeValue value : argValues)
