@@ -34,6 +34,8 @@ public final class LayeTest
    {
       Logger.setLoggerLevel(LoggerLevel.NONE);
       
+      final Timer timer = new Timer();
+      
       final LayeScriptEngineFactory factory = new LayeScriptEngineFactory();
       final LayeScriptEngine engine = factory.getScriptEngine();
       
@@ -43,9 +45,14 @@ public final class LayeTest
       try (final InputStream scriptInputStream = LayeTest.class.getResourceAsStream("/main.laye"))
       {
          final InputStreamReader scriptReader = new InputStreamReader(scriptInputStream);
-         final LayeScript script = engine.compile(scriptReader);
          
+         timer.start();
+         final LayeScript script = engine.compile(scriptReader);
+         timer.end("Compiler took {time_sec} seconds ({time_milli} milliseconds {time_nano} nanoseconds)");
+
+         timer.start();
          script.eval();
+         timer.end("Execution took {time_sec} seconds ({time_milli} milliseconds {time_nano} nanoseconds)");
       }
       catch (final IOException | ScriptException e)
       {
