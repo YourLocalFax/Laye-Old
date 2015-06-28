@@ -38,6 +38,7 @@ public final class LayeJavaInstance extends LayeValue
    private final Map<String, JavaMethod> prefixOperators;
    private final Map<String, JavaMethod> postfixOperators;
    private final Map<String, JavaMethod> infixOperators;
+   private final Map<String, JavaMethod> infixRightAssocOperators;
    
    public final Object object;
    
@@ -49,6 +50,7 @@ public final class LayeJavaInstance extends LayeValue
       this.prefixOperators = type.prefixOperators;
       this.postfixOperators = type.postfixOperators;
       this.infixOperators = type.infixOperators;
+      this.infixRightAssocOperators = type.infixRightAssocOperators;
    }
    
    @Override
@@ -86,6 +88,8 @@ public final class LayeJavaInstance extends LayeValue
       return LayeValue.valueOf(result);
    }
    
+   // TODO long/double
+   
    @Override
    public LayeValue prefixOp(final String op)
    {
@@ -110,6 +114,8 @@ public final class LayeJavaInstance extends LayeValue
       return LayeValue.valueOf(result);
    }
    
+   // TODO consolidate
+   
    @Override
    public LayeValue infixOp(final String op, final LayeValue right)
    {
@@ -119,6 +125,66 @@ public final class LayeJavaInstance extends LayeValue
          throw new LayeException("No infix operator " + op + " found.");
       }
       final Object result = method.invoke(object, right);
+      return LayeValue.valueOf(result);
+   }
+   
+   @Override
+   public LayeValue infixOp(final String op, final long right)
+   {
+      final JavaMethod method = infixOperators.get(op);
+      if (method == null)
+      {
+         throw new LayeException("No infix operator " + op + " found.");
+      }
+      final Object result = method.invoke(object, right);
+      return LayeValue.valueOf(result);
+   }
+   
+   @Override
+   public LayeValue infixOp(final String op, final double right)
+   {
+      final JavaMethod method = infixOperators.get(op);
+      if (method == null)
+      {
+         throw new LayeException("No infix operator " + op + " found.");
+      }
+      final Object result = method.invoke(object, right);
+      return LayeValue.valueOf(result);
+   }
+
+   @Override
+   public LayeValue infixOpRev(final String op, final LayeValue left)
+   {
+      final JavaMethod method = infixRightAssocOperators.get(op);
+      if (method == null)
+      {
+         throw new LayeException("No infix operator " + op + " found.");
+      }
+      final Object result = method.invoke(object, left);
+      return LayeValue.valueOf(result);
+   }
+
+   @Override
+   public LayeValue infixOpRev(final String op, final long left)
+   {
+      final JavaMethod method = infixRightAssocOperators.get(op);
+      if (method == null)
+      {
+         throw new LayeException("No infix operator " + op + " found.");
+      }
+      final Object result = method.invoke(object, left);
+      return LayeValue.valueOf(result);
+   }
+
+   @Override
+   public LayeValue infixOpRev(final String op, final double left)
+   {
+      final JavaMethod method = infixRightAssocOperators.get(op);
+      if (method == null)
+      {
+         throw new LayeException("No infix operator " + op + " found.");
+      }
+      final Object result = method.invoke(object, left);
       return LayeValue.valueOf(result);
    }
 }

@@ -41,6 +41,17 @@ public final class JUtil
       return javaArgs;
    }
    
+   public static Object[] maybeConvertPrimitives(Object[] args, Class<?>[] javaTypes)
+   {
+      for (int i = 0; i < args.length; i++)
+      {
+         final Class<?> methodArg = javaTypes[i];
+         final Object arg = args[i];
+         args[i] = JUtil.maybeConvertPrimitive(methodArg, arg);
+      }
+      return args;
+   }
+   
    static Object toJavaObject(final ValueType type, final Class<?> javaType, final LayeValue arg)
    {
       switch (type)
@@ -116,6 +127,53 @@ public final class JUtil
             throw new LayeException("TODO");
       }
       throw new LayeException("TODO");
+   }
+   
+   static Object maybeConvertPrimitive(Class<?> javaType, Object arg)
+   {
+      if (arg instanceof Number)
+      {
+         final Number num = (Number) arg;
+         if (arg instanceof Float || arg instanceof Double)
+         {
+            if (javaType == float.class || javaType == Float.class)
+            {
+               return num.floatValue();
+            }
+            else if (javaType == double.class || javaType == Double.class)
+            {
+               return num.doubleValue();
+            }
+         }
+         else
+         {
+            if (javaType == byte.class || javaType == Byte.class)
+            {
+               return num.byteValue();
+            }
+            else if (javaType == short.class || javaType == Short.class)
+            {
+               return num.shortValue();
+            }
+            else if (javaType == int.class || javaType == Integer.class)
+            {
+               return num.intValue();
+            }
+            else if (javaType == long.class || javaType == Long.class)
+            {
+               return num.longValue();
+            }
+            else if (javaType == float.class || javaType == Float.class)
+            {
+               return num.floatValue();
+            }
+            else if (javaType == double.class || javaType == Double.class)
+            {
+               return num.doubleValue();
+            }
+         }
+      }
+      return arg;
    }
    
    private JUtil()

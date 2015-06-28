@@ -450,8 +450,7 @@ public abstract class LayeValue
    /** Performs the given binary operation on this value and the right value. */
    public LayeValue infixOp(final String op, final LayeValue right)
    {
-      arithBinaryError(op, valueType.type.toString(), right.valueType.type.toString());
-      return null;
+      return right.infixOpRev(op, this);
    }
    
    /** Performs the given binary operation on this value and the right value. */
@@ -465,6 +464,26 @@ public abstract class LayeValue
    public LayeValue infixOp(final String op, final double right)
    {
       arithBinaryError(op, valueType.type.toString(), ValueType.FLOAT.toString());
+      return null;
+   }
+   
+   // TODO doc
+   
+   public LayeValue infixOpRev(final String op, final LayeValue left)
+   {
+      arithBinaryError(op, left.valueType.type.toString(), valueType.type.toString());
+      return null;
+   }
+   
+   public LayeValue infixOpRev(final String op, final long left)
+   {
+      arithBinaryError(op, ValueType.INT.toString(), valueType.type.toString());
+      return null;
+   }
+   
+   public LayeValue infixOpRev(final String op, final double left)
+   {
+      arithBinaryError(op, ValueType.FLOAT.toString(), valueType.type.toString());
       return null;
    }
    
@@ -499,15 +518,13 @@ public abstract class LayeValue
    /** Sum of a long and this LayeValue. */
    public LayeValue addRev(final long left)
    {
-      arithBinaryError("+", ValueType.INT.type.toString(), valueType.type.toString());
-      return null;
+      return infixOpRev("+", left);
    }
    
    /** Sum of a double and this LayeValue. */
    public LayeValue addRev(final double left)
    {
-      arithBinaryError("+", ValueType.FLOAT.type.toString(), valueType.type.toString());
-      return null;
+      return infixOpRev("+", left);
    }
    
    // Subtraction ( - )
@@ -533,15 +550,13 @@ public abstract class LayeValue
    /** Difference of a long and this LayeValue. */
    public LayeValue subtractRev(final long left)
    {
-      arithBinaryError("-", ValueType.INT.type.toString(), valueType.type.toString());
-      return null;
+      return infixOpRev("-", left);
    }
    
    /** Difference of a double and this LayeValue. */
    public LayeValue subtractRev(final double left)
    {
-      arithBinaryError("-", ValueType.FLOAT.type.toString(), valueType.type.toString());
-      return null;
+      return infixOpRev("-", left);
    }
    
    // Multiplication ( * )
@@ -567,15 +582,13 @@ public abstract class LayeValue
    /** Product of a long and this LayeValue. */
    public LayeValue multiplyRev(final long left)
    {
-      arithBinaryError("*", ValueType.INT.type.toString(), valueType.type.toString());
-      return null;
+      return infixOpRev("*", left);
    }
    
    /** Product of a double and this LayeValue. */
    public LayeValue multiplyRev(final double left)
    {
-      arithBinaryError("*", ValueType.FLOAT.type.toString(), valueType.type.toString());
-      return null;
+      return infixOpRev("*", left);
    }
    
    // Division ( / )
@@ -601,15 +614,13 @@ public abstract class LayeValue
    /** Quotient of a long and this LayeValue. */
    public LayeValue divideRev(final long left)
    {
-      arithBinaryError("/", ValueType.INT.type.toString(), valueType.type.toString());
-      return null;
+      return infixOpRev("/", left);
    }
    
    /** Quotient of a double and this LayeValue. */
    public LayeValue divideRev(final double left)
    {
-      arithBinaryError("/", ValueType.FLOAT.type.toString(), valueType.type.toString());
-      return null;
+      return infixOpRev("/", left);
    }
    
    // Integer Division ( // )
@@ -635,15 +646,13 @@ public abstract class LayeValue
    /** Integer quotient of a long and this LayeValue. */
    public LayeValue intDivideRev(final long left)
    {
-      arithBinaryError("//", ValueType.INT.type.toString(), valueType.type.toString());
-      return null;
+      return infixOpRev("//", left);
    }
    
    /** Integer quotient of a double and this LayeValue. */
    public LayeValue intDivideRev(final double left)
    {
-      arithBinaryError("//", ValueType.FLOAT.type.toString(), valueType.type.toString());
-      return null;
+      return infixOpRev("//", left);
    }
    
    // Modulo ( % )

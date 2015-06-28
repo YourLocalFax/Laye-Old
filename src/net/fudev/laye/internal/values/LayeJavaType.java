@@ -30,6 +30,7 @@ import net.fudev.laye.api.LayeMethod;
 import net.fudev.laye.api.LayePostfix;
 import net.fudev.laye.api.LayePrefix;
 import net.fudev.laye.api.LayeType;
+import net.fudev.laye.api.LayeOperator.Assoc;
 import net.fudev.laye.err.LayeException;
 import net.fudev.laye.internal.ValueType;
 import net.fudev.laye.internal.java.JavaCtor;
@@ -102,6 +103,7 @@ public class LayeJavaType extends LayeValue
    final Map<String, JavaMethod> prefixOperators = new HashMap<>();
    final Map<String, JavaMethod> postfixOperators = new HashMap<>();
    final Map<String, JavaMethod> infixOperators = new HashMap<>();
+   final Map<String, JavaMethod> infixRightAssocOperators = new HashMap<>();
    
    private final Map<String, JavaMethod> staticMethods = new HashMap<>();
    private final Map<String, JavaCtor> constructors = new HashMap<>();
@@ -142,7 +144,7 @@ public class LayeJavaType extends LayeValue
          }
          else if (infixAnnot != null)
          {
-            addOperator(method, infixAnnot.operator(), infixOperators);
+            addOperator(method, infixAnnot.operator(), infixAnnot.assoc() == Assoc.LEFT ? infixOperators : infixRightAssocOperators);
          }
       }
       

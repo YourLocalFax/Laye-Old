@@ -70,4 +70,30 @@ public final class JavaMethod
          return null;
       }
    }
+   
+   public Object invoke(final Object owner, final Object... args)
+   {
+      final Class<?>[] types = new Class<?>[args.length];
+      for (int i = 0; i < types.length; i++)
+      {
+         types[i] = args[i].getClass();
+      }
+      final LayeTypeSignature sig = LayeTypeSignature.createTypeSignature(types);
+      final Method method = methods.get(sig);
+      if (method == null)
+      {
+         throw new LayeException("No suitable method found for argument types " + sig.toString());
+      }
+      final Class<?>[] javaTypes = method.getParameterTypes();
+      final Object[] javaArgs = JUtil.maybeConvertPrimitives(args, javaTypes);
+      try
+      {
+         return method.invoke(owner, javaArgs);
+      }
+      catch (final IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+      {
+         e.printStackTrace();
+         return null;
+      }
+   }
 }
