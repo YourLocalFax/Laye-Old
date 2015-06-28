@@ -24,6 +24,8 @@ import net.fudev.laye.err.LayeException;
 import net.fudev.laye.internal.ValueType;
 import net.fudev.laye.internal.java.JavaMethod;
 
+// TODO java type inheritance
+
 public final class LayeJavaInstance extends LayeValue
 {
    public static LayeJavaInstance valueOf(final Object object)
@@ -33,6 +35,8 @@ public final class LayeJavaInstance extends LayeValue
    }
    
    private final Map<String, JavaMethod> instanceMethods;
+   private final Map<String, JavaMethod> prefixOperators;
+   private final Map<String, JavaMethod> postfixOperators;
    private final Map<String, JavaMethod> infixOperators;
    
    public final Object object;
@@ -42,6 +46,8 @@ public final class LayeJavaInstance extends LayeValue
       super(ValueType.JAVA_INSTANCE);
       this.object = object;
       this.instanceMethods = type.instanceMethods;
+      this.prefixOperators = type.prefixOperators;
+      this.postfixOperators = type.postfixOperators;
       this.infixOperators = type.infixOperators;
    }
    
@@ -81,12 +87,36 @@ public final class LayeJavaInstance extends LayeValue
    }
    
    @Override
+   public LayeValue prefixOp(final String op)
+   {
+      final JavaMethod method = prefixOperators.get(op);
+      if (method == null)
+      {
+         throw new LayeException("No prefix operator " + op + " found.");
+      }
+      final Object result = method.invoke(object);
+      return LayeValue.valueOf(result);
+   }
+   
+   @Override
+   public LayeValue postfixOp(final String op)
+   {
+      final JavaMethod method = postfixOperators.get(op);
+      if (method == null)
+      {
+         throw new LayeException("No postfix operator " + op + " found.");
+      }
+      final Object result = method.invoke(object);
+      return LayeValue.valueOf(result);
+   }
+   
+   @Override
    public LayeValue infixOp(final String op, final LayeValue right)
    {
       final JavaMethod method = infixOperators.get(op);
       if (method == null)
       {
-         throw new LayeException("No operator " + op + " found.");
+         throw new LayeException("No infix operator " + op + " found.");
       }
       final Object result = method.invoke(object, right);
       return LayeValue.valueOf(result);

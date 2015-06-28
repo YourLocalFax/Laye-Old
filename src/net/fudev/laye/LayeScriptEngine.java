@@ -30,6 +30,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptException;
 
+import net.fudev.laye.api.LayeType;
 import net.fudev.laye.err.LayeException;
 import net.fudev.laye.internal.Root;
 import net.fudev.laye.internal.values.LayeFloat;
@@ -38,6 +39,7 @@ import net.fudev.laye.internal.values.LayeInt;
 import net.fudev.laye.internal.values.LayeJavaType;
 import net.fudev.laye.internal.values.LayeString;
 import net.fudev.laye.internal.values.LayeValue;
+import net.fudev.laye.util.Util;
 
 public final class LayeScriptEngine extends AbstractScriptEngine implements ScriptEngine, Compilable
 {
@@ -169,6 +171,30 @@ public final class LayeScriptEngine extends AbstractScriptEngine implements Scri
    
    public void put(final String key, final Class<?> value)
    {
+      put(key, LayeJavaType.get(value));
+   }
+   
+   public void put(final Class<?> value)
+   {
+      final LayeType type = value.getAnnotation(LayeType.class);
+      if (type == null)
+      {
+         throw new LayeException("Class must be tagged with the @LayeType annotation.");
+      }
+      final String key;
+      final String name = type.name();
+      if (name == null || name.isEmpty())
+      {
+         key = value.getSimpleName();
+      }
+      else if (Util.isValidJavaIdentifier(name))
+      {
+         key = name;
+      }
+      else
+      {
+         throw new IllegalArgumentException(name + " is not a valid identifier.");
+      }
       put(key, LayeJavaType.get(value));
    }
    

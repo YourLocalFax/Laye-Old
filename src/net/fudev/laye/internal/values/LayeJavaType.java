@@ -27,6 +27,8 @@ import java.util.Map;
 import net.fudev.laye.api.LayeCtor;
 import net.fudev.laye.api.LayeInfix;
 import net.fudev.laye.api.LayeMethod;
+import net.fudev.laye.api.LayePostfix;
+import net.fudev.laye.api.LayePrefix;
 import net.fudev.laye.api.LayeType;
 import net.fudev.laye.err.LayeException;
 import net.fudev.laye.internal.ValueType;
@@ -118,11 +120,10 @@ public class LayeJavaType extends LayeValue
       // Gather methods (instance and static) TODO instance methods
       for (final Method method : value.getMethods())
       {
+         // TODO check that only one of these is not null.
          final LayeMethod methodAnnot = method.getDeclaredAnnotation(LayeMethod.class);
-         // final LayePrefix prefixAnnot = method
-         // .getDeclaredAnnotation(LayePrefix.class);
-         // final LayePostfix postfixAnnot = method
-         // .getDeclaredAnnotation(LayePostfix.class);
+         final LayePrefix prefixAnnot = method.getDeclaredAnnotation(LayePrefix.class);
+         final LayePostfix postfixAnnot = method.getDeclaredAnnotation(LayePostfix.class);
          final LayeInfix infixAnnot = method.getDeclaredAnnotation(LayeInfix.class);
          
          final int modifiers = method.getModifiers();
@@ -130,6 +131,14 @@ public class LayeJavaType extends LayeValue
          {
             final boolean isStatic = Modifier.isStatic(modifiers);
             addMethod(method, methodAnnot, isStatic ? staticMethods : instanceMethods);
+         }
+         else if (prefixAnnot != null)
+         {
+            addOperator(method, prefixAnnot.operator(), prefixOperators);
+         }
+         else if (postfixAnnot != null)
+         {
+            addOperator(method, postfixAnnot.operator(), postfixOperators);
          }
          else if (infixAnnot != null)
          {

@@ -114,5 +114,27 @@ public final class Util
       }
       return true;
    }
+
+   // TODO check impementation
+   public static boolean isValidJavaIdentifier(String name)
+   {
+      final char[] chars = name.toCharArray();
+      if (chars.length == 0)
+      {
+         return false;
+      }
+      if (!Character.isJavaIdentifierStart(chars[0]))
+      {
+         return false;
+      }
+      for (int i = 1; i < chars.length; i++)
+      {
+         if (!Character.isJavaIdentifierPart(chars[i]))
+         {
+            return false;
+         }
+      }
+      return true;
+   }
    
 }

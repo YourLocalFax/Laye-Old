@@ -352,12 +352,12 @@ public final class LayeFunction extends LayeValue
                   
                case Laye.OP_PREFIX: // [0] PREFIX(A) STK[TOP - 1] = STK[TOP -
                   // 1].unaryPrefixOp(k[A]);
-                  stack[top - 1] = stack[top - 1].unaryPrefixOp(k[i >>> Laye.POS_A].asstring());
+                  stack[top - 1] = stack[top - 1].prefixOp(k[i >>> Laye.POS_A].asstring());
                   continue;
                   
                case Laye.OP_POSTFIX: // [0] POSTFIX(A) STK[TOP - 1] = STK[TOP -
                   // 1].unaryPostfixOp(k[A]);
-                  stack[top - 1] = stack[top - 1].unaryPostfixOp(k[i >>> Laye.POS_A].asstring());
+                  stack[top - 1] = stack[top - 1].postfixOp(k[i >>> Laye.POS_A].asstring());
                   continue;
                   
                   // ---------- Binary Operations ---------- //

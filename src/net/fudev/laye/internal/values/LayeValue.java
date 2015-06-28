@@ -382,14 +382,14 @@ public abstract class LayeValue
    // ---------- Unary Operations ---------- //
    
    /** Performs the given prefix unary operation on this value. */
-   public LayeValue unaryPrefixOp(final String op)
+   public LayeValue prefixOp(final String op)
    {
       arithUnaryPreError(op, valueType.type.toString());
       return null;
    }
    
    /** Performs the given postfix unary operation on this value. */
-   public LayeValue unaryPostfixOp(final String op)
+   public LayeValue postfixOp(final String op)
    {
       arithUnaryPostError(op, valueType.type.toString());
       return null;
