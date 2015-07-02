@@ -64,7 +64,6 @@ public final class LayeFunction extends LayeValue
       result = prime * result + (insnFormat == null ? 0 : insnFormat.hashCode());
       result = prime * result + pc;
       result = prime * result + (proto == null ? 0 : proto.hashCode());
-      result = prime * result + (root == null ? 0 : root.hashCode());
       result = prime * result + (stringValue == null ? 0 : stringValue.hashCode());
       result = prime * result + Arrays.hashCode(ups);
       return result;
@@ -221,7 +220,7 @@ public final class LayeFunction extends LayeValue
                   {
                      target = ((LayeReference) target).getValue();
                   }
-                  if (i >>> Laye.POS_A != 0)
+                  if (((i >>> Laye.POS_A) & Laye.MAX_A) != 0)
                   {
                      target.newSlot(stack[top - 2], stack[top - 3] = stack[top - 1]);
                   }

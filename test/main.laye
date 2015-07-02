@@ -1,5 +1,5 @@
-loc veca = new Vec2(1.0, 2.0);
-loc vecb = new Vec2:xy(3.0);
+fn Create = do
+end
 
-println(veca + vecb);
-println(veca - vecb);
+fn Resize(width, height) = do
+end

@@ -244,7 +244,7 @@ public class LayeParser
    
    private String ident()
    {
-      return ident("identifier expected as function name");
+      return ident("identifier expected, got " + token);
    }
    
    private String ident(final String message)
